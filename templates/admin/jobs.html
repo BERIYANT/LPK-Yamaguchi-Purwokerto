@@ -1,0 +1,318 @@
+{% extends 'navbar/base.html' %}
+{% block title %}Kelola Lowongan{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+        --primary: #e11d48;
+        --primary-dark: #b91c1c;
+        --accent: #0ea5e9;
+        --warning: #f59e0b;
+        --success: #10b981;
+        --muted: #6b7280;
+        --surface: #ffffff;
+        --bg: #f8fafc;
+        --shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+        --border: #e5e7eb;
+    }
+
+    .job-page {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+        color: #0f172a;
+    }
+
+    .page-hero {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(circle at 20% 20%, rgba(225, 29, 72, 0.14), transparent 35%),
+            radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.14), transparent 32%),
+            linear-gradient(135deg, #fff7f8 0%, #f1f5f9 100%);
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 26px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+    }
+
+    .page-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(225, 29, 72, 0.05), rgba(14, 165, 233, 0.04));
+        pointer-events: none;
+    }
+
+    .hero-left,
+    .hero-right {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-left h1 {
+        font-size: 30px;
+        font-weight: 700;
+        margin: 4px 0 8px 0;
+        color: #0f172a;
+    }
+
+    .hero-left p {
+        margin: 0;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.04);
+        color: #0f172a;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .pill.accent {
+        background: rgba(225, 29, 72, 0.12);
+        color: var(--primary-dark);
+    }
+
+    .hero-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        background: linear-gradient(145deg, #e11d48, #be123c);
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 32px;
+        box-shadow: 0 16px 35px rgba(225, 29, 72, 0.25);
+    }
+
+    .card {
+        background: var(--surface);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        margin-bottom: 22px;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #fff, #f8fafc);
+        border-bottom: 1px solid var(--border);
+        padding: 18px 20px;
+    }
+
+    .card-header h5 {
+        margin: 0;
+        color: #0f172a;
+        font-weight: 700;
+    }
+
+    .card-header small {
+        color: var(--muted);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        margin-bottom: 0;
+        color: #0f172a;
+    }
+
+    .table thead th {
+        background-color: #f8fafc;
+        border-bottom: 2px solid var(--border);
+        color: #0f172a;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 12px 16px;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid var(--border);
+        transition: background-color 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .table tbody td {
+        padding: 14px 16px;
+        vertical-align: middle;
+    }
+
+    .badge {
+        font-weight: 600;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .badge.bg-success {
+        background-color: #d1fae5 !important;
+        color: #059669 !important;
+    }
+
+    .badge.bg-secondary {
+        background-color: #e5e7eb !important;
+        color: #4b5563 !important;
+    }
+
+    .btn-group-sm {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-sm {
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+    }
+
+    .btn-sm.btn-warning {
+        background-color: #fcd34d;
+        color: #92400e;
+        border-color: #fcd34d;
+    }
+
+    .btn-sm.btn-warning:hover {
+        background-color: #fbbf24;
+        border-color: #fbbf24;
+        color: #78350f;
+    }
+
+    .btn-sm.btn-danger {
+        background-color: #fee2e2;
+        color: #991b1b;
+        border-color: #fee2e2;
+    }
+
+    .btn-sm.btn-danger:hover {
+        background-color: #fecaca;
+        border-color: #fecaca;
+        color: #7f1d1d;
+    }
+
+    .btn-primary {
+        background-color: var(--primary) !important;
+        border-color: var(--primary) !important;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 10px;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-dark) !important;
+        border-color: var(--primary-dark) !important;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--muted);
+    }
+
+    .empty-state i {
+        font-size: 42px;
+        margin-bottom: 12px;
+        opacity: 0.5;
+    }
+
+    @media (max-width: 1024px) {
+        .page-hero {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="job-page">
+    <div class="page-hero">
+        <div class="hero-left">
+            <p><i class="fas fa-briefcase me-1"></i>Manajemen Lowongan</p>
+            <h1>Kelola Lowongan Kerja</h1>
+        </div>
+        <div class="hero-right">
+            <div class="hero-icon"><i class="fas fa-briefcase"></i></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h5><i class="fas fa-list me-2" style="color: var(--primary);"></i>Daftar Lowongan</h5>
+                <small>Kelola semua lowongan kerja yang tersedia</small>
+            </div>
+            <a href="{{ url_for('jobs.admin_create_job') }}" class="btn btn-primary"><i
+                    class="fas fa-plus me-2"></i>Tambah Lowongan</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Perusahaan</th>
+                            <th>Lokasi</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                            <th style="width:100px">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td><strong>{{ job.title }}</strong></td>
+                            <td>{{ job.company or '-' }}</td>
+                            <td>{{ job.location or '-' }}</td>
+                            <td>{{ job.deadline or '-' }}</td>
+                            <td>
+                                {% if job.status == 'active' %}
+                                <span class="badge bg-success"><i class="fas fa-circle me-1"
+                                        style="font-size: 6px;"></i>Aktif</span>
+                                {% else %}
+                                <span class="badge bg-secondary"><i class="fas fa-circle me-1"
+                                        style="font-size: 6px;"></i>Nonaktif</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group-sm">
+                                    <a href="{{ url_for('jobs.admin_edit_job', job_id=job.id) }}"
+                                        class="btn btn-sm btn-warning" title="Edit"><i class="fas fa-pen"></i></a>
+                                    <a href="{{ url_for('jobs.admin_delete_job', job_id=job.id) }}"
+                                        class="btn btn-sm btn-danger" onclick="return confirm('Hapus lowongan ini?')"
+                                        title="Hapus"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="fas fa-briefcase"></i>
+                                    <p>Belum ada lowongan</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

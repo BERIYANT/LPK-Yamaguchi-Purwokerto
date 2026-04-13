@@ -1,0 +1,95 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}Hasil Kuis - {{ quiz.title }} - LPK Yamaguchi{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Hasil Kuis - {{ quiz.title }}</h1>
+    <a href="{{ url_for('student.my_quiz_history') }}" class="btn btn-outline-primary">Lihat Riwayat Kuis</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h3 class="card-title {% if score.score >= 75 %}text-success{% elif score.score >= 50 %}text-warning{% else %}text-danger{% endif %}">
+                    {{ "%.1f"|format(score.score) }}
+                </h3>
+                <p class="card-text">Nilai Akhir</p>
+                
+                {% if score.score >= 75 %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>Lulus
+                </div>
+                {% elif score.score >= 50 %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-circle me-2"></i>Cukup
+                </div>
+                {% else %}
+                <div class="alert alert-danger">
+                    <i class="fas fa-times-circle me-2"></i>Tidak Lulus
+                </div>
+                {% endif %}
+                
+                <p class="text-muted small">
+                    Dinilai pada: {{ score.graded_at.strftime('%d/%m/%Y %H:%M') if score.graded_at }}
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Detail Jawaban</h5>
+            </div>
+            <div class="card-body">
+                {% for answer in answers %}
+                <div class="mb-4 p-3 border rounded {% if answer.is_correct %}border-success{% else %}border-danger{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h6>Pertanyaan {{ loop.index }}</h6>
+                        <span class="badge {% if answer.is_correct %}bg-success{% else %}bg-danger{% endif %}">
+                            {% if answer.is_correct %}Benar{% else %}Salah{% endif %}
+                        </span>
+                    </div>
+                    
+                    <p class="mb-3">{{ answer.question }}</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Jawaban Anda:</strong> 
+                                <span class="{% if answer.is_correct %}text-success{% else %}text-danger{% endif %}">
+                                    {{ answer.selected_option|upper or '-' }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Jawaban Benar:</strong> 
+                                <span class="text-success">{{ answer.correct_option|upper }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-2">
+                        <small class="text-muted">Opsi:</strong> 
+                            A) {{ answer.option_a }}, 
+                            B) {{ answer.option_b }}, 
+                            C) {{ answer.option_c }}, 
+                            D) {{ answer.option_d }}, 
+                            E) {{ answer.option_e }}
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('student.dashboard') }}" class="btn btn-primary">Kembali ke Dashboard</a>
+        <a href="{{ url_for('student.my_quiz_history') }}" class="btn btn-outline-primary">Lihat Semua Hasil Kuis</a>
+    </div>
+</div>
+{% endblock %}

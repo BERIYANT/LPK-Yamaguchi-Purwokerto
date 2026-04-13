@@ -1,0 +1,444 @@
+/* Custom styles for LPK Yamaguchi - Red Theme with Green Success */
+
+:root {
+    --primary-red: #E31E24;
+    /* match index navbar */
+    --dark-red: #b81217;
+    /* adjusted darker tone for hover */
+    --light-red: #fde4e5;
+    /* slightly lighter for backgrounds */
+    --red-hover: #c4161b;
+    /* hover border tone */
+    --red-border: #E31E24;
+    --red-bg: #fde4e5;
+    --red-text: #721c24;
+    --success-green: #28a745;
+    --success-light: #d4edda;
+    --success-border: #c3e6cb;
+    --success-text: #155724;
+}
+
+/* Primary buttons and elements - TETAP MERAH */
+.btn-primary {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-red);
+    border-color: var(--red-hover);
+}
+
+.btn-outline-primary {
+    color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+/* Navbar styling - TETAP MERAH */
+.navbar-dark.bg-primary {
+    background-color: var(--primary-red) !important;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: white !important;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Sidebar styling - TETAP MERAH */
+.sidebar {
+    min-height: calc(100vh - 56px);
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+}
+
+.sidebar .nav-link {
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: var(--light-red);
+    color: var(--red-text);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--primary-red);
+    color: white;
+}
+
+/* Badges with red theme - TETAP MERAH */
+.badge.bg-primary {
+    background-color: var(--primary-red) !important;
+}
+
+.badge.bg-success {
+    background-color: var(--success-green) !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
+}
+
+.badge.bg-danger {
+    background-color: var(--dark-red) !important;
+}
+
+.badge.bg-info {
+    background-color: #17a2b8 !important;
+}
+
+/* Cards and alerts */
+.card-header {
+    border-bottom: 2px solid var(--primary-red);
+}
+
+/* ALERT SUCCESS - DIUBAH MENJADI HIJAU */
+.alert-success {
+    background-color: var(--success-light);
+    border-color: var(--success-border);
+    color: var(--success-text);
+}
+
+.alert-success .fas.fa-check-circle {
+    color: var(--success-green);
+}
+
+/* Alert lainnya tetap */
+.alert-danger {
+    background-color: var(--light-red);
+    border-color: var(--red-border);
+    color: var(--red-text);
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.alert-info {
+    background-color: #d1edff;
+    border-color: #007bff;
+    color: #004085;
+}
+
+/* Table styling - TETAP MERAH */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(227, 30, 36, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(227, 30, 36, 0.1);
+}
+
+/* Avatar and profile - TETAP MERAH */
+.avatar-preview {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--primary-red);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-red);
+}
+
+/* Quiz styling - TETAP MERAH */
+.quiz-option {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.quiz-option:hover {
+    border-color: var(--primary-red);
+    background-color: var(--light-red);
+}
+
+.quiz-option.correct {
+    border-color: var(--success-green);
+    background-color: var(--success-light);
+}
+
+.quiz-option.incorrect {
+    border-color: var(--primary-red);
+    background-color: var(--light-red);
+}
+
+/* Material cards - TETAP MERAH */
+.material-card {
+    transition: transform 0.2s ease;
+    border: 1px solid #dee2e6;
+}
+
+.material-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(227, 30, 36, 0.2);
+    border-color: var(--primary-red);
+}
+
+/* Forum styling - TETAP MERAH */
+.forum-post {
+    border-left: 4px solid var(--primary-red);
+    background-color: white;
+}
+
+.forum-reply {
+    border-left: 4px solid #6c757d;
+    margin-left: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Statistics cards - TETAP MERAH */
+.stat-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid var(--primary-red);
+}
+
+.stat-card.bg-primary {
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red)) !important;
+}
+
+.stat-card.bg-success {
+    background: linear-gradient(135deg, var(--success-green), #218838) !important;
+}
+
+.stat-card.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+}
+
+.stat-card.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+}
+
+.stat-card.bg-danger {
+    background: linear-gradient(135deg, var(--dark-red), #a71e2a) !important;
+}
+
+/* Form controls focus - TETAP MERAH */
+.form-control:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.25);
+}
+
+.form-select:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.25);
+}
+
+/* Progress bars - TETAP MERAH */
+.progress-bar {
+    background-color: var(--primary-red);
+}
+
+/* Pagination - TETAP MERAH */
+.page-link {
+    color: var(--primary-red);
+}
+
+.page-link:hover {
+    color: var(--dark-red);
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+/* Dropdown menu - TETAP MERAH */
+.dropdown-menu {
+    border: 1px solid rgba(227, 30, 36, 0.1);
+}
+
+.dropdown-item:hover {
+    background-color: var(--light-red);
+    color: var(--red-text);
+}
+
+/* Jumbotron/Hero section - TETAP MERAH */
+.jumbotron.bg-primary {
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red)) !important;
+    color: white;
+}
+
+/* Custom red badges for specific roles - TETAP MERAH */
+.badge[class*="bg-"] {
+    font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        position: static;
+        height: auto;
+    }
+
+    .navbar-collapse {
+        background-color: var(--primary-red);
+    }
+}
+
+/* Loading and animation - TETAP MERAH */
+.spinner-border.text-primary {
+    color: var(--primary-red) !important;
+}
+
+/* Custom red shadows - TETAP MERAH */
+.red-shadow {
+    box-shadow: 0 2px 4px rgba(227, 30, 36, 0.2);
+}
+
+/* Status indicators - TETAP MERAH */
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-online {
+    background-color: var(--success-green);
+}
+
+.status-offline {
+    background-color: #6c757d;
+}
+
+.status-busy {
+    background-color: var(--primary-red);
+}
+
+/* Custom scrollbar for webkit browsers - TETAP MERAH */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-red);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-red);
+}
+
+/* Animasi khusus untuk SUCCESS messages - HIJAU */
+@keyframes slideInSuccess {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.alert-success {
+    animation: slideInSuccess 0.5s ease-out;
+    border-left: 4px solid var(--success-green);
+}
+
+.alert-danger {
+    border-left: 4px solid var(--primary-red);
+}
+
+.alert-warning {
+    border-left: 4px solid #ffc107;
+}
+
+.alert-info {
+    border-left: 4px solid #17a2b8;
+}
+
+/* Pulse effect untuk success message - HIJAU */
+@keyframes pulseSuccess {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+.alert-success {
+    animation: pulseSuccess 2s infinite;
+}
+
+/* Icon success dengan animasi - HIJAU */
+.alert-success .fas.fa-check-circle {
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Success message dengan efek khusus - HIJAU */
+.alert-success {
+    position: relative;
+    overflow: hidden;
+}
+
+.alert-success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--success-green), #20c997);
+}

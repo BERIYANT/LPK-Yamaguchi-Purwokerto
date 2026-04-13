@@ -1,0 +1,286 @@
+{% extends 'navbar/base.html' %}
+{% block title %}Materi{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+        --primary: #e11d48;
+        --primary-dark: #b91c1c;
+        --accent: #0ea5e9;
+        --muted: #6b7280;
+        --surface: #ffffff;
+        --bg: #f8fafc;
+        --shadow: 0 12px 28px rgba(15, 23, 42, .12);
+        --border: #e5e7eb;
+    }
+
+    .material-view-page {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+        color: #0f172a;
+        background: var(--bg);
+    }
+
+    .page-hero {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(circle at 20% 20%, rgba(225, 29, 72, .14), transparent 35%), radial-gradient(circle at 85% 30%, rgba(14, 165, 233, .14), transparent 32%), linear-gradient(135deg, #fff7f8 0%, #f1f5f9 100%);
+        border-radius: 18px;
+        padding: 24px;
+        margin-bottom: 26px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+    }
+
+    .hero-left p {
+        margin: 0 0 8px 0;
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .hero-left h1 {
+        font-size: 26px;
+        font-weight: 700;
+        margin: 0;
+        color: #0f172a;
+    }
+
+    .hero-btn {
+        background: linear-gradient(145deg, #e11d48, #be123c);
+        border: none;
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-weight: 600;
+        box-shadow: 0 12px 22px rgba(225, 29, 72, .25);
+        color: white;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .hero-btn:hover {
+        background: linear-gradient(145deg, #be123c, #9f1239);
+        transform: translateY(-2px);
+    }
+
+    .card {
+        background: var(--surface);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+    }
+
+    .btn-download-primary {
+        background: linear-gradient(145deg, #10b981, #059669);
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-download-primary:hover {
+        background: linear-gradient(145deg, #059669, #047857);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-outline-secondary {
+        border-color: var(--muted);
+        color: var(--muted);
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--muted);
+        color: white;
+    }
+
+    .file-info {
+        background: #f8fafc;
+        border-radius: 8px;
+        padding: 10px 14px;
+        border-left: 4px solid var(--accent);
+        margin-bottom: 15px;
+    }
+
+    .file-size {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+</style>
+
+<div class="material-view-page">
+    <div class="page-hero">
+        <div class="hero-left">
+            <p><i class="fas fa-book me-1"></i>Materi Pembelajaran</p>
+            <h1>{{ material.title }}</h1>
+        </div>
+        <div>
+            <a class="hero-btn" href="javascript:history.back()"><i class="fas fa-arrow-left"></i>Kembali</a>
+        </div>
+    </div>
+    
+    <div class="container py-4">
+        {% if material.file_path %}
+        {% set fp = material.file_path %}
+        {% set asset = fp if (fp and fp.startswith('uploads/')) else ('uploads/' ~ fp) %}
+        {% set lower = fp|lower %}
+        
+        <div class="file-info mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong><i class="fas fa-paperclip me-2"></i>File Lampiran:</strong>
+                    <span class="ms-2">{{ fp.split('/')[-1] if '/' in fp else fp }}</span>
+                    <div class="file-size mt-1">
+                        <i class="fas fa-file me-1"></i>
+                        {% if lower.endswith('.pdf') %}PDF Document
+                        {% elif lower.endswith('.doc') or lower.endswith('.docx') %}Word Document
+                        {% elif lower.endswith('.xls') or lower.endswith('.xlsx') %}Excel Spreadsheet
+                        {% elif lower.endswith('.ppt') or lower.endswith('.pptx') %}PowerPoint Presentation
+                        {% elif lower.endswith('.png') or lower.endswith('.jpg') or lower.endswith('.jpeg') or lower.endswith('.gif') or lower.endswith('.webp') %}Image File
+                        {% elif lower.endswith('.zip') or lower.endswith('.rar') %}Compressed Archive
+                        {% else %}File Attachment{% endif %}
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <!-- Tombol Download Utama (langsung download) -->
+                    <a class="btn-download-primary" 
+                       href="{{ url_for('material.download_material', material_id=material.id) }}">
+                        <i class="fas fa-download"></i> Download File
+                    </a>
+                    
+                    <!-- Tombol Pratinjau (buka di tab baru) -->
+                    <a class="btn btn-outline-secondary btn-sm" 
+                       href="{{ url_for('static', filename=asset) }}" 
+                       target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Pratinjau
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian pratinjau file (untuk gambar, PDF, dll) -->
+        {% if lower.endswith('.png') or lower.endswith('.jpg') or lower.endswith('.jpeg') or lower.endswith('.gif') or lower.endswith('.webp') %}
+        <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0"><i class="fas fa-image me-2"></i>Pratinjau Gambar</h6>
+                <a href="{{ url_for('static', filename=asset) }}" 
+                   target="_blank" 
+                   class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-expand"></i> Fullscreen
+                </a>
+            </div>
+            <img src="{{ url_for('static', filename=asset) }}" 
+                 alt="Lampiran Gambar" 
+                 class="img-fluid rounded border shadow-sm"
+                 style="max-height:500px; object-fit:contain; width:100%;">
+        </div>
+        
+        {% elif lower.endswith('.pdf') %}
+        <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0"><i class="fas fa-file-pdf me-2"></i>Pratinjau PDF</h6>
+                <div>
+                    <a href="{{ url_for('static', filename=asset) }}" 
+                       target="_blank" 
+                       class="btn btn-outline-primary btn-sm me-2">
+                        <i class="fas fa-external-link-alt"></i> Buka di Tab Baru
+                    </a>
+                    <a href="{{ url_for('material.download_material', material_id=material.id) }}"
+                       class="btn btn-success btn-sm">
+                        <i class="fas fa-download"></i> Download PDF
+                    </a>
+                </div>
+            </div>
+            <div style="min-height:500px; border:1px solid #ddd; border-radius:10px; overflow:hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <embed src="{{ url_for('static', filename=asset) }}#toolbar=1&navpanes=1&scrollbar=1" 
+                       type="application/pdf"
+                       style="width:100%; height:100%;">
+            </div>
+            <div class="alert alert-light mt-2 mb-0">
+                <small>
+                    <i class="fas fa-info-circle me-1"></i>
+                    Jika pratinjau tidak muncul, gunakan tombol "Buka di Tab Baru" atau "Download PDF".
+                </small>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            Materi ini tidak memiliki file lampiran.
+        </div>
+        {% endif %}
+
+        <!-- Konten Materi -->
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-align-left me-2"></i>Konten Materi</h5>
+            </div>
+            <div class="card-body">
+                <div class="material-content">
+                    {{ material.content | safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Tombol Kembali -->
+        <div class="mt-4 d-flex justify-content-between">
+            <a class="btn btn-outline-secondary" href="javascript:history.back()">
+                <i class="fas fa-arrow-left me-1"></i> Kembali
+            </a>
+            
+            {% if material.file_path %}
+            <a class="btn btn-success" 
+               href="{{ url_for('material.download_material', material_id=material.id) }}">
+                <i class="fas fa-download me-1"></i> Download File Lengkap
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Script untuk menambahkan konfirmasi sebelum download (opsional)
+document.addEventListener('DOMContentLoaded', function() {
+    const downloadLinks = document.querySelectorAll('a[href*="/download"]');
+    
+    downloadLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Opsional: Tambahkan efek loading
+            const originalHTML = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Memproses...';
+            this.classList.add('disabled');
+            
+            // Reset setelah 2 detik jika terjadi error
+            setTimeout(() => {
+                this.innerHTML = originalHTML;
+                this.classList.remove('disabled');
+            }, 2000);
+        });
+    });
+});
+</script>
+{% endblock %}

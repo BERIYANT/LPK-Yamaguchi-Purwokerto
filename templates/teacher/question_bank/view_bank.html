@@ -1,0 +1,359 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}{{ bank.name }} - Bank Soal{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+        --primary: #e11d48;
+        --primary-dark: #b91c1c;
+        --accent: #0ea5e9;
+        --success: #10b981;
+        --muted: #6b7280;
+        --surface: #ffffff;
+        --bg: #f8fafc;
+        --border: #e5e7eb;
+        --shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .header {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: var(--shadow);
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+    }
+
+    .header-content h1 {
+        margin: 0 0 10px 0;
+        font-size: 28px;
+        color: #0f172a;
+    }
+
+    .header-content p {
+        margin: 0 0 15px 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .stats {
+        display: flex;
+        gap: 20px;
+        margin: 15px 0 0 0;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stat-label {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .header-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(225, 29, 72, 0.3);
+    }
+
+    .btn-secondary {
+        background: var(--accent);
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #0284c7;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--border);
+        color: #0f172a;
+    }
+
+    .btn-outline:hover {
+        background: var(--bg);
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 30px 0 20px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .questions-list {
+        background: var(--surface);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+    }
+
+    .question-item {
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+        transition: all 0.3s ease;
+    }
+
+    .question-item:last-child {
+        border-bottom: none;
+    }
+
+    .question-item:hover {
+        background: var(--bg);
+    }
+
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 15px;
+    }
+
+    .question-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: var(--accent);
+        color: white;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .question-content {
+        flex: 1;
+    }
+
+    .question-text {
+        font-weight: 600;
+        color: #0f172a;
+        margin: 0 0 10px 0;
+        word-wrap: break-word;
+    }
+
+    .question-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0;
+    }
+
+    .option-badge {
+        background: var(--bg);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        border: 1px solid var(--border);
+    }
+
+    .option-badge.correct {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: var(--success);
+        color: var(--success);
+        font-weight: 600;
+    }
+
+    .question-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-small-secondary {
+        background: var(--border);
+        color: #0f172a;
+    }
+
+    .btn-small-secondary:hover {
+        background: #d1d5db;
+    }
+
+    .btn-small-danger {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .btn-small-danger:hover {
+        background: #fecaca;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: var(--surface);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+    }
+
+    .empty-state-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+
+    .empty-state h3 {
+        margin: 0 0 10px 0;
+        color: #0f172a;
+    }
+
+    .empty-state p {
+        color: var(--muted);
+        margin: 0 0 20px 0;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        gap: 12px;
+    }
+</style>
+
+<div class="container">
+    <a href="{{ url_for('question_bank.index') }}" class="back-link">← Kembali ke Bank Soal</a>
+
+    <div class="header">
+        <div class="header-content">
+            <h1>📚 {{ bank.name }}</h1>
+            {% if bank.description %}
+            <p>{{ bank.description }}</p>
+            {% endif %}
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">{{ questions|length }}</div>
+                    <div class="stat-label">Pertanyaan</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ bank.created_at.strftime('%d %b %Y') }}</div>
+                    <div class="stat-label">Dibuat</div>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <a href="{{ url_for('question_bank.use_bank_in_quiz', bank_id=bank.id) }}" class="btn btn-primary">🎯
+                Gunakan di Kuis</a>
+            <a href="{{ url_for('question_bank.add_question', bank_id=bank.id) }}" class="btn btn-secondary">+ Tambah
+                Soal</a>
+            <a href="{{ url_for('question_bank.edit_bank', bank_id=bank.id) }}" class="btn btn-secondary">Edit Info</a>
+            <a href="{{ url_for('question_bank.delete_bank', bank_id=bank.id) }}" class="btn btn-outline"
+                onclick="return confirm('Hapus bank soal ini dan semua soalnya?')">Hapus Bank</a>
+        </div>
+    </div>
+
+    <div class="section-title">📝 Daftar Pertanyaan</div>
+
+    {% if questions %}
+    <div class="questions-list">
+        {% for question in questions %}
+        <div class="question-item">
+            <div class="question-header">
+                <div style="display: flex; gap: 15px; flex: 1; width: 100%;">
+                    <div class="question-number">{{ loop.index }}</div>
+                    <div class="question-content" style="width: 100%;">
+                        <p class="question-text">{{ question.question }}</p>
+                        <div class="question-options">
+                            {% for opt in ['option_a', 'option_b', 'option_c', 'option_d', 'option_e'] %}
+                            {% if question[opt] %}
+                            <span
+                                class="option-badge {% if opt[7:].upper() == question.correct_option %}correct{% endif %}">
+                                <strong>{{ opt[7:].upper() }}.</strong> {{ question[opt] }}
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="question-actions">
+                    <a href="{{ url_for('question_bank.edit_question', question_id=question.id) }}"
+                        class="btn-small btn-small-secondary">Edit</a>
+                    <a href="{{ url_for('question_bank.delete_question', question_id=question.id) }}"
+                        class="btn-small btn-small-danger" onclick="return confirm('Hapus soal ini?')">Hapus</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">❓</div>
+        <h3>Belum Ada Pertanyaan</h3>
+        <p>Mulai tambahkan pertanyaan ke bank soal ini.</p>
+        <a href="{{ url_for('question_bank.add_question', bank_id=bank.id) }}" class="btn btn-primary">Tambah Pertanyaan
+            Pertama</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

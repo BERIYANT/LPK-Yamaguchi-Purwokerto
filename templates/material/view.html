@@ -1,0 +1,408 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}{{ material.title }} - LPK Yamaguchi{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1a365d;
+        margin-bottom: 5px;
+    }
+
+    .page-header p {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    .breadcrumb-item a {
+        color: #dc2626;
+        text-decoration: none;
+    }
+
+    .breadcrumb-item a:hover {
+        text-decoration: underline;
+    }
+
+    .breadcrumb-item.active {
+        color: #666;
+    }
+
+    .material-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-bottom: 20px;
+    }
+
+    .material-header {
+        border-bottom: 2px solid #dc2626;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .material-header h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #1a365d;
+        margin-bottom: 15px;
+    }
+
+    .material-meta {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .material-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .material-meta-item i {
+        color: #dc2626;
+    }
+
+    .material-content {
+        line-height: 1.8;
+        color: #1a365d;
+        font-size: 15px;
+    }
+
+    .material-content h1,
+    .material-content h2,
+    .material-content h3 {
+        color: #1a365d;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    .material-content h1 {
+        font-size: 24px;
+    }
+
+    .material-content h2 {
+        font-size: 20px;
+    }
+
+    .material-content h3 {
+        font-size: 18px;
+    }
+
+    .material-content p {
+        margin-bottom: 15px;
+    }
+
+    .material-content ul,
+    .material-content ol {
+        margin-bottom: 15px;
+        padding-left: 30px;
+    }
+
+    .material-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    .material-content code {
+        background: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        color: #dc2626;
+    }
+
+    .material-content pre {
+        background: #1a365d;
+        color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 20px 0;
+    }
+
+    .material-content pre code {
+        background: transparent;
+        color: #fff;
+        padding: 0;
+    }
+
+    .material-attachments {
+        background: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 30px;
+    }
+
+    .material-attachments h5 {
+        color: #1a365d;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .attachment-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        background: white;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .attachment-item:hover {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .attachment-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .attachment-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .attachment-icon {
+        width: 40px;
+        height: 40px;
+        background: #fee2e2;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #dc2626;
+        font-size: 18px;
+    }
+
+    .attachment-name {
+        font-weight: 500;
+        color: #1a365d;
+    }
+
+    .attachment-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-view {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-view:hover {
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-download {
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-download:hover {
+        background: #059669;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-back {
+        background: #f3f4f6;
+        color: #1a365d;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-back:hover {
+        background: #e5e7eb;
+    }
+
+    @media (max-width: 768px) {
+        .material-card {
+            padding: 20px;
+        }
+
+        .material-meta {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .attachment-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .btn-view, .btn-download {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        {% if g.user.role == 'teacher' %}
+        <li class="breadcrumb-item"><a href="{{ url_for('teacher.dashboard') }}">Dashboard</a></li>
+        {% elif g.user.role == 'student' %}
+        <li class="breadcrumb-item"><a href="{{ url_for('student.dashboard') }}">Dashboard</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active" aria-current="page">{{ material.title }}</li>
+    </ol>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+    <h1>Materi Pembelajaran</h1>
+    <p>Pelajari materi dengan seksama</p>
+</div>
+
+<!-- Material Card -->
+<div class="material-card">
+    <!-- Material Header -->
+    <div class="material-header">
+        <h2>{{ material.title }}</h2>
+        <div class="material-meta">
+            {% if material.author %}
+            <div class="material-meta-item">
+                <i class="fas fa-user-tie"></i>
+                <span>{{ material.author.full_name if material.author.full_name else material.author.username }}</span>
+            </div>
+            {% endif %}
+            {% if material.created_at %}
+            <div class="material-meta-item">
+                <i class="far fa-calendar"></i>
+                <span>{{ material.created_at.strftime('%d %B %Y') }}</span>
+            </div>
+            {% endif %}
+            {% if material.get('class_name') %}
+            <div class="material-meta-item">
+                <i class="fas fa-book"></i>
+                <span>{{ material.class_name }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Material Content -->
+    <div class="material-content">
+        {{ material.content | safe }}
+    </div>
+
+    <!-- Material Attachments -->
+    {% if material.file_path %}
+    <div class="material-attachments">
+        <h5>
+            <i class="fas fa-paperclip"></i>
+            Lampiran
+        </h5>
+        <div class="attachment-item">
+            <div class="attachment-info">
+                <div class="attachment-icon">
+                    <i class="fas fa-file"></i>
+                </div>
+                <div>
+                    <div class="attachment-name">{{ material.file_path.split('/')[-1] }}</div>
+                    <small class="text-muted">
+                        {% set file_extension = material.file_path.split('.')[-1].lower() %}
+                        {% if file_extension in ['pdf', 'doc', 'docx', 'txt', 'ppt', 'pptx'] %}
+                            {{ file_extension|upper }} File
+                        {% elif file_extension in ['jpg', 'jpeg', 'png', 'gif'] %}
+                            Image File
+                        {% else %}
+                            File
+                        {% endif %}
+                    </small>
+                </div>
+            </div>
+            <div class="attachment-buttons">
+                <!-- Tombol untuk melihat file (dibuka di browser) -->
+                <a href="{{ url_for('download_file', filename=material.file_path) }}" 
+                   target="_blank" 
+                   class="btn-view">
+                    <i class="fas fa-eye"></i> Lihat
+                </a>
+                
+                <!-- Tombol untuk download file secara langsung -->
+                <a href="{{ url_for('download_file', filename=material.file_path) }}" 
+                   download 
+                   class="btn-download">
+                    <i class="fas fa-download"></i> Download
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Back Button -->
+<div style="margin-bottom: 30px;">
+    {% if g.user.role == 'teacher' %}
+    <a href="{{ url_for('teacher.dashboard') }}" class="btn-back">
+        <i class="fas fa-arrow-left"></i>Kembali ke Dashboard
+    </a>
+    {% elif g.user.role == 'student' %}
+    <a href="{{ url_for('student.dashboard') }}" class="btn-back">
+        <i class="fas fa-arrow-left"></i>Kembali ke Dashboard
+    </a>
+    {% else %}
+    <a href="/" class="btn-back">
+        <i class="fas fa-arrow-left"></i>Kembali
+    </a>
+    {% endif %}
+</div>
+
+{% endblock %}

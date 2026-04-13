@@ -1,0 +1,454 @@
+{% extends "navbar/base.html" %}
+{% block title %}Kerjakan Kuis - LPK Yamaguchi{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Kerjakan Kuis</h1>
+    <button type="button" class="btn btn-sm btn-info" onclick="toggleDebug()">
+        <i class="fas fa-bug me-1"></i> Debug Mode
+    </button>
+</div>
+
+<!-- Debug Panel (hidden by default) -->
+<div id="debugPanel" class="card mb-3" style="display: none;">
+    <div class="card-header bg-warning text-dark">
+        <i class="fas fa-bug me-2"></i> Debug Information
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Quiz Data:</h6>
+                <pre id="debugQuiz" class="bg-light p-2 small"></pre>
+            </div>
+            <div class="col-md-6">
+                <h6>Audio Files:</h6>
+                <div id="debugAudio" class="bg-light p-2 small"></div>
+                <h6 class="mt-3">Browser Audio Support:</h6>
+                <div id="audioSupport" class="bg-light p-2 small"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning d-flex justify-content-between align-items-center">
+    <div>
+        <i class="fas fa-clock me-2"></i>
+        {% if quiz and quiz.due_at %}
+        Tenggat: <strong>{{ quiz.due_at.strftime('%d/%m/%Y %H:%M') }}</strong>
+        {% else %}
+        Tenggat: <strong>-</strong>
+        {% endif %}
+        <span class="ms-3"><i class="fas fa-redo me-1"></i>Attempt tersisa: <strong>{{ remaining_attempts }}</strong></span>
+    </div>
+    {% if quiz and quiz.duration_minutes %}
+    <div class="badge bg-danger" id="countdown">Sisa waktu: {{ quiz.duration_minutes }}:00</div>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" id="quizForm">
+                    {% for question in questions %}
+                    <div class="mb-4 p-3 border rounded question-container" data-question-id="{{ question.id }}">
+                        <h5>Pertanyaan {{ loop.index }} <small class="text-muted">(ID: {{ question.id }})</small></h5>
+                        
+                        <!-- Audio Player dengan Debug Info -->
+                        {% if question.audio_path %}
+                        <div class="mb-3 audio-container" data-audio-id="audio_{{ question.id }}">
+                            <div class="card {% if question.audio_path %}border-primary{% else %}bg-light{% endif %}">
+                                <div class="card-body py-2">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-2">
+                                            <i class="fas fa-volume-up"></i> Audio Pertanyaan:
+                                            <span class="badge bg-info ms-1" id="audio_status_{{ question.id }}">Ready</span>
+                                        </span>
+                                        <audio id="audio_{{ question.id }}" controls class="flex-grow-1 me-2"
+                                               onplay="updateAudioStatus('{{ question.id }}', 'playing')"
+                                               onpause="updateAudioStatus('{{ question.id }}', 'paused')"
+                                               onended="updateAudioStatus('{{ question.id }}', 'ended')"
+                                               onerror="updateAudioStatus('{{ question.id }}', 'error')">
+                                            <source src="{{ url_for('download_file', filename=question.audio_path) }}" 
+                                                    type="audio/mpeg"
+                                                    data-filename="{{ question.audio_path }}">
+                                            Browser Anda tidak mendukung pemutar audio.
+                                        </audio>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                    onclick="playAudio('audio_{{ question.id }}')">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                                    onclick="pauseAudio('audio_{{ question.id }}')">
+                                                <i class="fas fa-pause"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-info" 
+                                                    onclick="testAudio('audio_{{ question.id }}', '{{ question.id }}')">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block mt-1">
+                                        File: {{ question.audio_path }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="mb-3 text-muted">
+                            <i class="fas fa-volume-mute me-1"></i> Tidak ada audio untuk pertanyaan ini
+                        </div>
+                        {% endif %}
+                        
+                        <p class="mb-3">{{ question.question }}</p>
+
+                        {% if question.image_path %}
+                        <div class="mb-3">
+                            <img src="{{ url_for('download_file', filename=question.image_path) }}" 
+                                 alt="Gambar soal"
+                                 class="img-fluid" 
+                                 style="max-height: 300px;"
+                                 onerror="this.style.display='none'; console.error('Gambar gagal dimuat: {{ question.image_path }}')">
+                        </div>
+                        {% endif %}
+
+                        <!-- Options with improved layout -->
+                        {% set options = [
+                            {'letter': 'a', 'text': question.option_a, 'img': question.option_a_img},
+                            {'letter': 'b', 'text': question.option_b, 'img': question.option_b_img},
+                            {'letter': 'c', 'text': question.option_c, 'img': question.option_c_img},
+                            {'letter': 'd', 'text': question.option_d, 'img': question.option_d_img},
+                            {'letter': 'e', 'text': question.option_e, 'img': question.option_e_img}
+                        ] %}
+                        
+                        {% for option in options %}
+                        <div class="form-check mb-2 option-container">
+                            <input class="form-check-input" 
+                                   type="radio" 
+                                   name="q{{ question.id }}" 
+                                   id="q{{ question.id }}_{{ option.letter }}" 
+                                   value="{{ option.letter }}">
+                            <label class="form-check-label" for="q{{ question.id }}_{{ option.letter }}">
+                                <strong>{{ option.letter|upper }}.</strong> {{ option.text }}
+                                {% if option.img %}
+                                <br>
+                                <img src="{{ url_for('download_file', filename=option.img) }}" 
+                                     alt="Opsi {{ option.letter|upper }}"
+                                     class="img-fluid mt-1" 
+                                     style="max-height: 220px;"
+                                     onerror="console.warn('Gambar opsi {{ option.letter }} gagal dimuat: {{ option.img }}')">
+                                {% endif %}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                            <i class="fas fa-paper-plane me-2"></i>Kumpulkan Jawaban
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-lg ms-2" onclick="validateForm()">
+                            <i class="fas fa-check me-2"></i>Validasi Jawaban
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Debug JavaScript -->
+<script>
+// Debug mode toggle
+function toggleDebug() {
+    const panel = document.getElementById('debugPanel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    if (panel.style.display === 'block') {
+        collectDebugInfo();
+    }
+}
+
+// Collect debug information
+function collectDebugInfo() {
+    // Quiz data
+    const quizData = {
+        quizId: {{ quiz.id if quiz else 'null' }},
+        totalQuestions: {{ questions|length }},
+        durationMinutes: {{ quiz.duration_minutes if quiz and quiz.duration_minutes else 'null' }},
+        hasAudio: {{ questions|selectattr('audio_path')|list|length }},
+        questionsWithAudio: [
+            {% for q in questions if q.audio_path %}
+            {
+                id: {{ q.id }},
+                audio: "{{ q.audio_path }}",
+                hasImage: {{ 'true' if q.image_path else 'false' }}
+            },
+            {% endfor %}
+        ]
+    };
+    
+    document.getElementById('debugQuiz').textContent = JSON.stringify(quizData, null, 2);
+    
+    // Audio files info
+    let audioInfo = '';
+    const audioElements = document.querySelectorAll('audio');
+    audioElements.forEach((audio, index) => {
+        const source = audio.querySelector('source');
+        audioInfo += `Audio ${index + 1}: ${audio.id}<br>`;
+        audioInfo += `Source: ${source ? source.src : 'No source'}<br>`;
+        audioInfo += `ReadyState: ${audio.readyState}<br>`;
+        audioInfo += `NetworkState: ${audio.networkState}<br>`;
+        audioInfo += `Error: ${audio.error ? audio.error.message : 'None'}<br><br>`;
+    });
+    document.getElementById('debugAudio').innerHTML = audioInfo;
+    
+    // Browser audio support
+    const audio = document.createElement('audio');
+    const supportInfo = `
+        canPlayType('audio/mpeg'): ${audio.canPlayType('audio/mpeg')}<br>
+        canPlayType('audio/wav'): ${audio.canPlayType('audio/wav')}<br>
+        canPlayType('audio/ogg'): ${audio.canPlayType('audio/ogg')}<br>
+        HTML5 Audio Support: ${!!audio.canPlayType}<br>
+        Autoplay allowed: ${audio.autoplay ? 'Yes' : 'No'}
+    `;
+    document.getElementById('audioSupport').innerHTML = supportInfo;
+}
+
+// Audio control functions
+function playAudio(audioId) {
+    const audio = document.getElementById(audioId);
+    if (audio) {
+        console.log(`Playing audio: ${audioId}`);
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.error(`Error playing ${audioId}:`, error);
+                updateAudioStatus(audioId.replace('audio_', ''), 'error: ' + error.message);
+                // Try to unmute and play if autoplay was blocked
+                audio.muted = false;
+                audio.play();
+            });
+        }
+    } else {
+        console.error(`Audio element not found: ${audioId}`);
+    }
+}
+
+function pauseAudio(audioId) {
+    const audio = document.getElementById(audioId);
+    if (audio) {
+        audio.pause();
+        console.log(`Paused audio: ${audioId}`);
+    }
+}
+
+function updateAudioStatus(questionId, status) {
+    const statusEl = document.getElementById(`audio_status_${questionId}`);
+    if (statusEl) {
+        statusEl.textContent = status;
+        // Update badge color based on status
+        const colors = {
+            'playing': 'bg-success',
+            'paused': 'bg-warning',
+            'ended': 'bg-secondary',
+            'error': 'bg-danger',
+            'ready': 'bg-info'
+        };
+        statusEl.className = 'badge ' + (colors[status.split(':')[0]] || 'bg-info');
+    }
+    console.log(`Audio status updated: question ${questionId} = ${status}`);
+}
+
+function testAudio(audioId, questionId) {
+    const audio = document.getElementById(audioId);
+    if (audio) {
+        console.log(`Testing audio: ${audioId}`);
+        console.log(`- Current time: ${audio.currentTime}`);
+        console.log(`- Duration: ${audio.duration}`);
+        console.log(`- Paused: ${audio.paused}`);
+        console.log(`- Ended: ${audio.ended}`);
+        console.log(`- Error: ${audio.error ? audio.error.message : 'None'}`);
+        
+        if (audio.error) {
+            alert(`Error pada audio: ${audio.error.message}`);
+        } else if (audio.duration && audio.duration > 0) {
+            alert(`Audio berfungsi! Durasi: ${audio.duration.toFixed(2)} detik`);
+        } else {
+            alert('Audio sedang dimuat...');
+        }
+    }
+}
+
+// Validate form before submission
+function validateForm() {
+    const totalQuestions = {{ questions|length }};
+    let answered = 0;
+    let unanswered = [];
+    
+    {% for question in questions %}
+    const question{{ question.id }} = document.querySelector('input[name="q{{ question.id }}"]:checked');
+    if (!question{{ question.id }}) {
+        unanswered.push({{ loop.index }});
+    } else {
+        answered++;
+    }
+    {% endfor %}
+    
+    if (unanswered.length > 0) {
+        alert(`Peringatan: ${totalQuestions - answered} pertanyaan belum dijawab!\n\nPertanyaan yang belum dijawab: ${unanswered.join(', ')}`);
+    } else {
+        alert(`Semua ${answered} pertanyaan telah terjawab!\n\nSilakan kumpulkan jawaban.`);
+    }
+    
+    console.log(`Validation: ${answered}/${totalQuestions} answered`);
+    return unanswered.length === 0;
+}
+
+// Auto-pause all audio on form submission
+document.getElementById('quizForm').addEventListener('submit', function(e) {
+    console.log('Form submitted, pausing all audio...');
+    document.querySelectorAll('audio').forEach(audio => {
+        if (!audio.paused) {
+            audio.pause();
+            console.log(`Paused: ${audio.id}`);
+        }
+    });
+    
+    // Validate before submission (optional)
+    // if (!validateForm()) {
+    //     e.preventDefault();
+    //     return false;
+    // }
+    
+    return true;
+});
+
+// Timer countdown (jika ada durasi)
+{% if quiz and quiz.duration_minutes %}
+(function () {
+    var minutes = {{ quiz.duration_minutes | int }};
+    var endTime = Date.now() + minutes * 60 * 1000;
+    var el = document.getElementById('countdown');
+    var form = document.getElementById('quizForm');
+    var btn = document.getElementById('submitBtn');
+
+    console.log(`Timer started: ${minutes} minutes`);
+
+    var timer = setInterval(function () {
+        var remaining = Math.max(0, endTime - Date.now());
+        var m = Math.floor(remaining / 60000);
+        var s = Math.floor((remaining % 60000) / 1000);
+
+        if (el) {
+            el.textContent = "Sisa waktu: " + 
+                String(m).padStart(2, '0') + ":" + 
+                String(s).padStart(2, '0');
+        }
+
+        if (remaining <= 0) {
+            clearInterval(timer);
+            console.log('Time is up! Submitting form...');
+            if (btn) btn.disabled = true;
+            // Pause semua audio sebelum submit
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+            });
+            try { 
+                form.submit(); 
+            } catch (e) { 
+                console.error('Form submission error:', e);
+            }
+        }
+    }, 500);
+})();
+{% endif %}
+
+// Initialize debug info on load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Quiz page loaded');
+    console.log('Total questions:', {{ questions|length }});
+    console.log('Quiz ID:', {{ quiz.id if quiz else 'null' }});
+    
+    // Log audio elements
+    const audioElements = document.querySelectorAll('audio');
+    console.log(`Found ${audioElements.length} audio elements`);
+    
+    // Check for autoplay restrictions
+    const audio = new Audio();
+    audio.autoplay = true;
+    audio.muted = true;
+    audio.play().then(() => {
+        console.log('Autoplay is allowed');
+    }).catch(e => {
+        console.log('Autoplay is blocked:', e.message);
+    });
+});
+</script>
+
+<!-- Enhanced CSS for debugging -->
+<style>
+/* Audio player styling */
+audio {
+    height: 40px;
+    max-width: 300px;
+    transition: all 0.3s ease;
+}
+
+audio::-webkit-media-controls-panel {
+    background-color: #f8f9fa;
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+    font-size: 0.8rem;
+}
+
+/* Debug styling */
+#debugPanel {
+    border: 2px solid #ffc107;
+}
+
+.debug-highlight {
+    animation: highlight 2s ease;
+}
+
+@keyframes highlight {
+    0% { background-color: #ffc107; }
+    100% { background-color: transparent; }
+}
+
+.audio-container.playing {
+    border-left: 4px solid #28a745;
+}
+
+.audio-container.error {
+    border-left: 4px solid #dc3545;
+}
+
+.question-container {
+    transition: all 0.3s ease;
+}
+
+.question-container:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Responsive audio controls */
+@media (max-width: 768px) {
+    .audio-container .d-flex {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+    
+    audio {
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .btn-group {
+        align-self: center;
+    }
+}
+</style>
+{% endblock %}

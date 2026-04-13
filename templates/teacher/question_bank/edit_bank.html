@@ -1,0 +1,250 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}Edit Bank Soal - LPK Yamaguchi{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+        --primary: #e11d48;
+        --primary-dark: #b91c1c;
+        --accent: #0ea5e9;
+        --muted: #6b7280;
+        --surface: #ffffff;
+        --bg: #f8fafc;
+        --border: #e5e7eb;
+        --shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 20px;
+        margin-top: 30px;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        gap: 12px;
+    }
+
+    .page-hero {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(circle at 20% 20%, rgba(225, 29, 72, 0.14), transparent 35%),
+            radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.14), transparent 32%),
+            linear-gradient(135deg, #fff7f8 0%, #f1f5f9 100%);
+        border-radius: 16px;
+        padding: 28px 32px;
+        margin-bottom: 28px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .page-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(225, 29, 72, 0.05), rgba(14, 165, 233, 0.04));
+        pointer-events: none;
+    }
+
+    .page-hero h1 {
+        margin: 0;
+        font-size: 32px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+        position: relative;
+        z-index: 1;
+    }
+
+    .card {
+        background: var(--surface);
+        border-radius: 14px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        margin-bottom: 24px;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 24px;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .card-header h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #0f172a;
+        font-weight: 700;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #0f172a;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .required::after {
+        content: ' *';
+        color: #ef4444;
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+        color: #0f172a;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+        background: rgba(225, 29, 72, 0.02);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.6;
+    }
+
+    .helper-text {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+        line-height: 1.5;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: flex-end;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+    }
+
+    .btn {
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: 0 12px 22px rgba(225, 29, 72, 0.25);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 28px rgba(225, 29, 72, 0.3);
+    }
+
+    .btn-secondary {
+        background: var(--border);
+        color: #0f172a;
+        border: 1.5px solid #d1d5db;
+    }
+
+    .btn-secondary:hover {
+        background: #f3f4f6;
+        border-color: #bfdbfe;
+    }
+
+    @media (max-width: 768px) {
+        .page-hero {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 24px;
+        }
+
+        .page-hero h1 {
+            font-size: 26px;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="container">
+    <a href="{{ url_for('question_bank.view_bank', bank_id=bank.id) }}" class="back-link">← Kembali ke Bank Soal</a>
+
+    <div class="page-hero">
+        <div>
+            <h1>✏️ Edit Bank Soal</h1>
+            <p>Perbarui informasi bank soal Anda</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <form method="POST">
+            <div class="form-group">
+                <label for="name" class="required">Nama Bank Soal</label>
+                <input type="text" id="name" name="name" value="{{ bank.name }}" placeholder="Nama bank soal" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Deskripsi (Opsional)</label>
+                <textarea id="description" name="description"
+                    placeholder="Deskripsikan bank soal ini...">{{ bank.description or '' }}</textarea>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('question_bank.view_bank', bank_id=bank.id) }}" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "navbar/base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Detail Riwayat Kuis</h2>
+
+    <div style="border:1px solid #ddd; border-radius:8px; padding:12px; margin-bottom:12px;">
+        <div><strong>{{ score.quiz_title }}</strong></div>
+        <div style="font-size:13px; color:#666;">
+            Kelas: {{ score.class_name or '-' }} •
+            Dinilai: {{ score.graded_at.strftime('%d %b %Y %H:%M') if score.graded_at else '-' }}
+        </div>
+        <div style="margin-top:8px; font-weight:bold;">Nilai: {{ score.score }}%</div>
+    </div>
+
+    <div style="border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:12px;">
+        <strong>Ringkasan Jawaban</strong>
+        <div style="font-size:13px; color:#444; margin-top:6px;">
+            Total: {{ answer_stats.total }} • Benar: {{ answer_stats.correct }} • Salah: {{ answer_stats.wrong }}
+        </div>
+    </div>
+
+    {% if answers and answers|length > 0 %}
+    <div>
+        {% for a in answers %}
+        <div style="border:1px solid #f0f0f0; border-radius:8px; padding:10px; margin-bottom:8px;">
+            <div style="margin-bottom:6px;"><strong>Soal {{ loop.index }}:</strong> {{ a.question }}</div>
+            <div
+                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:6px; font-size:13px;">
+                <div>A. {{ a.option_a or '-' }}</div>
+                <div>B. {{ a.option_b or '-' }}</div>
+                <div>C. {{ a.option_c or '-' }}</div>
+                <div>D. {{ a.option_d or '-' }}</div>
+                {% if a.option_e %}<div>E. {{ a.option_e }}</div>{% endif %}
+            </div>
+            <div style="margin-top:8px; font-size:13px;">
+                Jawaban kamu: <strong>{{ a.selected_option|upper if a.selected_option else '-' }}</strong> •
+                Kunci: <strong>{{ a.correct_option|upper if a.correct_option else '-' }}</strong> •
+                Status:
+                {% if a.is_correct %}
+                <span style="color:green; font-weight:bold;">Benar</span>
+                {% else %}
+                <span style="color:#d00; font-weight:bold;">Salah</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Detail jawaban tidak tersedia.</p>
+    {% endif %}
+
+    <div style="margin-top:12px;">
+        <a href="{{ url_for('student.my_quiz_history') }}">Kembali ke riwayat</a>
+    </div>
+</div>
+{% endblock %}

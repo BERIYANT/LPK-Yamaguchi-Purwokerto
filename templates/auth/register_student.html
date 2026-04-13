@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Siswa - LPK Yamaguchi</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #E31E24;
+            --dark-navy: #1a1f3a;
+            --light-gray: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-gray: #555;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            position: relative;
+            background-color: #f5f5f5;
+        }
+
+        /* Navigation */
+        .navbar-yamaguchi {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            background: transparent;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .brand-icon img {
+            width: 54px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .brand-text h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 0.75rem;
+            color: #888;
+            margin: 0;
+        }
+
+        .navbar-yamaguchi .nav-link {
+            color: var(--text-dark);
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+            transition: color var(--transition-speed);
+            border-radius: 8px;
+        }
+
+        .navbar-yamaguchi .nav-link:hover,
+        .navbar-yamaguchi .nav-link.active {
+            color: var(--primary-red);
+            background: rgba(227, 30, 36, 0.05);
+        }
+
+        .btn-masuk {
+            background: transparent;
+            color: var(--primary-red);
+            font-weight: 600;
+            border: 2px solid var(--primary-red);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: all var(--transition-speed);
+            margin-right: 10px;
+        }
+
+        .btn-masuk:hover {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .btn-daftar {
+            background: var(--primary-red);
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: all var(--transition-speed);
+        }
+
+        .btn-daftar:hover {
+            background: #c71a1f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 30, 36, 0.3);
+        }
+
+        /* Style untuk halaman register */
+        .main-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 15px;
+        }
+
+        .registration-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .step-indicator {
+            background-color: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-red);
+            margin-bottom: 5px;
+        }
+
+        .step-description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .step-progress::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .step-item.active .step-circle {
+            background-color: var(--primary-red);
+            border-color: var(--primary-red);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            color: #999;
+            text-align: center;
+        }
+
+        .step-item.active .step-label {
+            color: var(--primary-red);
+            font-weight: 500;
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-navy);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: var(--primary-red);
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 5px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.15);
+        }
+
+        .class-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .class-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .class-card:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .class-card.selected {
+            border-color: var(--primary-red);
+            background-color: rgba(227, 30, 36, 0.05);
+        }
+
+        .class-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--dark-navy);
+        }
+
+        .class-schedule {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .payment-breakdown {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .payment-item:last-child {
+            border-bottom: none;
+        }
+
+        .payment-label {
+            color: #555;
+        }
+
+        .payment-value {
+            font-weight: 600;
+            color: var(--primary-red);
+        }
+
+        .payment-installment {
+            background-color: #f0f0f0;
+            border-left: 4px solid var(--primary-red);
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .installment-detail {
+            padding-left: 15px;
+            margin-top: 5px;
+        }
+
+        .installment-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+        }
+
+        .price-breakdown {
+            margin: 15px 0;
+        }
+
+        .price-category {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .price-category:last-child {
+            border-bottom: none;
+        }
+
+        .category-title {
+            font-weight: 600;
+            color: var(--dark-navy);
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .document-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .document-upload:hover {
+            border-color: var(--primary-red);
+        }
+
+        .document-icon {
+            font-size: 2.5rem;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .document-requirements {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .document-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .document-preview.show {
+            display: flex;
+        }
+
+        .terms-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .terms-section {
+            margin-bottom: 20px;
+        }
+
+        .terms-section h5 {
+            font-weight: 600;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+
+        .terms-section ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .terms-section li {
+            margin-bottom: 5px;
+        }
+
+        .payment-summary {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 600;
+        }
+
+        .total-payment {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .payment-method-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method-card:hover {
+            border-color: var(--primary-red);
+        }
+
+        .payment-method-card.selected {
+            border-color: var(--primary-red);
+            background-color: rgba(227, 30, 36, 0.05);
+        }
+
+        .payment-method-icon {
+            font-size: 2rem;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+
+        .payment-proof-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .payment-proof-upload:hover {
+            border-color: var(--primary-red);
+        }
+
+        .qris-section {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        .qris-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-navy);
+            margin-bottom: 15px;
+        }
+
+        .qris-image {
+            max-width: 300px;
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .qris-instruction {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .qris-amount {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-red);
+            margin: 10px 0;
+        }
+
+        .btn-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-prev,
+        .btn-next {
+            padding: 10px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            border: none;
+        }
+
+        .btn-prev {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-next {
+            background-color: var(--primary-red);
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-error {
+            color: var(--primary-red);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .has-error .form-control,
+        .has-error .form-select {
+            border-color: var(--primary-red);
+        }
+
+        .has-error .form-error {
+            display: block;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Loading/Validation Screen */
+        .validation-screen {
+            text-align: center;
+            padding: 50px 30px;
+            display: none;
+        }
+
+        .validation-screen.active {
+            display: block;
+        }
+
+        .validation-icon {
+            font-size: 4rem;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+
+        .validation-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .validation-message {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .spinner-container {
+            margin: 30px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                margin-top: 80px;
+            }
+
+            .class-options {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-yamaguchi .navbar-collapse {
+                background: rgba(255, 255, 255, 0.98);
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .validation-screen {
+                padding: 30px 15px;
+            }
+
+            .validation-icon {
+                font-size: 3rem;
+            }
+
+            .validation-title {
+                font-size: 1.5rem;
+            }
+
+            .qris-image {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-yamaguchi">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-container" href="{{ url_for('index') }}">
+                <div class="brand-icon">
+                    <img src="{{ url_for('static', filename='images/logo_yamaguchi.png') }}" alt="Logo LPK Yamaguchi">
+                </div>
+                <div class="brand-text">
+                    <h1>LPK Yamaguchi</h1>
+                    <p>Purwokerto</p>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#registerNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="registerNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#home">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#about">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#program">Program</a>
+                    </li>
+                    <li class="av-item">
+                        <a class="nav-link" href="{{ url_for('index') }}#contact">Kontak</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-masuk">Masuk</a>
+                    <a href="{{ url_for('auth.register_student') }}" class="btn btn-daftar">Daftar Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Registration Container -->
+    <div class="main-container">
+        {% if not registration_success %}
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="registration-card">
+            <!-- Validation Screen (Akan ditampilkan setelah submit) -->
+            <div class="validation-screen" id="validationScreen">
+                <div class="validation-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h2 class="validation-title">Mohon Tunggu</h2>
+                <div class="validation-message">
+                    Data pendaftaran Anda sedang diproses dan pembayaran sedang divalidasi oleh admin.<br>
+                    Kami akan mengirimkan konfirmasi melalui email/WhatsApp setelah proses verifikasi selesai.
+                </div>
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                </div>
+                <div class="validation-details mt-4">
+                    <p><strong>Estimasi waktu verifikasi:</strong> 1-2 jam kerja</p>
+                    <p><strong>Hubungi kami jika:</strong> Tidak menerima konfirmasi dalam 24 jam</p>
+                    <p><strong>WhatsApp Admin:</strong> <a href="https://wa.me/6281234567890">0812-3456-7890</a></p>
+                </div>
+                <a href="{{ url_for('index') }}" class="btn btn-danger mt-4">
+                    <i class="fas fa-home me-2"></i>Kembali ke Beranda
+                </a>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator" id="stepIndicator">
+                <div class="step-title">Step 1: Data Pribadi</div>
+                <div class="step-description">Isi data diri Anda dengan lengkap dan benar</div>
+
+                <div class="step-progress">
+                    <div class="step-item active">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Data Pribadi</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Pilih Kelas</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Upload Dokumen</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Persetujuan</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">Pembayaran</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Container -->
+            <form id="registrationForm" method="POST" action="{{ url_for('auth.register_student') }}"
+                enctype="multipart/form-data" onsubmit="showLoadingScreen(event)">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="form-container" id="formContainer">
+                    <!-- Step 1: Data Pribadi -->
+                    <div id="step1">
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label required">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name"
+                                    placeholder="Masukkan nama lengkap" required
+                                    value="{{ form_data.full_name if form_data }}">
+                                <div class="form-error" id="error_full_name">Nama lengkap harus diisi</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Jenis Kelamin</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="">Pilih jenis kelamin</option>
+                                    <option value="Laki-laki" {% if form_data and form_data.gender=='Laki-laki'
+                                        %}selected{% endif %}>Laki-laki</option>
+                                    <option value="Perempuan" {% if form_data and form_data.gender=='Perempuan'
+                                        %}selected{% endif %}>Perempuan</option>
+                                </select>
+                                <div class="form-error" id="error_gender">Jenis kelamin harus dipilih</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label required">Tempat Lahir</label>
+                                <input type="text" class="form-control" id="birth_place" name="birth_place"
+                                    placeholder="Masukkan tempat lahir" required
+                                    value="{{ form_data.birth_place if form_data }}">
+                                <div class="form-error" id="error_birth_place">Tempat lahir harus diisi</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="birth_date" name="birth_date" required
+                                    value="{{ form_data.birth_date if form_data }}">
+                                <div class="form-error" id="error_birth_date">Tanggal lahir harus diisi</div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label required">No. Telepon/WhatsApp</label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                    placeholder="081234567890" required value="{{ form_data.phone if form_data }}">
+                                <div class="form-error" id="error_phone">Nomor telepon harus diisi</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label required">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="email@example.com" required value="{{ form_data.email if form_data }}">
+                                <div class="form-error" id="error_email">Email harus diisi dengan format yang benar
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label required">NIK (Nomor Induk Kependudukan)</label>
+                                <input type="text" class="form-control" id="nik" name="nik"
+                                    placeholder="16 digit nomor NIK KTP Anda" required value="{{ form_data.nik if form_data }}">
+                                <div class="form-error" id="error_nik">NIK KTP harus diisi</div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label required">Tinggi (cm)</label>
+                                <input type="number" class="form-control" id="height" name="height"
+                                    placeholder="cm" required value="{{ form_data.height if form_data }}">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label required">Berat (kg)</label>
+                                <input type="number" class="form-control" id="weight" name="weight"
+                                    placeholder="kg" required value="{{ form_data.weight if form_data }}">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Gol Darah</label>
+                                <select class="form-select" id="blood_type" name="blood_type">
+                                    <option value="">-</option>
+                                    <option value="A" {% if form_data and form_data.blood_type=='A' %}selected{% endif %}>A</option>
+                                    <option value="B" {% if form_data and form_data.blood_type=='B' %}selected{% endif %}>B</option>
+                                    <option value="AB" {% if form_data and form_data.blood_type=='AB' %}selected{% endif %}>AB</option>
+                                    <option value="O" {% if form_data and form_data.blood_type=='O' %}selected{% endif %}>O</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-section-title">Alamat Lengkap</div>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label required">Alamat</label>
+                                    <textarea class="form-control" id="address" name="address" rows="3"
+                                        placeholder="Jalan, RT/RW, Kelurahan, Kecamatan"
+                                        required>{{ form_data.address if form_data }}</textarea>
+                                    <div class="form-error" id="error_address">Alamat harus diisi</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-section-title">Data Orang Tua / Wali</div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required">Nama Ayah</label>
+                                    <input type="text" class="form-control" id="father_name" name="father_name"
+                                        placeholder="Nama Lengkap Ayah" required value="{{ form_data.father_name if form_data }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label required">Nama Ibu</label>
+                                    <input type="text" class="form-control" id="mother_name" name="mother_name"
+                                        placeholder="Nama Lengkap Ibu" required value="{{ form_data.mother_name if form_data }}">
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required">No. HP Orang Tua / Wali</label>
+                                    <input type="tel" class="form-control" id="parent_phone" name="parent_phone"
+                                        placeholder="081234567890" required value="{{ form_data.parent_phone if form_data }}">
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label required">Alamat Orang Tua / Wali</label>
+                                    <textarea class="form-control" id="parent_address" name="parent_address" rows="2"
+                                        placeholder="Alamat Lengkap Orang Tua / Wali" required>{{ form_data.parent_address if form_data }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-section-title">Riwayat Pendidikan</div>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">Tahun Lulus SD</label>
+                                    <input type="text" class="form-control" id="sd_year" name="sd_year"
+                                        placeholder="Contoh: 2012" value="{{ form_data.sd_year if form_data }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tahun Lulus SMP</label>
+                                    <input type="text" class="form-control" id="smp_year" name="smp_year"
+                                        placeholder="Contoh: 2015" value="{{ form_data.smp_year if form_data }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label required">Tahun Lulus SMA/SMK</label>
+                                    <input type="text" class="form-control" id="sma_year" name="sma_year"
+                                        placeholder="Contoh: 2018" required value="{{ form_data.sma_year if form_data }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tahun Lulus D3/S1</label>
+                                    <input type="text" class="form-control" id="d3_year" name="d3_year"
+                                        placeholder="Kosongkan jika tidak ada" value="{{ form_data.d3_year if form_data }}">
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required">Pendidikan Terakhir</label>
+                                    <select class="form-select" id="education" name="education" required>
+                                        <option value="">Pilih pendidikan</option>
+                                        <option value="SMA/SMK" {% if form_data and form_data.education=='SMA/SMK'
+                                            %}selected{% endif %}>SMA/SMK/Sederajat</option>
+                                        <option value="D3" {% if form_data and form_data.education=='D3' %}selected{%
+                                            endif %}>D3</option>
+                                        <option value="S1" {% if form_data and form_data.education=='S1' %}selected{%
+                                            endif %}>S1</option>
+                                        <option value="S2" {% if form_data and form_data.education=='S2' %}selected{%
+                                            endif %}>S2</option>
+                                        <option value="Lainnya" {% if form_data and form_data.education=='Lainnya'
+                                            %}selected{% endif %}>Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Jurusan/Program Studi</label>
+                                    <input type="text" class="form-control" id="major" name="major"
+                                        placeholder="Contoh: IPA, Teknik Informatika"
+                                        value="{{ form_data.major if form_data }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Pilih Kelas -->
+                    <div id="step2" class="hidden">
+                        <div class="mb-4">
+                            <div class="form-section-title">Pilih Jenis Kelas *</div>
+                            <div class="class-options">
+                                <div class="class-card" data-class-type="Reguler">
+                                    <div class="class-title">Kelas Reguler</div>
+                                    <div class="class-schedule">
+                                        <strong>Jadwal:</strong><br>
+                                        Senin - Jumat : 08.00 - 15.00<br>
+                                        Sabtu : 08.00 - 12.00
+                                    </div>
+                                    <div class="payment-breakdown">
+                                        <div class="form-section-title" style="font-size: 1rem;">Rincian Biaya
+                                            Pendidikan Lengkap:</div>
+
+                                        <div class="price-breakdown">
+                                            <!-- Biaya Pendidikan -->
+                                            <div class="price-category">
+                                                <div class="category-title">1. Biaya Pendidikan:</div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Pendaftaran:</span>
+                                                    <span class="payment-value">Rp 350.000</span>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Biaya Pendidikan:</span>
+                                                    <span class="payment-value">Rp 7.000.000</span>
+                                                </div>
+                                                <div class="payment-installment">
+                                                    <small>Angsuran Pendidikan (5 juta dibayar saat pendidikan):</small>
+                                                    <div class="installment-detail">
+                                                        <div class="installment-item">
+                                                            <span>Bulan 1:</span>
+                                                            <span>Rp 2.000.000</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>Bulan 2:</span>
+                                                            <span>Rp 1.500.000</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>Bulan 3:</span>
+                                                            <span>Rp 1.500.000</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>2 juta setelah dapat job</span>
+                                                            <span>Rp 2.000.000</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Pra MCU:</span>
+                                                    <span class="payment-value">Rp 400.000</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Biaya Sertifikasi -->
+                                            <div class="price-category">
+                                                <div class="category-title">2. Biaya Sertifikasi Bahasa dan Keahlian:
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Sertifikasi N4 dan SSW:</span>
+                                                    <span class="payment-value">Rp 1.500.000</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Biaya Setelah Lolos Job -->
+                                            <div class="price-category">
+                                                <div class="category-title">3. Biaya Setelah Lolos Job:</div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">MCU:</span>
+                                                    <span class="payment-value">Rp 1.500.000</span>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Paspor:</span>
+                                                    <span class="payment-value">Rp 1.750.000</span>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Biaya SO (CoE, Visa, Tiket) dan
+                                                        Pemantapan:</span>
+                                                    <span class="payment-value">Rp 25.000.000 - 50.000.000</span>
+                                                </div>
+                                                <div class="payment-installment">
+                                                    <small>Pembayaran Biaya SO:</small>
+                                                    <div class="installment-detail">
+                                                        <div class="installment-item">
+                                                            <span>50% saat penandatangan kontrak</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>50% saat pemberangkatan (bisa pakai dana
+                                                                talangan)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Highlight: Total Pembayaran Awal -->
+                                            <div class="highlight-box">
+                                                <div class="payment-item" style="margin-bottom: 10px;">
+                                                    <span class="payment-label"
+                                                        style="font-weight: bold; font-size: 1.1rem;">Total Pembayaran
+                                                        Awal:</span>
+                                                    <span class="payment-value"
+                                                        style="font-weight: bold; font-size: 1.3rem; color: #d63031;">Rp
+                                                        350.000</span>
+                                                </div>
+                                                <div style="font-size: 0.9rem; color: #666;">
+                                                    <p><strong>Pembayaran saat pendaftaran hanya biaya pendaftaran
+                                                            sebesar Rp 350.000.</strong></p>
+                                                    <p>Biaya lainnya (Pra MCU, Biaya Pendidikan, dll) akan dibayarkan
+                                                        sesuai tahapan program.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">*Biaya lainnya akan dibayarkan sesuai tahapan
+                                            program</small>
+                                    </div>
+                                </div>
+                                <div class="class-card" data-class-type="Karyawan">
+                                    <div class="class-title">Kelas Karyawan</div>
+                                    <div class="class-schedule">
+                                        <strong>Jadwal:</strong><br>
+                                        Senin - Jumat : 19.00 - 21.30
+                                    </div>
+                                    <div class="payment-breakdown">
+                                        <div class="form-section-title" style="font-size: 1rem;">Rincian Biaya
+                                            Pendidikan Lengkap:</div>
+
+                                        <div class="price-breakdown">
+                                            <!-- Biaya Pendidikan -->
+                                            <div class="price-category">
+                                                <div class="category-title">1. Biaya Pendidikan:</div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Pendaftaran:</span>
+                                                    <span class="payment-value">Rp 350.000</span>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Biaya Pendidikan:</span>
+                                                    <span class="payment-value">Rp 7.000.000</span>
+                                                </div>
+                                                <div class="payment-installment">
+                                                    <small>Angsuran Pendidikan (5 juta dibayar saat pendidikan):</small>
+                                                    <div class="installment-detail">
+                                                        <div class="installment-item">
+                                                            <span>Bulan 1:</span>
+                                                            <span>Rp 2.000.000</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>Bulan 2:</span>
+                                                            <span>Rp 1.500.000</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>Bulan 3:</span>
+                                                            <span>Rp 1.500.000</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>2 juta setelah dapat job</span>
+                                                            <span>Rp 2.000.000</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Pra MCU:</span>
+                                                    <span class="payment-value">Rp 400.000</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Biaya Sertifikasi -->
+                                            <div class="price-category">
+                                                <div class="category-title">2. Biaya Sertifikasi Bahasa dan Keahlian:
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Sertifikasi N4 dan SSW:</span>
+                                                    <span class="payment-value">Rp 1.500.000</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Biaya Setelah Lolos Job -->
+                                            <div class="price-category">
+                                                <div class="category-title">3. Biaya Setelah Lolos Job:</div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">MCU:</span>
+                                                    <span class="payment-value">Rp 1.500.000</span>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Paspor:</span>
+                                                    <span class="payment-value">Rp 1.750.000</span>
+                                                </div>
+                                                <div class="payment-item">
+                                                    <span class="payment-label">Biaya SO (CoE, Visa, Tiket) dan
+                                                        Pemantapan:</span>
+                                                    <span class="payment-value">Rp 25.000.000 - 50.000.000</span>
+                                                </div>
+                                                <div class="payment-installment">
+                                                    <small>Pembayaran Biaya SO:</small>
+                                                    <div class="installment-detail">
+                                                        <div class="installment-item">
+                                                            <span>50% saat penandatangan kontrak</span>
+                                                        </div>
+                                                        <div class="installment-item">
+                                                            <span>50% saat pemberangkatan (bisa pakai dana
+                                                                talangan)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Highlight: Total Pembayaran Awal -->
+                                            <div class="highlight-box">
+                                                <div class="payment-item" style="margin-bottom: 10px;">
+                                                    <span class="payment-label"
+                                                        style="font-weight: bold; font-size: 1.1rem;">Total Pembayaran
+                                                        Awal:</span>
+                                                    <span class="payment-value"
+                                                        style="font-weight: bold; font-size: 1.3rem; color: #d63031;">Rp
+                                                        350.000</span>
+                                                </div>
+                                                <div style="font-size: 0.9rem; color: #666;">
+                                                    <p><strong>Pembayaran saat pendaftaran hanya biaya pendaftaran
+                                                            sebesar Rp 350.000.</strong></p>
+                                                    <p>Biaya lainnya (Pra MCU, Biaya Pendidikan, dll) akan dibayarkan
+                                                        sesuai tahapan program.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">*Biaya lainnya akan dibayarkan sesuai tahapan
+                                            program</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selected_class_type" name="selected_class_type"
+                                value="{{ form_data.selected_class_type if form_data }}">
+                            <div class="form-error" id="error_class_type">Silakan pilih jenis kelas</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Tujuan Belajar Bahasa Jepang</label>
+                            <textarea class="form-control" id="learning_purpose" name="learning_purpose" rows="3"
+                                placeholder="Ceritakan tujuan Anda mempelajari bahasa Jepang...">{{ form_data.learning_purpose if form_data }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Pengalaman dengan Bahasa/Budaya Jepang</label>
+                            <select class="form-select" id="experience" name="experience">
+                                <option value="">Pilih pengalaman</option>
+                                <option value="none" {% if form_data and form_data.experience=='none' %}selected{% endif
+                                    %}>Tidak Ada</option>
+                                <option value="basic" {% if form_data and form_data.experience=='basic' %}selected{%
+                                    endif %}>Pernah Belajar Dasar</option>
+                                <option value="fluent" {% if form_data and form_data.experience=='fluent' %}selected{%
+                                    endif %}>Sudah Lancar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Upload Dokumen -->
+                    <div id="step3" class="hidden">
+                        <div class="mb-4">
+                            <div class="form-section-title">Upload Dokumen</div>
+                            <p class="document-requirements">
+                                <strong>Petunjuk Upload Dokumen:</strong><br>
+                                - Format file: JPG, PNG, atau PDF<br>
+                                - Ukuran maksimal: 2MB per file<br>
+                                - Pastikan dokumen terlihat jelas dan tidak blur
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Foto KTP</label>
+                            <div class="document-upload" id="ktp-upload">
+                                <div class="document-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p>Klik untuk upload foto KTP</p>
+                                <div class="document-requirements">Format: JPG, PNG, PDF | Maks: 2MB</div>
+
+                                <div class="document-preview" id="ktp-preview">
+                                    <img src="https://via.placeholder.com/50x50?text=KTP" alt="KTP Preview">
+                                    <div>
+                                        <div id="ktp-filename">Belum ada file</div>
+                                        <small class="text-primary">Klik untuk ganti</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" id="ktp_file" name="ktp_file" accept=".jpg,.jpeg,.png,.pdf"
+                                class="d-none">
+                            <div class="form-error" id="error_ktp">Foto KTP harus diupload</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Foto Pas 3x4</label>
+                            <div class="document-upload" id="pas-upload">
+                                <div class="document-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p>Klik untuk upload foto Pas 3x4</p>
+                                <div class="document-requirements">Format: JPG, PNG, PDF | Maks: 2MB</div>
+
+                                <div class="document-preview" id="pas-preview">
+                                    <img src="https://via.placeholder.com/50x50?text=Pas" alt="Pas Foto Preview">
+                                    <div>
+                                        <div id="pas-filename">Belum ada file</div>
+                                        <small class="text-primary">Klik untuk ganti</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" id="pas_file" name="pas_file" accept=".jpg,.jpeg,.png,.pdf"
+                                class="d-none">
+                            <div class="form-error" id="error_pas">Foto Pas 3x4 harus diupload</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Ijazah Terakhir</label>
+                            <div class="document-upload" id="ijazah-upload">
+                                <div class="document-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p>Klik untuk upload ijazah terakhir</p>
+                                <div class="document-requirements">Format: JPG, PNG, PDF | Maks: 2MB</div>
+
+                                <div class="document-preview" id="ijazah-preview">
+                                    <img src="https://via.placeholder.com/50x50?text=Ijazah" alt="Ijazah Preview">
+                                    <div>
+                                        <div id="ijazah-filename">Belum ada file</div>
+                                        <small class="text-primary">Klik untuk ganti</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" id="ijazah_file" name="ijazah_file" accept=".jpg,.jpeg,.png,.pdf"
+                                class="d-none">
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Persetujuan -->
+                    <div id="step4" class="hidden">
+                        <div class="mb-4">
+                            <div class="form-section-title">Syarat dan Ketentuan LPK Yamaguchi</div>
+                            <p>Harap baca dan pahami seluruh syarat ketentuan berikut sebelum melanjutkan pendaftaran
+                            </p>
+
+                            <div class="terms-container">
+                                <div class="terms-section">
+                                    <h5>Rincian Biaya Program Magang Jepang</h5>
+                                    <ul>
+                                        <li><strong>Total Pembayaran Awal: Rp 350.000</strong> (Biaya Pendaftaran saja)
+                                        </li>
+                                        <li><strong>1. Biaya Pendidikan:</strong>
+                                            <ul>
+                                                <li>Pendaftaran: Rp 350.000 (non-refundable) - <strong>Dibayar saat
+                                                        pendaftaran</strong></li>
+                                                <li>Biaya Pendidikan: Rp 7.000.000</li>
+                                                <li>Pra MCU: Rp 400.000 (dibayar sesuai tahapan)</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>2. Biaya Sertifikasi Bahasa dan Keahlian:</strong>
+                                            <ul>
+                                                <li>Sertifikasi N4 dan SSW: Rp 1.500.000 (setelah selesai pendidikan)
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>3. Biaya Setelah Lolos Job:</strong>
+                                            <ul>
+                                                <li>MCU: Rp 1.500.000</li>
+                                                <li>Paspor: Rp 1.750.000</li>
+                                                <li>Biaya SO (CoE, Visa, Tiket) dan Pemantapan: Rp 25.000.000 - Rp
+                                                    50.000.000</li>
+                                                <li>50% dibayarkan saat penandatangan kontrak</li>
+                                                <li>50% dibayarkan saat pemberangkatan (bisa pakai dana talangan)</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="terms-section">
+                                    <h5>Kehadiran</h5>
+                                    <ul>
+                                        <li>Wajib hadir minimal 80% dari total pertemuan</li>
+                                        <li>Keterlambatan maksimal 15 menit dari jadwal</li>
+                                        <li>Izin tidak hadir harus diajukan minimal 1 hari sebelumnya</li>
+                                    </ul>
+                                </div>
+
+                                <div class="terms-section">
+                                    <h5>Akademik</h5>
+                                    <ul>
+                                        <li>Mengikuti seluruh ujian dan evaluasi yang dijadwalkan</li>
+                                        <li>Mengerjakan tugas tepat waktu</li>
+                                        <li>Menjaga integritas akademik (tidak mencontek)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="terms-section">
+                                    <h5>Etika & Perilaku</h5>
+                                    <ul>
+                                        <li>Menghormati guru dan sesama siswa</li>
+                                        <li>Menjaga kebersihan dan kerapian lingkungan belajar</li>
+                                        <li>Tidak membuat keributan atau mengganggu proses belajar</li>
+                                    </ul>
+                                </div>
+
+                                <div class="terms-section">
+                                    <h5>Larangan</h5>
+                                    <ul>
+                                        <li>Dilarang membawa senjata tajam atau benda berbahaya</li>
+                                        <li>Dilarang merokok dan mengonsumsi alkohol di lingkungan LPK</li>
+                                        <li>Dilarang melakukan tindakan bullying atau pelecehan</li>
+                                    </ul>
+                                </div>
+
+                                <div class="terms-section">
+                                    <h5>Kebijakan Pembayaran & Pembatalan</h5>
+                                    <ul>
+                                        <li>Biaya pendaftaran Rp 350.000 tidak dapat dikembalikan</li>
+                                        <li>Pembatalan sebelum kelas dimulai: refund 50% biaya kursus</li>
+                                        <li>Pembatalan setelah kelas dimulai: tidak ada refund</li>
+                                        <li>Cicilan harus dibayar tepat waktu sesuai jadwal</li>
+                                        <li>Keterlambatan pembayaran dikenakan denda 2% per minggu</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms"
+                                    required {% if form_data and form_data.agreeTerms %}checked{% endif %}>
+                                <label class="form-check-label" for="agreeTerms">
+                                    <strong>Saya telah membaca, memahami, dan menyetujui Syarat dan Ketentuan yang
+                                        berlaku di LPK Yamaguchi</strong>
+                                </label>
+                            </div>
+                            <div class="form-error" id="error_terms">Anda harus menyetujui syarat dan ketentuan</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Pembayaran -->
+                    <div id="step5" class="hidden">
+                        <div class="form-section-title">Pembayaran Pendaftaran</div>
+
+                        <div class="payment-summary mb-4">
+                            <div class="summary-item"><span class="summary-label">Nama:</span> <span
+                                    class="summary-value" id="summary_name">-</span></div>
+                            <div class="summary-item"><span class="summary-label">Jenis Kelas:</span> <span
+                                    class="summary-value" id="summary_class_type">-</span></div>
+                            <div class="total-payment">
+                                <span>Total Pembayaran Awal:</span>
+                                <span id="total_payment">Rp 350.000</span>
+                            </div>
+                            <div class="highlight-box" style="margin-top: 15px;">
+                                <p><strong>Catatan:</strong> Pembayaran saat pendaftaran hanya biaya pendaftaran sebesar
+                                    Rp 350.000.</p>
+                                <p>Biaya lainnya (Pra MCU Rp 400.000, Biaya Pendidikan, dll) akan dibayarkan sesuai
+                                    tahapan program.</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-section-title">Metode Pembayaran</div>
+
+                            <!-- QRIS Section -->
+                            <div class="qris-section">
+                                <div class="qris-title">Pembayaran via QRIS</div>
+                                <img src="{{ url_for('static', filename='images/qris.jpeg') }}" alt="QRIS LPK Yamaguchi"
+                                    class="qris-image">
+                                <div class="qris-amount">Rp 350.000</div>
+                                <div class="qris-instruction">
+                                    Scan QR code di atas menggunakan aplikasi pembayaran favorit Anda (GoPay, OVO, Dana,
+                                    dll)
+                                </div>
+                                <div class="qris-instruction">
+                                    <strong>Transfer tepat sebesar: Rp 350.000</strong>
+                                </div>
+                            </div>
+
+                            <!-- Transfer Bank Section -->
+                            <div class="payment-method-card" data-method="transfer">
+                                <div class="payment-method-icon">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <h5>Transfer Bank</h5>
+                                <p>Transfer ke rekening LPK Yamaguchi</p>
+                                <div class="bank-details mt-3" style="display: block;" id="bank-details">
+                                    <h6>Informasi Rekening:</h6>
+                                    <p><strong>Bank:</strong> Bank Jateng<br>
+                                        <strong>No. Rekening:</strong> 2004258471<br>
+                                        <strong>Atas Nama:</strong> LPK Yamaguchi Purwokerto
+                                    </p>
+                                    <p class="text-danger"><strong>Catatan:</strong> Transfer tepat sebesar <strong>Rp
+                                            350.000</strong></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label required">Upload Bukti Pembayaran</label>
+                            <div class="payment-proof-upload" id="proof-upload">
+                                <div class="document-icon">
+                                    <i class="fas fa-receipt"></i>
+                                </div>
+                                <p>Klik untuk upload bukti pembayaran</p>
+                                <div class="document-requirements">Format: JPG, PNG, PDF | Maks: 2MB</div>
+
+                                <div class="document-preview" id="proof-preview">
+                                    <img src="https://via.placeholder.com/50x50?text=Bukti" alt="Bukti Bayar Preview">
+                                    <div>
+                                        <div id="proof-filename">Belum ada file</div>
+                                        <small class="text-primary">Klik untuk ganti</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="file" id="payment_proof" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf"
+                                class="d-none" required>
+                            <div class="form-error" id="error_payment_proof">Bukti pembayaran harus diupload</div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Informasi Penting</h6>
+                            <p class="mb-0">Setelah upload bukti pembayaran, pendaftaran Anda akan divalidasi oleh admin
+                                dalam 1x24 jam. Setelah divalidasi, Anda akan menerima konfirmasi via email/WhatsApp.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="btn-navigation">
+                        <button type="button" class="btn btn-prev" id="btnPrev" onclick="prevStep()">
+                            <i class="fas fa-arrow-left me-2"></i>Sebelumnya
+                        </button>
+                        <button type="button" class="btn btn-next" id="btnNext" onclick="nextStep()">
+                            Selanjutnya<i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <!-- Tampilan sukses pendaftaran dengan loading screen -->
+        <div class="registration-card">
+            <div class="validation-screen active">
+                <div class="validation-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h2 class="validation-title">Pendaftaran Berhasil!</h2>
+                <div class="validation-message">
+                    Data pendaftaran Anda telah tersimpan. Proses pembayaran sedang divalidasi oleh admin.<br>
+                    Admin akan membuatkan akun untuk Anda dan mengirimkan kredensial login melalui email/WhatsApp.
+                </div>
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                </div>
+                <div class="validation-details mt-4">
+                    <p><strong>Estimasi waktu verifikasi:</strong> 1-2 jam kerja</p>
+                    <p><strong>Hubungi kami jika:</strong> Tidak menerima konfirmasi dalam 24 jam</p>
+                    <p><strong>WhatsApp Admin:</strong> <a href="https://wa.me/6281234567890">0812-3456-7890</a></p>
+                </div>
+                <div class="mt-4 d-flex justify-content-center gap-3">
+                    {% if pending_username %}
+                    <a href="{{ url_for('auth.download_registration_pdf', username=pending_username, preview=1) }}" class="btn btn-outline-success" target="_blank">
+                        <i class="fas fa-eye me-2"></i>Preview Formulir
+                    </a>
+                    <a href="{{ url_for('auth.download_registration_pdf', username=pending_username) }}" class="btn btn-success">
+                        <i class="fas fa-download me-2"></i>Download Formulir
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('index') }}" class="btn btn-danger">
+                        <i class="fas fa-home me-2"></i>Kembali ke Beranda
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        let selectedClassType = null;
+
+        function showLoadingScreen(event) {
+            // Validasi semua step sebelum submit
+            if (!validateAllSteps()) {
+                event.preventDefault();
+                return false;
+            }
+
+            // Validasi berhasil, tampilkan loading screen
+            event.preventDefault();
+
+            // Hide the form and step indicator
+            document.getElementById('stepIndicator').style.display = 'none';
+            document.getElementById('formContainer').style.display = 'none';
+
+            // Show validation screen
+            document.getElementById('validationScreen').classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Submit form setelah delay
+            setTimeout(() => {
+                document.getElementById('registrationForm').submit();
+            }, 2000);
+
+            return false;
+        }
+
+        function validateAllSteps() {
+            let allValid = true;
+
+            // Validasi semua step
+            if (!validateStep1()) {
+                currentStep = 1;
+                updateStepIndicator();
+                allValid = false;
+            } else if (!validateStep2()) {
+                currentStep = 2;
+                updateStepIndicator();
+                allValid = false;
+            } else if (!validateStep3()) {
+                currentStep = 3;
+                updateStepIndicator();
+                allValid = false;
+            } else if (!validateStep4()) {
+                currentStep = 4;
+                updateStepIndicator();
+                allValid = false;
+            } else if (!validateStep5()) {
+                currentStep = 5;
+                updateStepIndicator();
+                allValid = false;
+            }
+
+            if (!allValid) {
+                alert('Silakan lengkapi semua data yang diperlukan sebelum menyelesaikan pendaftaran.');
+            }
+
+            return allValid;
+        }
+
+        function updateStepIndicator() {
+            // Update step circles
+            document.querySelectorAll('.step-item').forEach((item, index) => {
+                if (index + 1 === currentStep) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Update step title and description
+            const stepTitle = document.querySelector('.step-title');
+            const stepDescription = document.querySelector('.step-description');
+
+            switch (currentStep) {
+                case 1:
+                    stepTitle.textContent = 'Step 1: Data Pribadi';
+                    stepDescription.textContent = 'Isi data diri Anda dengan lengkap dan benar';
+                    break;
+                case 2:
+                    stepTitle.textContent = 'Step 2: Pilih Kelas';
+                    stepDescription.textContent = 'Pilih jenis kelas yang sesuai dengan kebutuhan Anda';
+                    break;
+                case 3:
+                    stepTitle.textContent = 'Step 3: Upload Dokumen';
+                    stepDescription.textContent = 'Upload dokumen yang diperlukan untuk verifikasi';
+                    break;
+                case 4:
+                    stepTitle.textContent = 'Step 4: Persetujuan';
+                    stepDescription.textContent = 'Baca dan setujui syarat ketentuan yang berlaku';
+                    break;
+                case 5:
+                    stepTitle.textContent = 'Step 5: Pembayaran';
+                    stepDescription.textContent = 'Lakukan pembayaran untuk menyelesaikan pendaftaran';
+                    break;
+            }
+
+            // Show/hide steps
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepElement = document.getElementById(`step${i}`);
+                if (i === currentStep) {
+                    stepElement.classList.remove('hidden');
+                } else {
+                    stepElement.classList.add('hidden');
+                }
+            }
+
+            // Update navigation buttons
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+
+            if (currentStep === 1) {
+                btnPrev.style.visibility = 'hidden';
+            } else {
+                btnPrev.style.visibility = 'visible';
+            }
+
+            // Update teks tombol Next/Submit
+            if (currentStep === totalSteps) {
+                btnNext.innerHTML = 'Selesaikan Pendaftaran <i class="fas fa-check ms-2"></i>';
+                btnNext.setAttribute('type', 'submit');
+                btnNext.removeAttribute('onclick');
+            } else {
+                btnNext.innerHTML = 'Selanjutnya <i class="fas fa-arrow-right ms-2"></i>';
+                btnNext.setAttribute('type', 'button');
+                btnNext.setAttribute('onclick', 'nextStep()');
+            }
+
+            // Update summary if on step 5
+            if (currentStep === 5) {
+                updateSummary();
+            }
+        }
+
+        function validateStep1() {
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.has-error').forEach(el => {
+                el.classList.remove('has-error');
+            });
+
+            // Validate required fields
+            const requiredFields = [
+                'full_name', 'gender', 'birth_place', 'birth_date', 'phone', 'email', 'address',
+                'nik', 'height', 'weight', 'father_name', 'mother_name', 'parent_phone', 'parent_address',
+                'sma_year', 'education'
+            ];
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field) return; // safety check
+                const errorElement = document.getElementById(`error_${fieldId}`);
+
+                if (!field.value.trim()) {
+                    field.parentElement.classList.add('has-error');
+                    isValid = false;
+                } else if (fieldId === 'email') {
+                    // Basic email validation
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(field.value)) {
+                        field.parentElement.classList.add('has-error');
+                        isValid = false;
+                    }
+                } else if (fieldId === 'phone') {
+                    // Basic phone validation
+                    const phoneRegex = /^[0-9]{10,13}$/;
+                    if (!phoneRegex.test(field.value.replace(/\D/g, ''))) {
+                        field.parentElement.classList.add('has-error');
+                        isValid = false;
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        function validateStep2() {
+            const classError = document.getElementById('error_class_type');
+            const classContainer = document.querySelector('.class-options');
+
+            if (!selectedClassType) {
+                classContainer.parentElement.classList.add('has-error');
+                return false;
+            } else {
+                classContainer.parentElement.classList.remove('has-error');
+                return true;
+            }
+        }
+
+        function validateStep3() {
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.has-error').forEach(el => {
+                el.classList.remove('has-error');
+            });
+
+            // Validate KTP
+            const ktpFile = document.getElementById('ktp_file');
+            if (!ktpFile.files.length) {
+                document.getElementById('ktp-upload').parentElement.classList.add('has-error');
+                isValid = false;
+            }
+
+            // Validate Pas Foto
+            const pasFile = document.getElementById('pas_file');
+            if (!pasFile.files.length) {
+                document.getElementById('pas-upload').parentElement.classList.add('has-error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function validateStep4() {
+            const agreeTerms = document.getElementById('agreeTerms');
+
+            if (!agreeTerms.checked) {
+                agreeTerms.parentElement.parentElement.classList.add('has-error');
+                return false;
+            } else {
+                agreeTerms.parentElement.parentElement.classList.remove('has-error');
+                return true;
+            }
+        }
+
+        function validateStep5() {
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.has-error').forEach(el => {
+                el.classList.remove('has-error');
+            });
+
+            // Validate payment proof
+            const paymentProof = document.getElementById('payment_proof');
+            if (!paymentProof.files.length) {
+                document.getElementById('proof-upload').parentElement.classList.add('has-error');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function nextStep() {
+            // Validate current step before proceeding
+            let isValid = true;
+
+            switch (currentStep) {
+                case 1:
+                    isValid = validateStep1();
+                    break;
+                case 2:
+                    isValid = validateStep2();
+                    break;
+                case 3:
+                    isValid = validateStep3();
+                    break;
+                case 4:
+                    isValid = validateStep4();
+                    break;
+            }
+
+            if (isValid && currentStep < totalSteps) {
+                currentStep++;
+                updateStepIndicator();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepIndicator();
+            }
+        }
+
+        function updateSummary() {
+            // Get form values
+            const fullName = document.getElementById('full_name').value;
+            const classType = selectedClassType || '-';
+
+            // Update summary display
+            document.getElementById('summary_name').textContent = fullName || '-';
+            document.getElementById('summary_class_type').textContent = classType;
+        }
+
+        function handleFileUpload(inputId, previewId, filenameId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const filenameElement = document.getElementById(filenameId);
+
+            input.addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const fileName = file.name;
+
+                    // Update display
+                    filenameElement.textContent = fileName;
+                    preview.classList.add('show');
+
+                    // Remove error if exists
+                    const uploadContainer = preview.parentElement.parentElement;
+                    uploadContainer.classList.remove('has-error');
+
+                    // Create preview for image files
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const img = preview.querySelector('img');
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- JANGAN LETAKKAN BLOK JINJA2 DI DALAM SCRIPT JS ---
+            // Set minimum date for birth date (15 years ago)
+            const today = new Date();
+            const minDate = new Date(today.getFullYear() - 15, today.getMonth(), today.getDate());
+            document.getElementById('birth_date').max = minDate.toISOString().split('T')[0];
+
+            // Class selection
+            document.querySelectorAll('.class-card').forEach(card => {
+                card.addEventListener('click', function () {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.class-card').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+
+                    // Add selected class to clicked card
+                    this.classList.add('selected');
+
+                    // Update selected class type
+                    selectedClassType = this.dataset.classType;
+                    document.getElementById('selected_class_type').value = selectedClassType;
+
+                    // Remove error if exists
+                    this.parentElement.parentElement.classList.remove('has-error');
+                });
+            });
+
+            // File upload handlers
+            document.getElementById('ktp-upload').addEventListener('click', function () {
+                document.getElementById('ktp_file').click();
+            });
+            document.getElementById('pas-upload').addEventListener('click', function () {
+                document.getElementById('pas_file').click();
+            });
+            document.getElementById('ijazah-upload').addEventListener('click', function () {
+                document.getElementById('ijazah_file').click();
+            });
+            document.getElementById('proof-upload').addEventListener('click', function () {
+                document.getElementById('payment_proof').click();
+            });
+
+            // Initialize file upload handlers
+            handleFileUpload('ktp_file', 'ktp-preview', 'ktp-filename');
+            handleFileUpload('pas_file', 'pas-preview', 'pas-filename');
+            handleFileUpload('ijazah_file', 'ijazah-preview', 'ijazah-filename');
+            handleFileUpload('payment_proof', 'proof-preview', 'proof-filename');
+
+            // Initialize step indicator
+            updateStepIndicator();
+
+            // Pre-fill form data if exists
+            // (Blok Jinja2 di luar script, data di-inject sebagai JS variable)
+            if (window.prefilledFormData && window.prefilledFormData.selected_class_type) {
+                selectedClassType = window.prefilledFormData.selected_class_type;
+                const card = document.querySelector(`.class-card[data-class-type="${selectedClassType}"]`);
+                if (card) card.click();
+            }
+        });
+
+        // Inject form_data as JS variable if exists (letakkan di luar <script> utama)
+        // Contoh penempatan di bawah sebelum <script> utama:
+        // {% if form_data %}
+        // <script>window.prefilledFormData = {{ form_data|tojson }};</script>
+    // {% endif %}
+    </script>
+</body>
+
+</html>

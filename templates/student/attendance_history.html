@@ -1,0 +1,122 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}Riwayat Absensi - LPK Yamaguchi{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="bi bi-clock-history me-2"></i>Riwayat Absensi Saya</h4>
+            <a href="{{ url_for('attendance.student_scan_attendance') }}" class="btn btn-light btn-sm">
+                <i class="bi bi-qr-code-scan me-1"></i>Scan Absensi
+            </a>
+        </div>
+        <div class="card-body">
+            {% if history %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="50">No</th>
+                            <th>Tanggal</th>
+                            <th>Kelas</th>
+                            <th>Keterangan</th>
+                            <th>Waktu Absen</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in history %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ record.date }}
+                            </td>
+                            <td>
+                                <strong>{{ record.class_name }}</strong>
+                            </td>
+                            <td>
+                                {{ record.description or '-' }}
+                            </td>
+                            <td>
+                                <i class="bi bi-clock me-1"></i>
+                                {{ record.timestamp.strftime('%H:%M:%S') if record.timestamp else '-' }}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle-fill me-1"></i>Hadir
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="stat-card bg-primary text-white">
+                        <div class="stat-icon">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">{{ history|length }}</div>
+                            <div class="stat-label">Total Kehadiran</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <p class="text-muted mt-3">Belum ada riwayat absensi.</p>
+                <p class="text-muted">Mulai absensi dengan scan barcode dari guru Anda!</p>
+                <a href="{{ url_for('attendance.student_scan_attendance') }}" class="btn btn-primary mt-2">
+                    <i class="bi bi-qr-code-scan me-1"></i>Scan Absensi Sekarang
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card {
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        opacity: 0.9;
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        margin-top: 5px;
+        opacity: 0.9;
+    }
+
+    .table th {
+        font-weight: 600;
+        color: #334155;
+    }
+</style>
+{% endblock %}

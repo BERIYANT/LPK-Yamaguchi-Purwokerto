@@ -1,0 +1,128 @@
+<div class="payment-detail">
+    <h5>Detail Pembayaran #{{ payment.id }}</h5>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Informasi Siswa</h6>
+            <table class="table table-sm">
+                <tr>
+                    <th width="40%">Nama Lengkap</th>
+                    <td>{{ payment.full_name }}</td>
+                </tr>
+                <tr>
+                    <th>Username</th>
+                    <td>{{ payment.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ payment.email }}</td>
+                </tr>
+                <tr>
+                    <th>No. Telepon</th>
+                    <td>{{ payment.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Jenis Kelas</th>
+                    <td>{{ payment.class_type }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="col-md-6">
+            <h6>Informasi Pembayaran</h6>
+            <table class="table table-sm">
+                <tr>
+                    <th width="40%">Jenis Pembayaran</th>
+                    <td>
+                        {% if payment.payment_type == 'registration' %}
+                        <span class="badge bg-primary">Pendaftaran</span>
+                        {% elif 'installment' in payment.payment_type %}
+                        <span class="badge bg-info">Angsuran {{ payment.payment_type[-1] }}</span>
+                        {% else %}
+                        <span class="badge bg-secondary">{{ payment.payment_type }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Jumlah</th>
+                    <td class="fw-bold">Rp {{ "{:,.0f}".format(payment.amount) }}</td>
+                </tr>
+                <tr>
+                    <th>Tanggal Pembayaran</th>
+                    <td>{{ payment.payment_date.strftime('%d/%m/%Y') if payment.payment_date else '-' }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        {% if payment.status == 'pending' %}
+                        <span class="badge bg-warning">Pending</span>
+                        {% elif payment.status == 'verified' %}
+                        <span class="badge bg-success">Verified</span>
+                        {% elif payment.status == 'rejected' %}
+                        <span class="badge bg-danger">Rejected</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if payment.verified_by_name %}
+                <tr>
+                    <th>Diverifikasi Oleh</th>
+                    <td>{{ payment.verified_by_name }} ({{ payment.verified_at.strftime('%d/%m/%Y %H:%M') }})</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    
+    {% if payment.proof_file %}
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6>Bukti Pembayaran</h6>
+            <a href="{{ url_for('static', filename='uploads/' + payment.proof_file) }}" 
+               target="_blank" class="btn btn-sm btn-primary">
+                <i class="fas fa-download me-1"></i>Download Bukti
+            </a>
+            <div class="mt-2">
+                <img src="{{ url_for('static', filename='uploads/' + payment.proof_file) }}" 
+                     alt="Bukti Pembayaran" class="img-fluid" style="max-height: 300px;">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if payment.rejection_reason %}
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6>Alasan Penolakan</h6>
+            <div class="alert alert-danger">
+                {{ payment.rejection_reason }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="row mt-3">
+        <div class="col-12">
+            <h6>Dokumen Pendaftaran</h6>
+            <div class="btn-group">
+                {% if payment.ktp_file %}
+                <a href="{{ url_for('static', filename='uploads/' + payment.ktp_file) }}" 
+                   target="_blank" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-id-card me-1"></i>KTP
+                </a>
+                {% endif %}
+                {% if payment.pas_foto_file %}
+                <a href="{{ url_for('static', filename='uploads/' + payment.pas_foto_file) }}" 
+                   target="_blank" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-camera me-1"></i>Pas Foto
+                </a>
+                {% endif %}
+                {% if payment.ijazah_file %}
+                <a href="{{ url_for('static', filename='uploads/' + payment.ijazah_file) }}" 
+                   target="_blank" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-graduation-cap me-1"></i>Ijazah
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

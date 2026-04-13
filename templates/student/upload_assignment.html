@@ -1,0 +1,111 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}Upload Tugas - {{ task.title }} - LPK Yamaguchi{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Upload Tugas - {{ task.title }}</h1>
+    <a href="{{ url_for('student.dashboard') }}" class="btn btn-secondary">Kembali ke Dashboard</a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Form Upload Tugas</h5>
+            </div>
+            <div class="card-body">
+                <!-- Task Information -->
+                <div class="alert alert-info">
+                    <h6>Informasi Tugas:</h6>
+                    <p class="mb-1">{{ task.description }}</p>
+                    {% if task.due_date %}
+                    <p class="mb-0"><strong>Batas Waktu:</strong> {{ task.due_date.strftime('%d/%m/%Y %H:%M') }}</p>
+                    {% endif %}
+                </div>
+
+                {% if existing_submission %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Anda sudah mengumpulkan tugas ini. Upload baru akan menggantikan file sebelumnya.
+                </div>
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">File Tugas *</label>
+                        <input type="file" class="form-control" id="file" name="file" required 
+                               accept=".pdf,.doc,.docx,.txt,.zip,.rar,.jpg,.jpeg,.png,.gif">
+                        <div class="form-text">
+                            Format yang didukung: PDF, DOC, DOCX, TXT, ZIP, RAR, JPG, JPEG, PNG, GIF
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload me-1"></i>
+                            {% if existing_submission %}Update File{% else %}Upload Tugas{% endif %}
+                        </button>
+                        <a href="{{ url_for('student.dashboard') }}" class="btn btn-secondary">Batal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <!-- Current Submission Info -->
+        {% if existing_submission %}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">File Saat Ini</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Upload pada:</strong> {{ existing_submission.submitted_at.strftime('%d/%m/%Y %H:%M') }}</p>
+                
+                {% if existing_submission.file_path %}
+                <a href="{{ url_for('assignment.download_submission_file', submission_id=existing_submission.id) }}" 
+                   class="btn btn-outline-primary btn-sm w-100 mb-2">
+                    <i class="fas fa-download me-1"></i>Download File
+                </a>
+                {% endif %}
+                
+                {% if existing_submission.score is not none %}
+                <div class="alert alert-success">
+                    <strong>Nilai:</strong> {{ existing_submission.score }}<br>
+                    {% if existing_submission.feedback %}
+                    <strong>Feedback:</strong> {{ existing_submission.feedback }}
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-clock me-1"></i>Belum dinilai
+                </div>
+                {% endif %}
+                
+                <a href="{{ url_for('student.delete_submission', submission_id=existing_submission.id) }}" 
+                   class="btn btn-outline-danger btn-sm w-100" 
+                   onclick="return confirm('Hapus file tugas ini?')">
+                    <i class="fas fa-trash me-1"></i>Hapus File
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Task File (if any) -->
+        {% if task.file_path %}
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="card-title mb-0">File Tugas dari Guru</h5>
+            </div>
+            <div class="card-body">
+                <a href="{{ url_for('assignment.download_assignment_file', task_id=task.id) }}" 
+                   class="btn btn-outline-primary btn-sm w-100">
+                    <i class="fas fa-download me-1"></i>Download File Tugas
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LPK Yamaguchi Purwokerto - Platform pembelajaran online modern untuk pelatihan kerja profesional">
+
+    <title>LPK Yamaguchi Purwokerto</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #E31E24;
+            --dark-navy: #1a1f3a;
+            --light-gray: #f8f9fa;
+            --text-dark: #2c3e50;
+            --text-gray: #555;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Navigation */
+        .navbar-yamaguchi {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            background: transparent;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .brand-icon img {
+            width: 54px;
+            height: 54px;
+            object-fit: contain;
+        }
+
+        .brand-text h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 0.75rem;
+            color: #888;
+            margin: 0;
+        }
+
+        .navbar-yamaguchi .nav-link {
+            color: var(--text-dark);
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+            transition: color var(--transition-speed);
+            border-radius: 8px;
+        }
+
+        .navbar-yamaguchi .nav-link:hover,
+        .navbar-yamaguchi .nav-link.active {
+            color: var(--primary-red);
+            background: rgba(227, 30, 36, 0.05);
+        }
+
+        .btn-masuk {
+            background: transparent;
+            color: var(--primary-red);
+            font-weight: 600;
+            border: 2px solid var(--primary-red);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: all var(--transition-speed);
+            margin-right: 10px;
+        }
+
+        .btn-masuk:hover {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .btn-daftar {
+            background: var(--primary-red);
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: all var(--transition-speed);
+        }
+
+        .btn-daftar:hover {
+            background: #c71a1f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 30, 36, 0.3);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-badge i {
+            color: #ffd700;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-title .highlight {
+            color: #ffb6b8;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 35px;
+            max-width: 700px;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        .btn-hero-primary {
+            background: var(--primary-red);
+            color: white;
+            font-weight: 600;
+            padding: 14px 35px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.05rem;
+            transition: all var(--transition-speed);
+            margin-right: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 20px rgba(227, 30, 36, 0.4);
+        }
+
+        .btn-hero-primary:hover {
+            background: #c71a1f;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(227, 30, 36, 0.5);
+        }
+
+        .btn-hero-outline {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-weight: 600;
+            padding: 14px 35px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            font-size: 1.05rem;
+            transition: all var(--transition-speed);
+            margin-bottom: 10px;
+        }
+
+        .btn-hero-outline:hover {
+            background: white;
+            color: var(--primary-red);
+            border-color: white;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            position: relative;
+            margin-top: -180px;
+            z-index: 10;
+            padding-bottom: 80px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all var(--transition-speed);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            height: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            background: rgba(227, 30, 36, 0.25);
+            backdrop-filter: blur(35px) saturate(200%);
+            -webkit-backdrop-filter: blur(35px) saturate(200%);
+            box-shadow: 0 12px 40px rgba(227, 30, 36, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .stat-text {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        /* Sections */
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-red);
+            border-radius: 2px;
+        }
+
+        .section-title-why {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 15px;
+        }
+
+        .section-title-program {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 15px;
+        }
+
+        .text-red {
+            color: var(--primary-red);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Anchor offset so sections don't hide under fixed navbar */
+        section {
+            scroll-margin-top: 90px;
+        }
+
+        /* Section Hero (About & Contact) */
+        .section-hero {
+            background: linear-gradient(180deg, #f9d7df 0%, #f6c7d2 100%);
+            padding: 70px 0;
+            text-align: center;
+        }
+
+        .section-hero-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--dark-navy);
+            margin-bottom: 10px;
+        }
+
+        .section-hero-subtitle {
+            font-size: 1rem;
+            color: #5f6b7a;
+            max-width: 760px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Why Choose Section */
+        .why-choose-section {
+            background: #fef5f5;
+            padding: 80px 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all var(--transition-speed);
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            border-color: rgba(227, 30, 36, 0.3);
+            box-shadow: 0 12px 48px rgba(227, 30, 36, 0.2);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-red);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            transition: all var(--transition-speed);
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotateY(360deg);
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 15px;
+        }
+
+        .feature-text {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Program Section - Hero */
+        .program-hero {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fa3 50%, #ff6b8b 100%);
+            padding: 80px 0;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .program-hero h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .program-hero p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .training-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+            padding: 90px 0 70px;
+        }
+
+        .training-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .training-subtitle {
+            color: #6b7280;
+            max-width: 640px;
+            margin: 12px auto 0;
+            font-size: 1rem;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            padding: 30px 25px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+            border-color: rgba(227, 30, 36, 0.4);
+        }
+
+        .pricing-card.featured {
+            border: 1.5px solid rgba(227, 30, 36, 0.5);
+            box-shadow: 0 12px 48px rgba(227, 30, 36, 0.25);
+            background: rgba(254, 245, 245, 0.7);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            transform: scale(1.02);
+        }
+
+        .pricing-card.featured:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(254, 245, 245, 0.85);
+        }
+
+        .pricing-pill {
+            display: inline-flex;
+            align-items: center;
+            background: #f9fafb;
+            color: #9ca3af;
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            line-height: 1;
+            margin-bottom: 8px;
+            width: fit-content;
+            max-width: max-content;
+        }
+
+        .pricing-card.featured .pricing-pill {
+            background: #e31e24;
+            color: #ffffff;
+        }
+
+        .pricing-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+
+        .pricing-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .pricing-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .pricing-meta i {
+            color: var(--primary-red);
+        }
+
+        .pricing-divider {
+            height: 1.5px;
+            background: linear-gradient(to right, #e5e7eb, transparent);
+            margin: 18px 0;
+        }
+
+        .btn-pricing {
+            width: 100%;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-weight: 700;
+            border: 2px solid #e31e24;
+            color: #e31e24;
+            background: #ffffff;
+            transition: all var(--transition-speed);
+            margin-top: auto;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-pricing:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(227, 30, 36, 0.2);
+        }
+
+        .pricing-card.featured .btn-pricing,
+        .btn-pricing:hover {
+            background: linear-gradient(135deg, #e31e24, #b80f1d);
+            color: #ffffff;
+            box-shadow: 0 12px 28px rgba(227, 30, 36, 0.2);
+            border-color: transparent;
+        }
+
+        /* Placement Section */
+        .placement-section {
+            background: #f9fafb;
+            padding: 70px 0;
+        }
+
+        .placement-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 20px 20px 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .placement-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .placement-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #e7ecff;
+            color: #4f46e5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .placement-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: var(--text-dark);
+        }
+
+        .placement-duration {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .placement-text {
+            color: #4b5563;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .placement-req {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 14px;
+        }
+
+        .placement-req li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4b5563;
+            font-size: 0.94rem;
+            margin-bottom: 8px;
+        }
+
+        .placement-req i {
+            color: #16a34a;
+        }
+
+        .btn-consult {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 8px;
+            padding: 10px 16px;
+            background: #E31E24;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            border: 1px solid #E31E24;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-consult:hover {
+            background: #b3122a;
+            color: #fff;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fa3 50%, #ff6b8b 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,50 Q300,0 600,50 T1200,50 L1200,0 L0,0 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 700px;
+            margin: 0 auto 35px;
+            line-height: 1.7;
+        }
+
+        .btn-cta {
+            background: white;
+            color: var(--primary-red);
+            font-weight: 700;
+            padding: 16px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.1rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            color: var(--primary-red);
+        }
+
+        /* Swiper Carousel Images */
+        .imageCarouselSwiper .swiper-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .imageCarouselSwiper .swiper-slide img {
+                height: 350px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .imageCarouselSwiper .swiper-slide img {
+                height: 400px;
+            }
+        }
+
+        /* About Section */
+        .about-hero {
+            background: linear-gradient(180deg, #ffe3e8 0%, #ffffff 70%);
+        }
+
+        .about-hero .section-title {
+            color: var(--dark-navy);
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-gray);
+        }
+
+        .about-stat-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 22px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .about-stat-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .about-stat-number {
+            color: var(--primary-red);
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .about-stat-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .vmk-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .vmk-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .vmk-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: #fde7e8;
+            color: var(--primary-red);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 14px;
+        }
+
+        .vmk-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .vmk-text {
+            color: #666;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .teacher-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .teacher-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .teacher-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: #fde7e8;
+            color: var(--primary-red);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .teacher-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .teacher-role {
+            font-size: 0.95rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .teacher-desc {
+            font-size: 0.92rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .legal-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .legal-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.12);
+        }
+
+        .legal-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #fde7e8;
+            color: var(--primary-red);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .legal-text {
+            margin: 0;
+            color: #4b5563;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* ========== FASILITAS SECTION - iOS 26 GLASS THEME ========== */
+        .facility-section {
+            background: linear-gradient(135deg, rgba(255, 249, 249, 0.95) 0%, rgba(254, 245, 245, 0.98) 100%);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0;
+        }
+
+        .facility-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(227, 30, 36, 0.1), transparent);
+        }
+
+        .facility-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(227, 30, 36, 0.1), transparent);
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(227, 30, 36, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+            border: 1px solid rgba(227, 30, 36, 0.2);
+        }
+
+        .section-badge i {
+            color: #ffd700;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #E31E24, #FF6B8B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glass Facility Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 30px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(40px) saturate(220%);
+            -webkit-backdrop-filter: blur(40px) saturate(220%);
+            border-color: rgba(227, 30, 36, 0.3);
+            box-shadow:
+                0 20px 60px rgba(227, 30, 36, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(227, 30, 36, 0.1), rgba(255, 255, 255, 0.3));
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover .glass-icon {
+            background: linear-gradient(135deg, rgba(227, 30, 36, 0.2), rgba(255, 255, 255, 0.4));
+            transform: rotateY(180deg);
+        }
+
+        .glass-icon i {
+            font-size: 2rem;
+            color: var(--primary-red);
+            position: relative;
+            z-index: 2;
+        }
+
+        .glass-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: transform 0.6s ease;
+        }
+
+        .glass-card:hover .glass-icon::after {
+            transform: rotate(225deg);
+        }
+
+        .glass-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-navy);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .glass-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-red), transparent);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .glass-card:hover .glass-title::after {
+            width: 100%;
+        }
+
+        .glass-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .glass-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .glass-feature {
+            background: rgba(227, 30, 36, 0.08);
+            backdrop-filter: blur(5px);
+            color: var(--primary-red);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(227, 30, 36, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass-feature:hover {
+            background: rgba(227, 30, 36, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .glass-feature i {
+            font-size: 0.8rem;
+        }
+
+        /* Facility Image Gallery */
+        .facility-gallery {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 250px;
+            margin-top: 40px;
+        }
+
+        .facility-gallery img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 14px;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.5s ease;
+        }
+
+        .facility-gallery:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .facility-gallery:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-text {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(180deg, #fff6f6 0%, #ffffff 100%);
+            padding: 90px 0;
+        }
+
+        .contact-intro {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .contact-form-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-section .form-control {
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+        }
+
+        .contact-section .form-control:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, 0.15);
+        }
+
+        .btn-contact {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #d81928, #b4131f);
+            color: white;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 12px 30px rgba(227, 30, 36, 0.25);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 38px rgba(227, 30, 36, 0.3);
+        }
+
+        .contact-info-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 18px 18px 18px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .contact-info-card:hover {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .contact-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #fde7e8;
+            color: var(--primary-red);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-info-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-dark);
+        }
+
+        .contact-info-text {
+            margin: 0;
+            color: #556;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .contact-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .contact-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(227, 30, 36, 0.1);
+            color: var(--primary-red);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed);
+        }
+
+        .contact-social a:hover {
+            background: var(--primary-red);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-card {
+            background: rgba(43, 107, 230, 0.7);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 20px;
+            padding: 22px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(43, 107, 230, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-card:hover {
+            background: rgba(43, 107, 230, 0.85);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(43, 107, 230, 0.4);
+        }
+
+        .whatsapp-card .btn-whatsapp {
+            background: #f8fafc;
+            color: #1e293b;
+            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .whatsapp-card .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f1724;
+            color: #e5e7eb;
+            padding: 80px 0 40px;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            opacity: 0.4;
+        }
+
+        .footer-top {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo {
+            width: 50px;
+            height: 50px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            background: transparent;
+            padding: 0;
+        }
+
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+            color: #e5e7eb;
+        }
+
+        .footer-subtitle {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin: 0;
+        }
+
+        .footer-desc {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-heading {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 14px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color var(--transition-speed);
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .footer-contact i {
+            color: #e31e24;
+            margin-top: 3px;
+            width: 18px;
+            text-align: center;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .footer-social a {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            transition: all var(--transition-speed);
+        }
+
+        .footer-social a:hover {
+            background: #e31e24;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+            margin: 30px 0;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Sakura Animation */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .sakura {
+            position: absolute;
+            top: -10px;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #ffb7c5 0%, #ff9db8 100%);
+            border-radius: 50% 0 50% 0;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            transform-origin: center;
+        }
+
+        .sakura::before,
+        .sakura::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #ffb7c5 0%, #ff9db8 100%);
+            border-radius: 50% 0 50% 0;
+        }
+
+        .sakura::before {
+            transform: rotate(90deg);
+        }
+
+        .sakura::after {
+            transform: rotate(180deg);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 0.8;
+            }
+
+            25% {
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateY(50vh) rotate(180deg) translateX(50px);
+            }
+
+            75% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg) translateX(-50px);
+                opacity: 0;
+            }
+        }
+
+        /* Alert Messages */
+        .alert-success {
+            background: rgba(34, 197, 94, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.9);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+        }
+
+        /* VoiceFlow Chatbot Styling */
+        .voiceflow-chat {
+            z-index: 9999 !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.05rem;
+            }
+
+            .stats-section {
+                margin-top: 0;
+                padding-top: 60px;
+            }
+
+            .stat-card {
+                background: white;
+                border: 2px solid var(--primary-red);
+            }
+
+            .stat-number {
+                color: var(--primary-red);
+            }
+
+            .stat-text {
+                color: var(--text-dark);
+            }
+
+            .hero-section {
+                padding: 140px 0 80px;
+            }
+
+            .glass-card {
+                padding: 20px;
+            }
+
+            .glass-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 20px;
+            }
+
+            .glass-icon i {
+                font-size: 1.5rem;
+            }
+
+            .glass-title {
+                font-size: 1.1rem;
+            }
+
+            .facility-gallery {
+                height: 200px;
+            }
+
+            /* VoiceFlow Mobile Adjustments */
+            .voiceflow-chat {
+                bottom: 10px !important;
+                right: 10px !important;
+            }
+        }
+    </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="100" data-bs-smooth-scroll="true">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-yamaguchi">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-container" href="#">
+                <div class="brand-icon">
+                    <img src="static/images/logo_yamaguchi.png" alt="Logo LPK Yamaguchi">
+                </div>
+                <div class="brand-text">
+                    <h1>LPK Yamaguchi</h1>
+                    <p>Purwokerto</p>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#fasilitas">Fasilitas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#program">Program</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Kontak</a></li>
+                </ul>
+                <div class="d-flex">
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-masuk">Masuk</a>
+                    <a href="{{ url_for('auth.register_student') }}" class="btn btn-daftar">Daftar Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="static/images/vidio.mp4" type="video/mp4">
+        </video>
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="row justify-content-start">
+                <div class="col-lg-8">
+                    <div class="hero-badge">
+                        <i class="fas fa-star"></i>
+                        <span>LPK Resmi Terakreditasi</span>
+                    </div>
+                    <h1 class="hero-title">Wujudkan Impianmu<br><span class="highlight">Bekerja di Jepang</span></h1>
+                    <p class="hero-subtitle">
+                        Belajar bahasa Jepang dengan metode terbaik bersama LPK Yamaguchi Purwokerto. Dari pemula hingga
+                        siap kerja di Jepang.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#program" class="btn btn-hero-primary">Mulai Belajar <i
+                                class="fas fa-arrow-right ms-2"></i></a>
+                        <a href="#fasilitas" class="btn btn-hero-outline">Lihat Fasilitas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number">2</div>
+                        <div class="stat-text">Tahun Operasional</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number">5+</div>
+                        <div class="stat-text">Mentor Berpengalaman Jepang</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-text">Modul Pelatihan</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="stat-number">2–3</div>
+                        <div class="stat-text">Batch Aktif Berjalan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section id="why-choose" class="why-choose-section section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title-why">Kenapa Memilih <span class="text-red">LPK Yamaguchi?</span></h2>
+                <p class="section-subtitle">Kami menyediakan layanan terbaik untuk mempersiapkan Anda menuju karir
+                    cemerlang di Jepang</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="feature-title">Materi Lengkap</h3>
+                        <p class="feature-text">Kurikulum terstruktur dari N5 hingga N3 dengan materi interaktif dan
+                            mudah dipahami.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Pengajar Berpengalaman</h3>
+                        <p class="feature-text">Guru native speaker dan bersertifikat JLPT dengan pengalaman mengajar
+                            selama bertahun-tahun.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3 class="feature-title">Peluang Kerja</h3>
+                        <p class="feature-text">Akses langsung ke lowongan kerja di Jepang melalui program magang dan
+                            tokutei ginou.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3 class="feature-title">Sertifikasi Resmi</h3>
+                        <p class="feature-text">Sertifikat pelatihan yang diakui oleh pemerintah Indonesia dan
+                            perusahaan Jepang.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fasilitas Section dengan Tema Glass iOS 26 -->
+    <section id="fasilitas" class="facility-section section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="section-badge">
+                    <i class="fas fa-star"></i>
+                    <span>Premium Facilities</span>
+                </div>
+                <h2 class="section-title">Fasilitas <span class="text-gradient">Asrama Premium</span></h2>
+                <p class="section-subtitle">Nikmati kenyamanan asrama bergaya modern dengan fasilitas lengkap untuk
+                    mendukung proses belajar Anda</p>
+            </div>
+
+            <!-- Main Facilities Grid -->
+            <div class="row g-4 g-lg-5 mb-5">
+                <div class="col-lg-3 col-md-6">
+                    <div class="glass-card">
+                        <div class="glass-icon">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <h3 class="glass-title">Kamar Tidur Bersih & Nyaman</h3>
+                        <p class="glass-description">
+                            Kamar tidur dengan tempat tidur bertingkat, kasur tambahan, dan lemari pribadi. Nyaman dan
+                            rapi untuk istirahat peserta.
+                        </p>
+                        <div class="glass-features">
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Tempat Tidur
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Lemari Pribadi
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Ventilasi Baik
+                            </span>
+                        </div>
+                        <div class="mt-3">
+                            <img src="static/images/mess.png" alt="Kamar Tidur" class="img-fluid facility-img"
+                                style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="glass-card">
+                        <div class="glass-icon">
+                            <i class="fas fa-mosque"></i>
+                        </div>
+                        <h3 class="glass-title">Mushola</h3>
+                        <p class="glass-description">
+                            Fasilitas mushola yang bersih dan tenang untuk mendukung ibadah peserta selama pelatihan.
+                        </p>
+                        <div class="glass-features">
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Bersih & Tenang
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Peralatan Lengkap
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Area Khusyuk
+                            </span>
+                        </div>
+                        <div class="mt-3">
+                            <img src="static/images/mushola.png" alt="Mushola" class="img-fluid facility-img"
+                                style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="glass-card">
+                        <div class="glass-icon">
+                            <i class="fas fa-bath"></i>
+                        </div>
+                        <h3 class="glass-title">Kamar Mandi & Toilet</h3>
+                        <p class="glass-description">
+                            Kamar mandi dan toilet bersih dengan fasilitas air memadai, menjaga kenyamanan dan
+                            kebersihan peserta.
+                        </p>
+                        <div class="glass-features">
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Air Memadai
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Bersih Terawat
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Sanitasi Baik
+                            </span>
+                        </div>
+                        <div class="mt-3">
+                            <img src="static/images/toilet.png" alt="Kamar Mandi" class="img-fluid facility-img"
+                                style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="glass-card">
+                        <div class="glass-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="glass-title">Dapur Bersama</h3>
+                        <p class="glass-description">
+                            Dapur bersama lengkap dengan peralatan memasak dan wastafel, memungkinkan peserta memasak
+                            sendiri.
+                        </p>
+                        <div class="glass-features">
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Peralatan Lengkap
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Kompor & Wastafel
+                            </span>
+                            <span class="glass-feature">
+                                <i class="fas fa-check-circle"></i> Area Bersih
+                            </span>
+                        </div>
+                        <div class="mt-3">
+                            <img src="static/images/dapur.png" alt="Dapur" class="img-fluid facility-img"
+                                style="width: 100%; height: 180px; object-fit: cover; border-radius: 14px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Facility Gallery -->
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Program Section -->
+    <section id="program" class="program-hero">
+        <div class="container">
+            <h2>Program Pelatihan</h2>
+            <p>Pilih program yang sesuai dengan kebutuhan dan tujuan karir Anda di Jepang. Semua program dilengkapi
+                dengan materi terstruktur dan pengajar berpengalaman.</p>
+        </div>
+    </section>
+
+    <section class="training-section">
+        <div class="container">
+            <div class="training-header">
+                <h3 class="h4 fw-bold">Program Pelatihan Kami</h3>
+                <p class="training-subtitle">Berbagai program unggulan untuk karir internasional Anda</p>
+            </div>
+            <div class="row justify-content-center g-4">
+                <!-- Sample programs data - you can replace this with dynamic data -->
+                <div class="col-lg-4 col-md-6 col-sm-10 col-12">
+                    <div class="pricing-card featured">
+                        <div class="pricing-pill">
+                            Bahasa
+                        </div>
+                        <div class="pricing-title">Bahasa Jepang N5-N3</div>
+                        <div class="pricing-price">Rp 2.500.000 / 3 bulan</div>
+                        <div class="pricing-divider"></div>
+                        <div class="small text-muted fw-bold mb-2">Deskripsi:</div>
+                        <div style="font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.6;">
+                            Program intensif belajar bahasa Jepang dari level dasar (N5) hingga menengah (N3).
+                        </div>
+                        <div class="small text-muted fw-bold mb-2">Keunggulan:</div>
+                        <div style="font-size: 0.85rem; margin-bottom: 12px;">
+                            • Pengajar bersertifikat JLPT<br>
+                            • Materi lengkap N5-N3<br>
+                            • Kelas kecil (max 15 orang)<br>
+                            • Persiapan ujian JLPT
+                        </div>
+                        <a href="#register" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-10 col-12">
+                    <div class="pricing-card">
+                        <div class="pricing-pill">
+                            Magang
+                        </div>
+                        <div class="pricing-title">Program Magang IM Japan</div>
+                        <div class="pricing-price">Penempatan kerja profesional</div>
+                        <div class="pricing-divider"></div>
+                        <div class="small text-muted fw-bold mb-2">Deskripsi:</div>
+                        <div style="font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.6;">
+                            Program magang resmi pemerintah Jepang dengan durasi 3-5 tahun di berbagai sektor industri.
+                        </div>
+                        <div class="small text-muted fw-bold mb-2">Keunggulan:</div>
+                        <div style="font-size: 0.85rem; margin-bottom: 12px;">
+                            • Kontrak kerja resmi<br>
+                            • Asuransi kesehatan lengkap<br>
+                            • Pelatihan bahasa intensif<br>
+                            • Bimbingan penuh dokumen
+                        </div>
+                        <a href="#register" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-10 col-12">
+                    <div class="pricing-card">
+                        <div class="pricing-pill">
+                            Visa Kerja
+                        </div>
+                        <div class="pricing-title">Tokutei Ginou (SSW)</div>
+                        <div class="pricing-price">Rp 5.000.000 - Rp 7.500.000</div>
+                        <div class="pricing-divider"></div>
+                        <div class="small text-muted fw-bold mb-2">Deskripsi:</div>
+                        <div style="font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.6;">
+                            Program Specified Skilled Worker untuk bekerja di 14 sektor industri Jepang dengan gaji
+                            lebih tinggi.
+                        </div>
+                        <div class="small text-muted fw-bold mb-2">Keunggulan:</div>
+                        <div style="font-size: 0.85rem; margin-bottom: 12px;">
+                            • Gaji lebih tinggi<br>
+                            • Dapat diperpanjang hingga 5 tahun<br>
+                            • Bisa bawa keluarga<br>
+                            • Pelatihan skill khusus
+                        </div>
+                        <a href="#register" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="placement-section">
+        <div class="container">
+            <div class="training-header mb-4">
+                <h3 class="h4 fw-bold">Program Penempatan Kerja</h3>
+                <p class="training-subtitle">Program resmi untuk bekerja di Jepang dengan jaminan penempatan</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="placement-card">
+                        <div class="placement-icon"><i class="fa-solid fa-id-badge"></i></div>
+                        <div class="placement-title">Program Magang IM Japan (Pemerintahan)</div>
+                        <div class="placement-duration">Durasi: 3-5 Tahun</div>
+                        <p class="placement-text">Skema resmi pemerintah (IM Japan) dengan pelatihan intensif dan
+                            penempatan di sektor manufaktur, konstruksi, serta industri teknik lainnya.</p>
+                        <ul class="placement-req">
+                            <li><i class="fa-solid fa-circle-check"></i> Usia 18-26 tahun</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Lulusan SMA/SMK/Paket C</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Lulus seleksi fisik dan medical check-up</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Tidak bertato dan bertindik</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Siap ikut diklat pra-keberangkatan</li>
+                        </ul>
+                        <a class="btn-consult" href="#contact">Konsultasi Gratis <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="placement-card">
+                        <div class="placement-icon"><i class="fa-solid fa-building"></i></div>
+                        <div class="placement-title">Program Magang SO (Swasta)</div>
+                        <div class="placement-duration">Durasi: 1-3 Tahun (kontrak swasta)</div>
+                        <p class="placement-text">Magang melalui Sending Organization (SO) untuk perusahaan swasta di
+                            Jepang pada sektor manufaktur, jasa, dan hospitality.</p>
+                        <ul class="placement-req">
+                            <li><i class="fa-solid fa-circle-check"></i> Usia 18-28 tahun</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Pendidikan minimal SMA/SMK</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Pelatihan minimal 1 bulan</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Sehat jasmani dan rohani</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Tidak bertato dan bertindik</li>
+                        </ul>
+                        <a class="btn-consult" href="#contact">Konsultasi Gratis <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="placement-card">
+                        <div class="placement-icon"><i class="fa-solid fa-briefcase"></i></div>
+                        <div class="placement-title">Program Tokutei Ginou (SSW)</div>
+                        <div class="placement-duration">Durasi: 1-5 Tahun (dapat diperpanjang)</div>
+                        <p class="placement-text">Program Specified Skilled Worker untuk bekerja di 14 sektor industri
+                            Jepang dengan gaji dan benefit lebih tinggi.</p>
+                        <ul class="placement-req">
+                            <li><i class="fa-solid fa-circle-check"></i> Usia 18-35 tahun</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Lulus ujian keterampilan sektor terkait</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Lulus JLPT N4 atau JFT-Basic</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Pengalaman kerja di bidang terkait</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Sehat jasmani dan rohani</li>
+                        </ul>
+                        <a class="btn-consult" href="#contact">Konsultasi Gratis <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content text-center">
+                <div class="cta-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h2 class="cta-title">Tentang LPK Yamaguchi</h2>
+                <p class="cta-subtitle">Lembaga Pelatihan Kerja resmi yang baru berjalan 2 tahun dan terus berkembang
+                    dalam mempersiapkan tenaga kerja Indonesia untuk berkarir di Jepang.</p>
+                <div class="swiper imageCarouselSwiper mt-5"
+                    style="max-width: 1000px; margin: 0 auto; overflow: hidden;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="static/images/1.jpg" alt="Foto 1">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/2.jpg" alt="Foto 2">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/3.jpg" alt="Foto 3">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/4.jpg" alt="Foto 4">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/5.jpg" alt="Foto 5">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/6.jpg" alt="Foto 6">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/7.jpg" alt="Foto 7">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="static/images/8.jpg" alt="Foto 8">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-hero section-padding">
+        <div class="container">
+            <div class="row g-4 align-items-center mb-5">
+                <div class="col-lg-6">
+                    <h3 class="h4 fw-bold mb-3">Perjalanan Kami</h3>
+                    <p class="about-text mb-3">LPK Yamaguchi Purwokerto didirikan pada tahun 2024 dengan tujuan mulia
+                        untuk membantu masyarakat Indonesia, khususnya warga Jawa Tengah, meraih kesempatan bekerja di
+                        Jepang.</p>
+                    <p class="about-text mb-0">Dengan kurikulum yang disesuaikan dengan standar JLPT dan kebutuhan
+                        industri Jepang, kami membina puluhan peserta. Sebagian sudah berangkat magang atau bekerja di
+                        Jepang, sementara lainnya masih aktif belajar; kami mendampingi setiap siswa mempersiapkan
+                        karier di Negeri Sakura.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="about-stat-card">
+                                <div class="about-stat-number">80</div>
+                                <p class="about-stat-text">Siswa Aktif</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="about-stat-card">
+                                <div class="about-stat-number">2</div>
+                                <p class="about-stat-text">Tahun Berjalan</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="about-stat-card">
+                                <div class="about-stat-number">4</div>
+                                <p class="about-stat-text">Kelas Berjalan</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="about-stat-card">
+                                <div class="about-stat-number">90%</div>
+                                <p class="about-stat-text">Tingkat Kelulusan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <h3 class="h4 fw-bold">Visi, Misi & Komitmen</h3>
+            </div>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="vmk-card">
+                        <div class="vmk-icon"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="vmk-title">Visi</div>
+                        <p class="vmk-text">Menjadi lembaga pelatihan bahasa Jepang terdepan yang menghasilkan tenaga
+                            kerja berkualitas untuk pasar Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="vmk-card">
+                        <div class="vmk-icon"><i class="fa-solid fa-heart"></i></div>
+                        <div class="vmk-title">Misi</div>
+                        <p class="vmk-text">Memberikan pendidikan bahasa dan budaya Jepang berkualitas tinggi dengan
+                            metode pembelajaran modern dan interaktif.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="vmk-card">
+                        <div class="vmk-icon"><i class="fa-solid fa-hands-holding-circle"></i></div>
+                        <div class="vmk-title">Komitmen</div>
+                        <p class="vmk-text">Mendampingi siswa dari awal pembelajaran hingga sukses bekerja di Jepang
+                            dengan dukungan penuh.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <h3 class="h4 fw-bold">Tim Pengajar Kami</h3>
+            </div>
+            <div class="row g-3 g-lg-4 mb-5">
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-user-tie"></i></div>
+                        <div class="teacher-name">Dedi Damhudi</div>
+                        <div class="teacher-role">Admin LPK</div>
+                        <p class="teacher-desc">Native speaker dengan 5 tahun pengalaman mengajar.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-crown"></i></div>
+                        <div class="teacher-name">Bambang Sugiarto</div>
+                        <div class="teacher-role">Direktur</div>
+                        <p class="teacher-desc">Lulusan Universitas Tokyo, 20 tahun di industri HR Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-clipboard-check"></i></div>
+                        <div class="teacher-name">Septo Adi Purwoko</div>
+                        <div class="teacher-role">Pengawas</div>
+                        <p class="teacher-desc">Spesialis rekrutmen untuk pasar kerja Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="teacher-name">Efrayin</div>
+                        <div class="teacher-role">Keamanan LPK</div>
+                        <p class="teacher-desc">Menjaga keamanan dan ketertiban lingkungan LPK.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Siti Rahayu</div>
+                        <div class="teacher-role">Pengajar Senior</div>
+                        <p class="teacher-desc">Pengajar bersertifikat dengan pengalaman 10 tahun mengajar.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Rizki Husna</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Berpengalaman dalam pengajaran bahasa Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Nur Shabrina Zhafirah</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Spesialis dalam persiapan JLPT.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Choirul Ghazy</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Ahli dalam budaya dan tata bahasa Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Anggit Amirulloh</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Berpengalaman dalam pelatihan percakapan Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Alifian Ardianto Saputra</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Spesialis pembelajaran bahasa untuk pemula.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Fajar Maulana</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Pengalaman mengajar dan persiapan kerja di Jepang.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <div class="teacher-card">
+                        <div class="teacher-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <div class="teacher-name">Riky</div>
+                        <div class="teacher-role">Pengajar</div>
+                        <p class="teacher-desc">Pengajar berpengalaman dalam bahasa Jepang.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <h3 class="h4 fw-bold">Legalitas & Sertifikasi</h3>
+            </div>
+            <div class="row g-3 g-md-3">
+                <div class="col-md-4">
+                    <div class="legal-card">
+                        <div class="legal-icon"><i class="fa-solid fa-check"></i></div>
+                        <p class="legal-text">LPK resmi dengan badan usaha terdaftar</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="legal-card">
+                        <div class="legal-icon"><i class="fa-solid fa-check"></i></div>
+                        <p class="legal-text">Memiliki NIB & legalitas usaha resmi</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="legal-card">
+                        <div class="legal-icon"><i class="fa-solid fa-check"></i></div>
+                        <p class="legal-text">Terdaftar di OSS Kementerian terkait</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="legal-card">
+                        <div class="legal-icon"><i class="fa-solid fa-check"></i></div>
+                        <p class="legal-text">Kurikulum disusun sesuai standar LPK Bahasa Jepang</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="legal-card">
+                        <div class="legal-icon"><i class="fa-solid fa-check"></i></div>
+                        <p class="legal-text">Instruktur memiliki pengalaman & sertifikat pendukung</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="legal-card">
+                        <div class="legal-icon"><i class="fa-solid fa-check"></i></div>
+                        <p class="legal-text">Pengelolaan lembaga mengacu pada standar akreditasi LPK</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Hero -->
+    <section id="contact" class="section-hero">
+        <div class="container">
+            <h2 class="section-hero-title">Hubungi Kami</h2>
+            <p class="section-hero-subtitle">Ada pertanyaan atau ingin berkonsultasi? Tim kami siap membantu Anda
+                mewujudkan impian bekerja di Jepang.</p>
+        </div>
+    </section>
+
+    <!-- Contact Section dengan EmailJS -->
+    <section id="contact-details" class="contact-section">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Form Kontak dengan EmailJS -->
+                <div class="col-lg-7">
+                    <div class="contact-form-card p-4 p-lg-5">
+                        <h5 class="mb-4 fw-bold">Kirim Pesan</h5>
+                        <form id="contact-form-emailjs">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted mb-1">Nama Lengkap *</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Masukkan nama Anda"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted mb-1">No. Telepon *</label>
+                                    <input type="tel" name="phone" class="form-control" placeholder="08xx xxxx xxxx"
+                                        required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small text-muted mb-1">Email *</label>
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="email@example.com" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small text-muted mb-1">Subjek *</label>
+                                    <input type="text" name="subject" class="form-control"
+                                        placeholder="Tentang apa pesan Anda?" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small text-muted mb-1">Pesan *</label>
+                                    <textarea class="form-control" name="message" rows="5"
+                                        placeholder="Tulis pesan Anda di sini..." required></textarea>
+                                </div>
+                                <div class="col-12 pt-2">
+                                    <button type="submit" class="btn-contact" id="submit-btn">
+                                        <span id="submit-text">Kirim Pesan</span>
+                                        <i class="fa-solid fa-paper-plane ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Tempat untuk pesan sukses/error -->
+                        <div id="form-alert" class="mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Informasi Kontak -->
+                <div class="col-lg-5">
+                    <div class="d-grid gap-3">
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+                            <div>
+                                <div class="contact-info-title">Alamat</div>
+                                <p class="contact-info-text mb-1"> H6RV+PXV, Pakembaran<br>Kelurahan Bancarkembar,
+                                    Kecamatan Purwokerto Utara<br>Kabupaten Banyumas, Jawa Tengah 53121</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                            <div>
+                                <div class="contact-info-title">Telepon</div>
+                                <p class="contact-info-text mb-1">+62 812 2679 292</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <div class="contact-info-title">Email</div>
+                                <p class="contact-info-text mb-1">yamaguchi.pwt@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fa-regular fa-clock"></i></div>
+                            <div>
+                                <div class="contact-info-title">Jam Operasional</div>
+                                <p class="contact-info-text mb-1">Senin - Jumat: 08:00 - 16:00<br>Sabtu: 08:00 -
+                                    12:00<br>Minggu: Tutup</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                            <div class="w-100">
+                                <div class="contact-info-title">Ikuti Kami</div>
+                                <div class="contact-social">
+                                    <a href="https://instagram.com/yamaguchi.pwt" target="_blank"
+                                        aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.facebook.com/share/1CGQcfcts9/" target="_blank" rel="noopener"
+                                        aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://www.tiktok.com/@yamaguchi_pwt?_r=1&_t=ZS-93yErfxgdzo"
+                                        target="_blank" rel="noopener" aria-label="TikTok"><i
+                                            class="fab fa-tiktok"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="whatsapp-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="fs-3"><i class="fa-brands fa-whatsapp"></i></div>
+                                <div>
+                                    <div class="fw-bold fs-5 mb-1">Chat via WhatsApp</div>
+                                    <div class="small">Respon cepat untuk pertanyaan Anda</div>
+                                </div>
+                            </div>
+                            <a class="btn-whatsapp" href="https://wa.me/628122679292" target="_blank" rel="noopener">
+                                Hubungi via WhatsApp <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="row g-4 footer-top">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <img src="static/images/logo_yamaguchi.png" alt="Logo LPK Yamaguchi">
+                        </div>
+                        <div>
+                            <p class="footer-title">LPK Yamaguchi</p>
+                            <p class="footer-subtitle">Purwokerto</p>
+                        </div>
+                    </div>
+                    <p class="footer-desc">
+                        Lembaga Pelatihan Kerja resmi untuk pelatihan bahasa Jepang dan penempatan kerja ke Jepang
+                        dengan program magang dan tokutei ginou.
+                    </p>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-heading">Navigasi</h5>
+                    <ul class="footer-links">
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#about">Tentang Kami</a></li>
+                        <li><a href="#fasilitas">Fasilitas</a></li>
+                        <li><a href="#program">Program</a></li>
+                        <li><a href="#contact">Kontak</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Program Kami</h5>
+                    <ul class="footer-links">
+                        <li><a href="#program">Bahasa Korea</a></li>
+                        <li><a href="#program">Tokutei Ginou (SSW)</a></li>
+                        <li><a href="#program">Kuliah Sambil Kerja</a></li>
+                        <li><a href="#program">Engineer</a></li>
+                        <li><a href="#program">Magang ke Jepang</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Hubungi Kami</h5>
+                    <div class="footer-contact">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span> H6RV+PXV, Pakembaran, Bancarkembar, Kec. Purwokerto Utara, Kabupaten Banyumas, Jawa
+                            Tengah 53121 </span>
+                    </div>
+                    <div class="footer-contact">
+                        <i class="fas fa-phone"></i>
+                        <a href="tel:+628122679292">+62 812-2679-292</a>
+                    </div>
+                    <div class="footer-contact">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:yamaguchi.pwt@gmail.com">yamaguchi.pwt@gmail.com</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/yamaguchi.pwt/" aria-label="Instagram" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/share/1CGQcfcts9/" aria-label="Facebook" target="_blank"
+                            rel="noopener"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.tiktok.com/@yamaguchi_pwt?_r=1&_t=ZS-93yErfxgdzo" aria-label="TikTok"
+                            target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">© 2026 LPK Yamaguchi Purwokerto. Semua hak dilindungi.</div>
+        </div>
+    </footer>
+
+    <!-- Sakura Container -->
+    <div class="sakura-container" id="sakuraContainer"></div>
+
+    <!-- Script Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <!-- EmailJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        // ========== EmailJS Configuration ==========
+        // Initialize EmailJS dengan Public Key Anda
+        (function () {
+            emailjs.init("_THudUfaKHSvhmR6d"); // Public Key dari EmailJS
+        })();
+
+        // Form submission handler
+        document.getElementById('contact-form-emailjs').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const formAlert = document.getElementById('form-alert');
+
+            // Disable button dan ubah teks
+            submitBtn.disabled = true;
+            submitText.textContent = 'Mengirim...';
+
+            // Clear previous alerts
+            formAlert.innerHTML = '';
+            formAlert.style.display = 'none';
+
+            // Kirim email langsung dari form menggunakan emailjs.sendForm
+            emailjs.sendForm('service_dw7ax88', 'template_gmg6vnc', this)
+                .then(function (response) {
+                    console.log('SUCCESS!', response.status, response.text);
+
+                    // Success message
+                    formAlert.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>✓ Berhasil!</strong> Pesan Anda telah dikirim ke LPK Yamaguchi. 
+                        Kami akan membalas dalam 1x24 jam.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                    formAlert.style.display = 'block';
+
+                    // Reset form
+                    document.getElementById('contact-form-emailjs').reset();
+
+                    // Scroll ke alert
+                    formAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    // Auto-hide alert setelah 10 detik
+                    setTimeout(() => {
+                        const alertElement = formAlert.querySelector('.alert');
+                        if (alertElement) {
+                            const bsAlert = new bootstrap.Alert(alertElement);
+                            bsAlert.close();
+                        }
+                    }, 10000);
+
+                }, function (error) {
+                    console.log('FAILED...', error);
+
+                    // Detailed error message
+                    let errorMsg = 'Terjadi kesalahan saat mengirim pesan.';
+
+                    if (error.text) {
+                        console.error('Error details:', error.text);
+
+                        // Parse error untuk info lebih detail
+                        if (error.text.includes('Invalid')) {
+                            errorMsg = 'Konfigurasi email tidak valid. Silakan hubungi administrator.';
+                        } else if (error.text.includes('Template')) {
+                            errorMsg = 'Template email tidak ditemukan. Silakan hubungi administrator.';
+                        } else if (error.text.includes('Service')) {
+                            errorMsg = 'Service email tidak ditemukan. Silakan hubungi administrator.';
+                        }
+                    }
+
+                    // Error message dengan WhatsApp fallback
+                    formAlert.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>✗ Gagal Mengirim Pesan!</strong> ${errorMsg}
+                        <div class="mt-2 small">
+                            <strong>Solusi alternatif:</strong><br>
+                            Hubungi kami langsung via WhatsApp:
+                            <a href="https://wa.me/628122679292?text=${encodeURIComponent('Halo LPK Yamaguchi, saya ingin bertanya tentang program pelatihan')}" 
+                               target="_blank" 
+                               class="alert-link d-block mt-1">
+                                <i class="fab fa-whatsapp"></i> +62 812-2679-292
+                            </a>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                    formAlert.style.display = 'block';
+
+                    // Scroll ke alert
+                    formAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                }).finally(() => {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitText.textContent = 'Kirim Pesan';
+                });
+        });
+
+        // ========== Sakura Animation Script ==========
+        function createSakura() {
+            const container = document.getElementById('sakuraContainer');
+            const sakura = document.createElement('div');
+            sakura.classList.add('sakura');
+
+            // Random horizontal position
+            sakura.style.left = Math.random() * 100 + '%';
+
+            // Random size
+            const size = Math.random() * 10 + 10; // 10-20px
+            sakura.style.width = size + 'px';
+            sakura.style.height = size + 'px';
+
+            // Random animation duration (slower fall)
+            const duration = Math.random() * 10 + 15; // 15-25 seconds
+            sakura.style.animationDuration = duration + 's';
+
+            // Random delay
+            const delay = Math.random() * 5;
+            sakura.style.animationDelay = delay + 's';
+
+            container.appendChild(sakura);
+
+            // Remove sakura after animation completes
+            setTimeout(() => {
+                sakura.remove();
+            }, (duration + delay) * 1000);
+        }
+
+        // Create sakura petals periodically
+        setInterval(createSakura, 600);
+
+        // Initial batch of sakura
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createSakura, i * 300);
+        }
+
+        // ========== Swiper Carousel ==========
+        const swiper = new Swiper('.imageCarouselSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            breakpoints: {
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 15,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 15,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 20,
+                },
+            },
+        });
+
+        // Smooth scroll untuk navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Navbar active state update
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.navbar-yamaguchi .nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- VoiceFlow Chatbot Script dengan URL yang benar -->
+    <script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '69cb7d75ba511b0ce1c31bd1' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,286 @@
+{% extends "navbar/base.html" %}
+
+{% block title %}Gunakan Bank Tugas - LPK Yamaguchi{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+        --primary: #e11d48;
+        --primary-dark: #b91c1c;
+        --accent: #0ea5e9;
+        --muted: #6b7280;
+        --surface: #ffffff;
+        --bg: #f8fafc;
+        --border: #e5e7eb;
+        --shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        gap: 12px;
+    }
+
+    .header {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: var(--shadow);
+        margin-bottom: 30px;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+        color: #0f172a;
+    }
+
+    .header p {
+        margin: 8px 0 0 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: var(--shadow);
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 20px 0;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #0f172a;
+        font-size: 14px;
+    }
+
+    .required::after {
+        content: ' *';
+        color: #ef4444;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .helper-text {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+    }
+
+    .preview-box {
+        background: var(--bg);
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent);
+        margin-bottom: 20px;
+    }
+
+    .preview-title {
+        font-weight: 600;
+        color: #0f172a;
+        margin: 0 0 10px 0;
+    }
+
+    .preview-content {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid var(--border);
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(225, 29, 72, 0.3);
+    }
+
+    .btn-secondary {
+        background: var(--border);
+        color: #0f172a;
+    }
+
+    .btn-secondary:hover {
+        background: #d1d5db;
+    }
+
+    .info-box {
+        background: #dbeafe;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+        padding: 12px 15px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container">
+    <a href="{{ url_for('question_bank.assignment_banks_index') }}" class="back-link">← Kembali ke Bank Tugas</a>
+
+    <div class="header">
+        <h1>🎯 Gunakan Bank Tugas "{{ bank.name }}"</h1>
+        <p>Buat tugas baru di kelas dengan konten dari bank ini</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div
+        style="padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; background: {% if category == 'error' %}#fee2e2{% else %}#dbeafe{% endif %}; color: {% if category == 'error' %}#991b1b{% else %}#1e40af{% endif %}; border: 1px solid {% if category == 'error' %}#fecaca{% else %}#bfdbfe{% endif %};">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="card">
+            <h3 class="card-title">⚙️ Buat Tugas Baru</h3>
+
+            <div class="info-box">
+                <strong>ℹ️ Info:</strong> Tugas akan dibuat dengan konten dari bank tugas "{{ bank.name }}" di kelas
+                yang dipilih.
+            </div>
+
+            <div class="form-group">
+                <label for="class_id" class="required">Kelas Tujuan</label>
+                <select id="class_id" name="class_id" required>
+                    <option value="">-- Pilih kelas --</option>
+                    {% for cls in classes %}
+                    <option value="{{ cls.id }}" {% if selected_class_id==cls.id %}selected{% endif %}>{{ cls.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <div class="helper-text">Tugas akan dipublikasikan ke kelas ini</div>
+            </div>
+
+            <div class="form-group">
+                <label for="task_title" class="required">Judul Tugas</label>
+                <input type="text" id="task_title" name="task_title"
+                    placeholder="Contoh: Esai Tema Cinta dalam Karya Sastra" required>
+                <div class="helper-text">Anda bisa mengubah judul, atau gunakan judul dari bank</div>
+            </div>
+
+            <div class="form-group">
+                <label for="due_date">Batas Pengumpulan (Opsional)</label>
+                <input type="date" id="due_date" name="due_date">
+                <div class="helper-text">Kapan siswa harus mengumpulkan tugas</div>
+            </div>
+
+            <h3 class="card-title" style="margin-top: 30px;">📋 Konten dari Bank</h3>
+
+            <div class="preview-box">
+                <p class="preview-title">Deskripsi Bank:</p>
+                <p class="preview-content">{{ bank.description or 'Tidak ada deskripsi' }}</p>
+            </div>
+
+            <div class="preview-box">
+                <p class="preview-title">Konten Tugas:</p>
+                <p class="preview-content">{{ bank.content }}</p>
+            </div>
+
+            {% if bank.file_path %}
+            <div class="preview-box">
+                <p class="preview-title">✓ File Pendukung Tersedia</p>
+                <p class="preview-content">File dari bank akan juga diberikan kepada siswa</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <div class="form-actions">
+                <a href="{{ url_for('question_bank.assignment_banks_index') }}" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-primary">Buat Tugas Sekarang</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
