@@ -11,7 +11,7 @@ def view_material(material_id):
     material = MaterialModel.get_by_id(material_id)
     if not material:
         flash("Materi tidak ditemukan.")
-        return redirect(url_for('main.dashboard'))
+        return redirect(url_for('main.dashboard')) 
     
     return render_template('material/view.html', material=material)
 
@@ -58,3 +58,5 @@ def download_material(material_id):
     except Exception as e:
         flash(f"Error: {str(e)}")
         return redirect(url_for('material.view_material', material_id=material_id))
+
+        #DARMUJI

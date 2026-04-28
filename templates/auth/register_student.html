@@ -808,7 +808,7 @@
 
             <!-- Form Container -->
             <form id="registrationForm" method="POST" action="{{ url_for('auth.register_student') }}"
-                enctype="multipart/form-data" onsubmit="showLoadingScreen(event)">
+                enctype="multipart/form-data" onsubmit="return showLoadingScreen(event)" novalidate>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                 <div class="form-container" id="formContainer">
