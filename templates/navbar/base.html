@@ -313,7 +313,7 @@
                         {% endif %}><i class="fas fa-money-bill-wave"></i> Pembayaran</a></li>
                 <li><a href="{{ url_for('admin.activities') }}" {% if request.endpoint=='admin.activities'
                         %}class="active" {% endif %}><i class="fas fa-history"></i> Aktivitas</a></li>
-                <li><a href="{{ url_for('attendance.admin_attendance_report') }}" {% if 'attendance.admin' in
+                <li><a href="{{ url_for('attendance.admin_attendance_report') }}" {% if request.endpoint and 'attendance.admin' in
                         request.endpoint %}class="active" {% endif %}><i class="fas fa-clipboard-check"></i> Absensi</a>
                 </li>
                 <li><a href="{{ url_for('jobs.admin_jobs') }}" {% if request.endpoint=='jobs.admin_jobs'

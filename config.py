@@ -11,12 +11,11 @@ class Config:
     
     # Database configuration
     DB_CONFIG = {
-        'host': 'localhost',
-        'user': 'root',
-        'password': 'root',
-        'database': 'elearning_lpkyamaguchi',
-        'port': 8889
-    }
+    'host': 'localhost',
+    'user': 'lpkd3153_lpk_yamaguchi-pwt',      
+    'password': 'Terserah27!',                  
+    'database': 'lpkd3153_elearning_lpkyamaguchi' 
+}
     
     # CSRF Protection
     WTF_CSRF_ENABLED = True
