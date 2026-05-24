@@ -16,7 +16,12 @@ try:
         ("sd_year", "VARCHAR(10)"),
         ("smp_year", "VARCHAR(10)"),
         ("sma_year", "VARCHAR(10)"),
-        ("d3_year", "VARCHAR(10)")
+        ("d3_year", "VARCHAR(10)"),
+        ("sd_name", "VARCHAR(150)"),
+        ("smp_name", "VARCHAR(150)"),
+        ("sma_name", "VARCHAR(150)"),
+        ("d3_name", "VARCHAR(150)"),
+        ("signature_file", "VARCHAR(255)")
     ]
     
     for col_name, col_type in columns_to_add:

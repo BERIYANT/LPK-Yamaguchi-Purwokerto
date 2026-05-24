@@ -941,23 +941,63 @@
 
                         <div class="mb-4">
                             <div class="form-section-title">Riwayat Pendidikan</div>
+                            
+                            <!-- SD/MI -->
                             <div class="row g-3 mb-3">
-                                <div class="col-md-3">
-                                    <label class="form-label">Tahun Lulus SD</label>
-                                    <input type="text" class="form-control" id="sd_year" name="sd_year"
+                                <div class="col-md-8">
+                                    <label class="form-label required">Nama Sekolah SD/MI</label>
+                                    <input type="text" class="form-control" id="sd_name" name="sd_name" required
+                                        placeholder="Nama Sekolah Dasar Anda" value="{{ form_data.sd_name if form_data }}">
+                                    <div class="form-error" id="error_sd_name">Nama sekolah SD harus diisi</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label required">Tahun Lulus SD</label>
+                                    <input type="text" class="form-control" id="sd_year" name="sd_year" required
                                         placeholder="Contoh: 2012" value="{{ form_data.sd_year if form_data }}">
+                                    <div class="form-error" id="error_sd_year">Tahun lulus SD harus diisi</div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Tahun Lulus SMP</label>
-                                    <input type="text" class="form-control" id="smp_year" name="smp_year"
+                            </div>
+                            
+                            <!-- SMP/MTs -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label required">Nama Sekolah SMP/MTs</label>
+                                    <input type="text" class="form-control" id="smp_name" name="smp_name" required
+                                        placeholder="Nama SMP Anda" value="{{ form_data.smp_name if form_data }}">
+                                    <div class="form-error" id="error_smp_name">Nama sekolah SMP harus diisi</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label required">Tahun Lulus SMP</label>
+                                    <input type="text" class="form-control" id="smp_year" name="smp_year" required
                                         placeholder="Contoh: 2015" value="{{ form_data.smp_year if form_data }}">
+                                    <div class="form-error" id="error_smp_year">Tahun lulus SMP harus diisi</div>
                                 </div>
-                                <div class="col-md-3">
+                            </div>
+                            
+                            <!-- SMA/SMK/MA -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label required">Nama Sekolah SMA/SMK/MA</label>
+                                    <input type="text" class="form-control" id="sma_name" name="sma_name" required
+                                        placeholder="Nama SMA/SMK Anda" value="{{ form_data.sma_name if form_data }}">
+                                    <div class="form-error" id="error_sma_name">Nama sekolah SMA harus diisi</div>
+                                </div>
+                                <div class="col-md-4">
                                     <label class="form-label required">Tahun Lulus SMA/SMK</label>
                                     <input type="text" class="form-control" id="sma_year" name="sma_year"
                                         placeholder="Contoh: 2018" required value="{{ form_data.sma_year if form_data }}">
+                                    <div class="form-error" id="error_sma_year">Tahun lulus SMA harus diisi</div>
                                 </div>
-                                <div class="col-md-3">
+                            </div>
+                            
+                            <!-- D3/S1 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-8">
+                                    <label class="form-label">Nama Perguruan Tinggi (D3/S1)</label>
+                                    <input type="text" class="form-control" id="d3_name" name="d3_name"
+                                        placeholder="Nama Universitas/Akademi (jika ada)" value="{{ form_data.d3_name if form_data }}">
+                                </div>
+                                <div class="col-md-4">
                                     <label class="form-label">Tahun Lulus D3/S1</label>
                                     <input type="text" class="form-control" id="d3_year" name="d3_year"
                                         placeholder="Kosongkan jika tidak ada" value="{{ form_data.d3_year if form_data }}">
@@ -1422,6 +1462,28 @@
                             </div>
                             <div class="form-error" id="error_terms">Anda harus menyetujui syarat dan ketentuan</div>
                         </div>
+
+                        <!-- Digital Signature Pad -->
+                        <div class="mb-4 p-3" style="background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <label class="form-label required"><strong>Tanda Tangan Digital</strong></label>
+                            <p class="text-muted" style="font-size: 0.85rem; margin-top: -5px; margin-bottom: 10px;">
+                                Silakan buat tanda tangan Anda langsung di dalam kotak putih di bawah ini (menggunakan tinta hitam yang serasi dengan tema PDF pendaftaran) menggunakan mouse, trackpad, atau jari/stylus Anda.
+                            </p>
+                            
+                            <div class="signature-pad-wrapper" style="border: 2px dashed #bbb; border-radius: 8px; background: #ffffff; padding: 10px; width: 100%; max-width: 450px;">
+                                <canvas id="signature-pad" width="430" height="200" style="background: #ffffff; border: 1px solid #ccc; border-radius: 4px; display: block; touch-action: none; cursor: crosshair; width: 100%; max-width: 430px; height: auto;"></canvas>
+                                <div class="mt-2 d-flex justify-content-between align-items-center">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" id="clear-signature-btn">
+                                        <i class="fas fa-eraser me-1"></i>Hapus
+                                    </button>
+                                    <span class="badge bg-secondary" id="signature-status">Belum ditandatangani</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Hidden field to send base64 data to server -->
+                            <input type="hidden" id="signature_data" name="signature_data" required>
+                            <div class="form-error" id="error_signature">Tanda tangan digital harus diisi</div>
+                        </div>
                     </div>
 
                     <!-- Step 5: Pembayaran -->
@@ -1563,6 +1625,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
     <script>
         let currentStep = 1;
         const totalSteps = 5;
@@ -1715,7 +1778,7 @@
             const requiredFields = [
                 'full_name', 'gender', 'birth_place', 'birth_date', 'phone', 'email', 'address',
                 'nik', 'height', 'weight', 'father_name', 'mother_name', 'parent_phone', 'parent_address',
-                'sma_year', 'education'
+                'sd_name', 'sd_year', 'smp_name', 'smp_year', 'sma_name', 'sma_year', 'education'
             ];
 
             requiredFields.forEach(fieldId => {
@@ -1785,15 +1848,25 @@
         }
 
         function validateStep4() {
+            let isValid = true;
             const agreeTerms = document.getElementById('agreeTerms');
+            const signatureInput = document.getElementById('signature_data');
 
             if (!agreeTerms.checked) {
                 agreeTerms.parentElement.parentElement.classList.add('has-error');
-                return false;
+                isValid = false;
             } else {
                 agreeTerms.parentElement.parentElement.classList.remove('has-error');
-                return true;
             }
+
+            if (!signatureInput.value) {
+                signatureInput.parentElement.parentElement.classList.add('has-error');
+                isValid = false;
+            } else {
+                signatureInput.parentElement.parentElement.classList.remove('has-error');
+            }
+
+            return isValid;
         }
 
         function validateStep5() {
@@ -1893,7 +1966,19 @@
             // Set minimum date for birth date (15 years ago)
             const today = new Date();
             const minDate = new Date(today.getFullYear() - 15, today.getMonth(), today.getDate());
+            
+            // Set max date limit for native browser calendar (15 years ago)
             document.getElementById('birth_date').max = minDate.toISOString().split('T')[0];
+
+            // Clear has-error class immediately when user inputs data or selects an option
+            document.querySelectorAll('input, select, textarea').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.parentElement.classList.remove('has-error');
+                });
+                input.addEventListener('change', function() {
+                    this.parentElement.classList.remove('has-error');
+                });
+            });
 
             // Class selection
             document.querySelectorAll('.class-card').forEach(card => {
@@ -1914,6 +1999,95 @@
                     this.parentElement.parentElement.classList.remove('has-error');
                 });
             });
+
+            // Signature Pad logic
+            const canvas = document.getElementById('signature-pad');
+            const clearBtn = document.getElementById('clear-signature-btn');
+            const statusBadge = document.getElementById('signature-status');
+            const signatureInput = document.getElementById('signature_data');
+            
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let drawing = false;
+                let isCanvasSigned = false; // Flag to track if user drew anything
+                
+                // Initialize canvas with solid white background (prevents FPDF transparency bugs!)
+                function initCanvasBackground() {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                initCanvasBackground();
+                
+                // Style the signature line (thick black brush)
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                // Clear function
+                function clearCanvas() {
+                    initCanvasBackground();
+                    signatureInput.value = '';
+                    isCanvasSigned = false;
+                    statusBadge.textContent = 'Belum ditandatangani';
+                    statusBadge.className = 'badge bg-secondary';
+                    canvas.parentElement.parentElement.classList.remove('has-error');
+                }
+                
+                clearBtn.addEventListener('click', clearCanvas);
+                
+                // Get mouse/touch coordinates relative to canvas
+                function getPos(canvasDom, e) {
+                    const rect = canvasDom.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    return {
+                        x: clientX - rect.left,
+                        y: clientY - rect.top
+                    };
+                }
+                
+                function startDrawing(e) {
+                    drawing = true;
+                    isCanvasSigned = true; // Mark as signed as soon as user touches/clicks
+                    const pos = getPos(canvas, e);
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y);
+                    if (e.cancelable) e.preventDefault();
+                }
+                
+                function draw(e) {
+                    if (!drawing) return;
+                    const pos = getPos(canvas, e);
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                    if (e.cancelable) e.preventDefault();
+                }
+                
+                function stopDrawing() {
+                    if (drawing) {
+                        drawing = false;
+                        if (isCanvasSigned) {
+                            // Save image as solid JPEG data URL (highly compatible with FPDF)
+                            signatureInput.value = canvas.toDataURL('image/jpeg', 0.9);
+                            statusBadge.textContent = 'Sudah ditandatangani';
+                            statusBadge.className = 'badge bg-success';
+                            canvas.parentElement.parentElement.classList.remove('has-error');
+                        }
+                    }
+                }
+                
+                // Mouse Events
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseleave', stopDrawing);
+                
+                // Touch Events for Mobile compatibility
+                canvas.addEventListener('touchstart', startDrawing, { passive: false });
+                canvas.addEventListener('touchmove', draw, { passive: false });
+                canvas.addEventListener('touchend', stopDrawing, { passive: false });
+            }
 
             // File upload handlers
             document.getElementById('ktp-upload').addEventListener('click', function () {
