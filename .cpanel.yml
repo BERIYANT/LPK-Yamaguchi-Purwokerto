@@ -3,6 +3,7 @@ deployment:
   tasks:
     - /bin/mkdir -p /home/lpkd3153/yamaguchipwt && /bin/tar -cf - --exclude='.git' --exclude='.github' --exclude='__MACOSX' --exclude='._*' --exclude='.cpanel.yml' --exclude='.env' --exclude='.env.*' --exclude='.venv' --exclude='venv' --exclude='__pycache__' --exclude='*.pyc' --exclude='*.log' --exclude='.coverage' --exclude='database.db' --exclude='static/uploads' --exclude='tmp' . | /bin/tar -C /home/lpkd3153/yamaguchipwt -xf -
     - /bin/rm -rf /home/lpkd3153/yamaguchipwt/__MACOSX && /usr/bin/find /home/lpkd3153/yamaguchipwt -name '._*' -type f -delete
+    - /usr/bin/find /home/lpkd3153/yamaguchipwt -type d -name '__pycache__' -prune -exec /bin/rm -rf '{}' + && /usr/bin/find /home/lpkd3153/yamaguchipwt -type f -name '*.pyc' -delete && /usr/bin/find /home/lpkd3153/yamaguchipwt -type f -name '*.pyo' -delete
     - /bin/cp /home/lpkd3153/yamaguchipwt/deploy/public_html.htaccess /home/lpkd3153/public_html/.htaccess && /bin/chmod 644 /home/lpkd3153/public_html/.htaccess
     - /usr/bin/test -f /home/lpkd3153/yamaguchipwt/passenger_wsgi.py && /usr/bin/test -f /home/lpkd3153/yamaguchipwt/app.py
     - /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m pip install -r /home/lpkd3153/yamaguchipwt/requirements.txt

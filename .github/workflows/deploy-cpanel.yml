@@ -85,12 +85,16 @@ jobs:
 
           rm -rf "$APP/__MACOSX"
           find "$APP" -name '._*' -type f -delete
+          find "$APP" -type d -name '__pycache__' -prune -exec rm -rf {} +
+          find "$APP" -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           install -m 644 "$APP/deploy/public_html.htaccess" /home/lpkd3153/public_html/.htaccess
           test -f "$APP/passenger_wsgi.py"
           test -f "$APP/app.py"
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
+          grep -q "return render_template('index.html')" "$APP/routes_main.py"
+          ! grep -q 'SELECT \* FROM materials ORDER BY created_at DESC LIMIT 6' "$APP/routes_main.py"
           mkdir -p "$APP/tmp"
           touch "$APP/tmp/restart.txt"
 
