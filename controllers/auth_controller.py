@@ -53,10 +53,9 @@ def register_student():
     from models.program_model import ProgramModel
     from models.payment_model import PaymentModel
     
-    # Get all active programs (hanya ada 2: Reguler dan Karyawan)
-    programs = ProgramModel.get_all_active()
-    
     if request.method == 'POST':
+        # Pilihan kelas tersedia di template; database hanya dibaca saat submit.
+        programs = ProgramModel.get_all_active()
         try:
             # Collect form data
             form_data = {
@@ -341,8 +340,8 @@ def register_student():
             flash(f"Terjadi kesalahan: {str(e)}", "danger")
             return render_template('auth/register_student.html', programs=programs)
     
-    # GET request - show form
-    return render_template('auth/register_student.html', programs=programs)
+    # Tampilkan formulir publik tanpa ketergantungan pada koneksi MySQL.
+    return render_template('auth/register_student.html')
 
 @auth_bp.route('/download-registration-pdf/<username>')
 def download_registration_pdf(username):
