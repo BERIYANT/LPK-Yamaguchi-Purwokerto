@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Tests and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Runtime files
+*.log
+tmp/
+
+# macOS
+.DS_Store
+
+# Local environment
+.env
+.env.*
+!.env.example
