@@ -1791,6 +1791,200 @@
             html { scroll-behavior: auto; }
             *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
         }
+
+        /* Editorial landing experience inspired by modern product websites */
+        :root {
+            --canvas: #f3f1ed;
+            --ink: #141313;
+            --muted: #6d6a66;
+            --accent: #c9202b;
+            --accent-dark: #981821;
+            --surface: #ffffff;
+            --line: rgba(20, 19, 19, .11);
+            --soft-shadow: 0 24px 70px rgba(32, 26, 23, .10);
+        }
+
+        body { background: var(--canvas); color: var(--ink); }
+        .container { max-width: 1240px; }
+
+        .navbar-yamaguchi {
+            top: 24px;
+            left: 50%;
+            right: auto;
+            width: min(94%, 980px);
+            transform: translateX(-50%);
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, .92);
+            border: 1px solid rgba(255, 255, 255, .8);
+            border-radius: 999px;
+            box-shadow: 0 14px 45px rgba(30, 24, 20, .09);
+        }
+        .navbar-yamaguchi .container { max-width: none; padding: 0; }
+        .brand-icon, .brand-icon img { width: 44px; height: 44px; }
+        .brand-text h1 { font-size: 1rem; color: var(--ink); letter-spacing: -.02em; }
+        .brand-text p { color: #8b8781; }
+        .navbar-yamaguchi .nav-link {
+            color: #77736e;
+            padding: .65rem .9rem;
+            border-radius: 999px;
+            font-size: .9rem;
+        }
+        .navbar-yamaguchi .nav-link:hover,
+        .navbar-yamaguchi .nav-link.active { color: var(--ink); background: #f1efeb; }
+        .btn-masuk { border: 0; color: var(--ink); padding: .6rem 1rem; margin-right: 2px; }
+        .btn-masuk:hover { background: #f1efeb; color: var(--ink); }
+        .btn-daftar {
+            border-radius: 999px;
+            padding: .72rem 1.25rem;
+            background: var(--accent);
+        }
+        .btn-daftar:hover { background: var(--accent-dark); transform: none; box-shadow: none; }
+
+        .hero-section {
+            min-height: 940px;
+            padding: 148px 20px 0;
+            display: block;
+            background:
+                radial-gradient(circle at 10% 14%, rgba(201, 32, 43, .10), transparent 23%),
+                radial-gradient(circle at 90% 38%, rgba(201, 32, 43, .08), transparent 25%),
+                var(--canvas);
+            color: var(--ink);
+            overflow: hidden;
+        }
+        .hero-section::after { display: none; }
+        .hero-section > .container { text-align: center; }
+        .hero-section .row { justify-content: center !important; }
+        .hero-section .col-lg-8 { width: min(100%, 1020px); }
+        .hero-badge {
+            color: var(--accent);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 9px 16px;
+            margin-bottom: 28px;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(34, 28, 24, .06);
+        }
+        .hero-badge i { color: var(--accent); }
+        .hero-title {
+            max-width: 1000px;
+            margin: 0 auto 34px;
+            font-size: clamp(3.8rem, 7.4vw, 7rem);
+            line-height: .92;
+            letter-spacing: -.065em;
+            color: var(--ink);
+            font-weight: 800;
+        }
+        .hero-title .highlight { color: var(--accent); }
+        .hero-subtitle {
+            max-width: 690px;
+            margin: 0 auto 34px;
+            color: var(--muted);
+            font-size: clamp(1.08rem, 1.65vw, 1.35rem);
+            line-height: 1.5;
+        }
+        .btn-hero-primary, .btn-hero-outline {
+            border-radius: 999px;
+            padding: 16px 28px;
+            font-size: 1rem;
+            box-shadow: none;
+        }
+        .btn-hero-primary { background: var(--accent); }
+        .btn-hero-primary:hover { background: var(--accent-dark); transform: translateY(-2px); box-shadow: none; }
+        .btn-hero-outline { color: var(--ink); border: 1px solid var(--line); background: #fff; }
+        .btn-hero-outline:hover { color: var(--ink); border-color: rgba(20,19,19,.25); background: #fff; }
+        .hero-video {
+            top: auto;
+            left: 50%;
+            bottom: -80px;
+            width: min(760px, 84vw);
+            height: 480px;
+            transform: translateX(-50%);
+            border-radius: 380px 380px 48px 48px;
+            border: 12px solid rgba(255,255,255,.95);
+            object-fit: cover;
+            box-shadow: var(--soft-shadow);
+            z-index: 1;
+        }
+        .stats-section { margin-top: 0; padding: 42px 0 70px; background: var(--canvas); }
+        .stat-card {
+            border-radius: 24px;
+            padding: 28px 20px;
+            border: 1px solid var(--line);
+            box-shadow: none;
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(32,26,23,.07); }
+
+        .section-padding, .training-section, .contact-section { padding: 82px 0; }
+        .section-title, .section-title-why, .section-title-program,
+        .program-hero h2, .cta-title, .section-hero-title {
+            font-size: clamp(2.5rem, 4.8vw, 4.6rem);
+            line-height: 1;
+            letter-spacing: -.055em;
+            color: var(--ink);
+        }
+        .section-title::after { display: none; }
+        .section-subtitle { color: var(--muted); font-size: 1.1rem; line-height: 1.65; }
+        .why-choose-section, .facility-section, .training-section,
+        .placement-section, .about-hero, .contact-section { background: var(--canvas); }
+        .feature-card, .glass-card, .pricing-card, .placement-card,
+        .about-stat-card, .vmk-card, .teacher-card, .legal-card,
+        .contact-form-card, .contact-info-card {
+            border-radius: 28px;
+            border: 1px solid var(--line);
+            box-shadow: none;
+            overflow: hidden;
+        }
+        .feature-card { text-align: left; padding: 34px 30px; }
+        .feature-icon { margin: 0 0 28px; border-radius: 50%; background: #f8e5e7; }
+        .feature-icon i { color: var(--accent); }
+        .feature-card:hover .feature-icon { background: var(--accent); }
+        .feature-card:hover .feature-icon i { color: #fff; }
+        .glass-card { padding: 24px; }
+        .glass-icon { border-radius: 50%; background: #f8e5e7; }
+        .glass-title::after { display: none; }
+        .glass-feature { border-radius: 999px; }
+        .pricing-card, .pricing-card.featured { border-radius: 30px; transform: none; padding: 34px; }
+        .pricing-card.featured { background: var(--ink); color: #fff; border-color: var(--ink); }
+        .pricing-card.featured .pricing-title, .pricing-card.featured .pricing-price,
+        .pricing-card.featured .text-muted, .pricing-card.featured [style] { color: #fff !important; }
+        .program-hero, .section-hero {
+            margin: 0 24px;
+            border-radius: 36px;
+            padding: 72px 20px;
+            background: var(--ink);
+        }
+        .program-hero h2, .program-hero p, .section-hero-title, .section-hero-subtitle { color: #fff; }
+        .cta-section {
+            margin: 24px;
+            border-radius: 36px;
+            background: var(--accent);
+            padding: 72px 0 48px;
+        }
+        .cta-title { color: #fff; }
+        .imageCarouselSwiper .swiper-slide img { border-radius: 24px !important; }
+        .footer { margin: 24px; border-radius: 36px 36px 0 0; background: var(--ink); }
+
+        @media (max-width: 991px) {
+            .navbar-yamaguchi { top: 12px; width: calc(100% - 24px); border-radius: 28px; }
+            .navbar-yamaguchi .navbar-collapse { border-radius: 20px; padding: 14px; }
+            .hero-section { min-height: 830px; padding-top: 132px; }
+            .hero-title { font-size: clamp(3.1rem, 12vw, 5rem); }
+            .hero-video { bottom: -55px; height: 390px; width: min(700px, 92vw); }
+            .stats-section { padding-top: 40px; }
+            .program-hero, .section-hero, .cta-section, .footer { margin-left: 12px; margin-right: 12px; border-radius: 28px; }
+        }
+
+        @media (max-width: 575px) {
+            .brand-text p { display: none; }
+            .hero-section { min-height: 760px; padding-inline: 8px; }
+            .hero-title { font-size: 3.25rem; }
+            .hero-subtitle { font-size: 1rem; padding-inline: 10px; }
+            .btn-hero-primary, .btn-hero-outline { width: calc(100% - 36px); margin: 0 18px 10px; }
+            .hero-video { height: 310px; bottom: -40px; border-width: 7px; }
+            .section-padding, .training-section, .contact-section { padding: 64px 0; }
+            .feature-card { padding: 28px 24px; }
+        }
     </style>
 </head>
 
@@ -1839,15 +2033,15 @@
                         <i class="fas fa-star"></i>
                         <span>LPK Resmi Terakreditasi</span>
                     </div>
-                    <h1 class="hero-title">Wujudkan Impianmu<br><span class="highlight">Bekerja di Jepang</span></h1>
+                    <h1 class="hero-title">Belajar di sini.<br><span class="highlight">Berkarier di Jepang.</span></h1>
                     <p class="hero-subtitle">
-                        Belajar bahasa Jepang dengan metode terbaik bersama LPK Yamaguchi Purwokerto. Dari pemula hingga
-                        siap kerja di Jepang.
+                        Pelatihan bahasa, budaya, dan kesiapan kerja dalam satu pendampingan terarah—dari langkah pertama
+                        sampai siap berangkat ke Jepang.
                     </p>
                     <div class="mt-4">
-                        <a href="#program" class="btn btn-hero-primary">Mulai Belajar <i
+                        <a href="#program" class="btn btn-hero-primary">Lihat Program <i
                                 class="fas fa-arrow-right ms-2"></i></a>
-                        <a href="#fasilitas" class="btn btn-hero-outline">Lihat Fasilitas</a>
+                        <a href="#contact" class="btn btn-hero-outline">Konsultasi Gratis</a>
                     </div>
                 </div>
             </div>
