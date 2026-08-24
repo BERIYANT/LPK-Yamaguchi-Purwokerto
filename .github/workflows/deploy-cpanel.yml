@@ -120,7 +120,9 @@ jobs:
           fi
           RESPONSE=$(cat "$RESPONSE_FILE")
           rm -f "$RESPONSE_FILE"
-          printf '%s' "$RESPONSE" | grep -q '<title>LPK Yamaguchi Purwokerto</title>' || {
-            echo "Domain merespons, tetapi aplikasi Flask belum tampil."
+          printf '%s' "$RESPONSE" | grep -Fq '<title>LPK Yamaguchi Purwokerto — Siap Kerja ke Jepang</title>' || {
+            echo "Domain merespons, tetapi landing page versi terbaru belum tampil."
+            printf 'Title yang diterima: '
+            printf '%s' "$RESPONSE" | grep -o '<title>[^<]*</title>' | head -n 1 || echo "tidak ditemukan"
             exit 1
           }
