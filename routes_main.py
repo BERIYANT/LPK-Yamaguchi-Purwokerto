@@ -13,18 +13,9 @@ def init_routes(app):
     
     @app.route('/')
     def index():
-        from models.program_model import ProgramModel
-        
-        db = get_db()
-        cur = db.cursor(dictionary=True)
-        cur.execute("SELECT * FROM materials ORDER BY created_at DESC LIMIT 6")
-        materials = cur.fetchall()
-        cur.close()
-        
-        # Get all active programs
-        programs = ProgramModel.get_all_active()
-        
-        return render_template('index.html', materials=materials, programs=programs)
+        # Keep the public landing page independent from MySQL availability.
+        # Its programs and facilities are defined directly in the template.
+        return render_template('index.html')
 
     @app.route('/profile')
     def profile():
