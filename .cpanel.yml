@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m pip install -r /home/lpkd3153/yamaguchipwt/requirements.txt
+    - cd /home/lpkd3153/yamaguchipwt && /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
+    - /bin/mkdir -p /home/lpkd3153/yamaguchipwt/tmp
+    - /bin/touch /home/lpkd3153/yamaguchipwt/tmp/restart.txt
