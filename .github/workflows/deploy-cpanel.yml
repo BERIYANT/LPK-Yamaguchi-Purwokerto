@@ -86,9 +86,12 @@ jobs:
           rm -rf "$APP/__MACOSX"
           find "$APP" -name '._*' -type f -delete
           install -m 644 "$APP/deploy/public_html.htaccess" /home/lpkd3153/public_html/.htaccess
+          test -f "$APP/passenger_wsgi.py"
+          test -f "$APP/app.py"
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
+          "$PYTHON" -c 'from passenger_wsgi import application; assert application is not None'
           mkdir -p "$APP/tmp"
           touch "$APP/tmp/restart.txt"
 
