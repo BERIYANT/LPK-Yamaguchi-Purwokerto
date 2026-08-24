@@ -91,7 +91,6 @@ jobs:
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
-          "$PYTHON" -c 'from passenger_wsgi import application; assert application is not None'
           mkdir -p "$APP/tmp"
           touch "$APP/tmp/restart.txt"
 

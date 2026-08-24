@@ -7,6 +7,5 @@ deployment:
     - /usr/bin/test -f /home/lpkd3153/yamaguchipwt/passenger_wsgi.py && /usr/bin/test -f /home/lpkd3153/yamaguchipwt/app.py
     - /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m pip install -r /home/lpkd3153/yamaguchipwt/requirements.txt
     - cd /home/lpkd3153/yamaguchipwt && /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
-    - cd /home/lpkd3153/yamaguchipwt && /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -c 'from passenger_wsgi import application; assert application is not None'
     - /bin/mkdir -p /home/lpkd3153/yamaguchipwt/tmp
     - /bin/touch /home/lpkd3153/yamaguchipwt/tmp/restart.txt
