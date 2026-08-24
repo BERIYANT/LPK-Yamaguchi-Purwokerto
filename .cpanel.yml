@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - /usr/bin/rsync -a --exclude='.git/' --exclude='.cpanel.yml' --exclude='.env' --exclude='.env.*' --exclude='.venv/' --exclude='venv/' --exclude='__pycache__/' --exclude='*.pyc' --exclude='*.log' --exclude='.coverage' --exclude='database.db' --exclude='static/uploads/' --exclude='tmp/' ./ /home/lpkd3153/yamaguchipwt/
+    - /bin/mkdir -p /home/lpkd3153/yamaguchipwt && /bin/tar -cf - --exclude='.git' --exclude='.github' --exclude='.cpanel.yml' --exclude='.env' --exclude='.env.*' --exclude='.venv' --exclude='venv' --exclude='__pycache__' --exclude='*.pyc' --exclude='*.log' --exclude='.coverage' --exclude='database.db' --exclude='static/uploads' --exclude='tmp' . | /bin/tar -C /home/lpkd3153/yamaguchipwt -xf -
     - /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m pip install -r /home/lpkd3153/yamaguchipwt/requirements.txt
     - cd /home/lpkd3153/yamaguchipwt && /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
     - /bin/mkdir -p /home/lpkd3153/yamaguchipwt/tmp

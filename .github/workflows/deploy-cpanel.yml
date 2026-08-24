@@ -63,22 +63,23 @@ jobs:
           git -C "$REPO" checkout main
           git -C "$REPO" reset --hard origin/main
 
-          rsync -a \
-            --exclude='.git/' \
-            --exclude='.github/' \
+          mkdir -p "$APP"
+          tar -C "$REPO" -cf - \
+            --exclude='.git' \
+            --exclude='.github' \
             --exclude='.cpanel.yml' \
             --exclude='.env' \
             --exclude='.env.*' \
-            --exclude='.venv/' \
-            --exclude='venv/' \
-            --exclude='__pycache__/' \
+            --exclude='.venv' \
+            --exclude='venv' \
+            --exclude='__pycache__' \
             --exclude='*.pyc' \
             --exclude='*.log' \
             --exclude='.coverage' \
             --exclude='database.db' \
-            --exclude='static/uploads/' \
-            --exclude='tmp/' \
-            "$REPO/" "$APP/"
+            --exclude='static/uploads' \
+            --exclude='tmp' \
+            . | tar -C "$APP" -xf -
 
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
