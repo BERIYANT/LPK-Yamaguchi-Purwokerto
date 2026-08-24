@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -1690,6 +1690,107 @@
                 right: 10px !important;
             }
         }
+
+        /* Tampilan institusi: sederhana, ringan, dan konsisten */
+        :root {
+            --primary-red: #c92127;
+            --dark-navy: #18212f;
+            --light-gray: #f6f5f2;
+            --text-dark: #252a31;
+            --text-gray: #626971;
+        }
+
+        body { background: #fff; font-family: Arial, Helvetica, sans-serif; }
+        .navbar-yamaguchi {
+            background: rgba(255, 255, 255, .96);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 1px 0 rgba(24, 33, 47, .1);
+            padding: 10px 0;
+        }
+        .navbar-yamaguchi .nav-link { border-radius: 4px; }
+        .btn-masuk, .btn-daftar, .btn-hero-primary, .btn-hero-outline,
+        .btn-pricing, .btn-consult, .btn-contact, .btn-cta,
+        .whatsapp-card .btn-whatsapp { border-radius: 6px; box-shadow: none; }
+        .hero-section { min-height: 760px; background: #263242; }
+        .hero-section::after {
+            background: linear-gradient(90deg, rgba(14, 22, 32, .84) 0%, rgba(14, 22, 32, .54) 58%, rgba(14, 22, 32, .25) 100%);
+        }
+        .hero-video { background: #263242 url("static/images/hero-poster.jpg") center/cover no-repeat; }
+        .hero-badge {
+            background: rgba(255, 255, 255, .12);
+            backdrop-filter: none;
+            border-radius: 4px;
+            padding: 7px 12px;
+        }
+        .hero-title { font-size: clamp(2.6rem, 5vw, 4.5rem); letter-spacing: -.035em; text-shadow: none; }
+        .hero-title .highlight { color: #fff; }
+        .hero-subtitle { max-width: 620px; line-height: 1.65; }
+        .stats-section { margin-top: -105px; padding-bottom: 50px; }
+        .stat-card {
+            background: #fff;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: 1px solid #e6e2dd;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(24, 33, 47, .08);
+            padding: 26px 20px;
+        }
+        .stat-card:hover { transform: none; background: #fff; border-color: #d8d2ca; box-shadow: 0 8px 24px rgba(24, 33, 47, .08); }
+        .stat-number { color: var(--primary-red); font-size: 2.2rem; }
+        .stat-text { color: var(--text-gray); }
+        .section-padding, .training-section, .contact-section { padding: 80px 0; }
+        .section-title, .section-title-why, .section-title-program,
+        .program-hero h2, .cta-title, .section-hero-title { letter-spacing: -.025em; }
+        .section-title::after { height: 2px; width: 52px; }
+        .why-choose-section, .training-section, .placement-section, .about-hero,
+        .facility-section, .contact-section { background: #f6f5f2; }
+        .feature-card, .pricing-card, .placement-card, .about-stat-card,
+        .vmk-card, .teacher-card, .legal-card, .glass-card,
+        .contact-form-card, .contact-info-card {
+            background: #fff;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border: 1px solid #e4e1dc;
+            border-radius: 8px;
+            box-shadow: none;
+        }
+        .feature-card:hover, .pricing-card:hover, .placement-card:hover,
+        .about-stat-card:hover, .vmk-card:hover, .teacher-card:hover,
+        .legal-card:hover, .glass-card:hover, .contact-info-card:hover {
+            background: #fff; transform: translateY(-3px); backdrop-filter: none;
+            -webkit-backdrop-filter: none; box-shadow: 0 10px 24px rgba(24, 33, 47, .07);
+        }
+        .feature-icon, .glass-icon, .vmk-icon, .teacher-avatar,
+        .contact-icon, .placement-icon { border-radius: 6px; }
+        .feature-card:hover .feature-icon, .glass-card:hover .glass-icon { transform: none; }
+        .glass-card::before, .glass-icon::after, .cta-section::before,
+        .facility-section::before, .facility-section::after { display: none; }
+        .glass-feature, .pricing-pill, .section-badge { backdrop-filter: none; border-radius: 4px; }
+        .program-hero, .cta-section, .section-hero {
+            background: #8f1f24;
+            color: #fff;
+        }
+        .cta-section { padding: 64px 0 48px; }
+        .cta-section .imageCarouselSwiper { margin-top: 28px !important; }
+        .cta-section .swiper-pagination { position: relative; margin-top: 18px; }
+        .section-hero-title, .section-hero-subtitle { color: #fff; }
+        .cta-icon { display: none; }
+        .imageCarouselSwiper .swiper-slide img, .facility-img { border-radius: 6px !important; }
+        .whatsapp-card { background: #1f6b4f; backdrop-filter: none; border-radius: 8px; box-shadow: none; }
+        .sakura-container { display: none; }
+
+        @media (max-width: 991px) {
+            .navbar-yamaguchi .navbar-collapse { background: #fff; padding: 16px 0; }
+            .navbar-yamaguchi .nav-link { color: var(--text-dark) !important; }
+            .hero-section { min-height: 680px; }
+            .stats-section { margin-top: 0; padding-top: 40px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 
@@ -1727,8 +1828,9 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
-        <video class="hero-video" autoplay muted loop playsinline>
-            <source src="static/images/vidio.mp4" type="video/mp4">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+            poster="static/images/hero-poster.jpg" aria-hidden="true">
+            <source src="static/images/vidio-web.mp4" type="video/mp4">
         </video>
         <div class="container" style="position: relative; z-index: 2;">
             <div class="row justify-content-start">
@@ -1765,7 +1867,7 @@
                 <div class="col-md-3 col-6">
                     <div class="stat-card">
                         <div class="stat-number">5+</div>
-                        <div class="stat-text">Mentor Berpengalaman Jepang</div>
+                        <div class="stat-text">Mentor Berpengalaman</div>
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
@@ -1843,7 +1945,7 @@
             <div class="text-center mb-5">
                 <div class="section-badge">
                     <i class="fas fa-star"></i>
-                    <span>Premium Facilities</span>
+                    <span>Fasilitas Peserta</span>
                 </div>
                 <h2 class="section-title">Fasilitas <span class="text-gradient">Asrama Premium</span></h2>
                 <p class="section-subtitle">Nikmati kenyamanan asrama bergaya modern dengan fasilitas lengkap untuk
@@ -2547,10 +2649,10 @@
                 <div class="col-lg-3 col-md-6">
                     <h5 class="footer-heading">Program Kami</h5>
                     <ul class="footer-links">
-                        <li><a href="#program">Bahasa Korea</a></li>
+                        <li><a href="#program">Bahasa Jepang N5–N3</a></li>
                         <li><a href="#program">Tokutei Ginou (SSW)</a></li>
-                        <li><a href="#program">Kuliah Sambil Kerja</a></li>
-                        <li><a href="#program">Engineer</a></li>
+                        <li><a href="#program">Magang IM Japan</a></li>
+                        <li><a href="#program">Magang SO</a></li>
                         <li><a href="#program">Magang ke Jepang</a></li>
                     </ul>
                 </div>
@@ -2586,8 +2688,6 @@
         </div>
     </footer>
 
-    <!-- Sakura Container -->
-    <div class="sakura-container" id="sakuraContainer"></div>
 
     <!-- Script Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
@@ -2627,7 +2727,7 @@
                     // Success message
                     formAlert.innerHTML = `
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>✓ Berhasil!</strong> Pesan Anda telah dikirim ke LPK Yamaguchi. 
+                        <strong>✓ Berhasil!</strong> Pesan Anda telah dikirim ke LPK Yamaguchi.
                         Kami akan membalas dalam 1x24 jam.
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
@@ -2675,8 +2775,8 @@
                         <div class="mt-2 small">
                             <strong>Solusi alternatif:</strong><br>
                             Hubungi kami langsung via WhatsApp:
-                            <a href="https://wa.me/628122679292?text=${encodeURIComponent('Halo LPK Yamaguchi, saya ingin bertanya tentang program pelatihan')}" 
-                               target="_blank" 
+                            <a href="https://wa.me/628122679292?text=${encodeURIComponent('Halo LPK Yamaguchi, saya ingin bertanya tentang program pelatihan')}"
+                               target="_blank"
                                class="alert-link d-block mt-1">
                                 <i class="fab fa-whatsapp"></i> +62 812-2679-292
                             </a>
@@ -2696,42 +2796,21 @@
                 });
         });
 
-        // ========== Sakura Animation Script ==========
-        function createSakura() {
-            const container = document.getElementById('sakuraContainer');
-            const sakura = document.createElement('div');
-            sakura.classList.add('sakura');
-
-            // Random horizontal position
-            sakura.style.left = Math.random() * 100 + '%';
-
-            // Random size
-            const size = Math.random() * 10 + 10; // 10-20px
-            sakura.style.width = size + 'px';
-            sakura.style.height = size + 'px';
-
-            // Random animation duration (slower fall)
-            const duration = Math.random() * 10 + 15; // 15-25 seconds
-            sakura.style.animationDuration = duration + 's';
-
-            // Random delay
-            const delay = Math.random() * 5;
-            sakura.style.animationDelay = delay + 's';
-
-            container.appendChild(sakura);
-
-            // Remove sakura after animation completes
-            setTimeout(() => {
-                sakura.remove();
-            }, (duration + delay) * 1000);
-        }
-
-        // Create sakura petals periodically
-        setInterval(createSakura, 600);
-
-        // Initial batch of sakura
-        for (let i = 0; i < 8; i++) {
-            setTimeout(createSakura, i * 300);
+        // Hentikan video saat hero tidak terlihat untuk mengurangi beban CPU/GPU.
+        const heroVideo = document.querySelector('.hero-video');
+        if (heroVideo) {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const videoObserver = new IntersectionObserver(([entry]) => {
+                if (reduceMotion.matches || !entry.isIntersecting || document.hidden) {
+                    heroVideo.pause();
+                } else {
+                    heroVideo.play().catch(() => {});
+                }
+            }, { threshold: 0.1 });
+            videoObserver.observe(heroVideo);
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) heroVideo.pause();
+            });
         }
 
         // ========== Swiper Carousel ==========
