@@ -98,9 +98,24 @@ jobs:
           DEPLOY
 
       - name: Verify production website
+        env:
+          SSH_HOST: ${{ secrets.CPANEL_SSH_HOST }}
+          SSH_PORT: ${{ secrets.CPANEL_SSH_PORT }}
+          SSH_USER: ${{ secrets.CPANEL_SSH_USER }}
         run: |
           set -eu
-          RESPONSE=$(curl --fail --silent --show-error --location --retry 3 --retry-delay 5 --max-time 30 https://www.lpkyamaguchi-pwt.com/)
+          RESPONSE_FILE=$(mktemp)
+          if ! curl --fail --silent --show-error --location --retry 3 --retry-delay 5 --max-time 30 \
+            --output "$RESPONSE_FILE" https://www.lpkyamaguchi-pwt.com/; then
+            echo "Website production gagal merespons. Log aplikasi terbaru:"
+            ssh -i ~/.ssh/cpanel_deploy -p "$SSH_PORT" \
+              -o BatchMode=yes -o IdentitiesOnly=yes \
+              "$SSH_USER@$SSH_HOST" \
+              'tail -n 120 /home/lpkd3153/yamaguchipwt/wsgi_debug.log 2>/dev/null || echo "wsgi_debug.log belum tersedia"'
+            exit 1
+          fi
+          RESPONSE=$(cat "$RESPONSE_FILE")
+          rm -f "$RESPONSE_FILE"
           printf '%s' "$RESPONSE" | grep -q '<title>LPK Yamaguchi Purwokerto</title>' || {
             echo "Domain merespons, tetapi aplikasi Flask belum tampil."
             exit 1
