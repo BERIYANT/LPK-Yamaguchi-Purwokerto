@@ -163,7 +163,7 @@ def users():
     # Students with performance stats
     cur.execute("""
         SELECT u.*, 
-               c.name as class_name,
+               MAX(c.name) as class_name,
                COUNT(DISTINCT qs.id) as total_quiz_taken,
                ROUND(AVG(qs.score), 2) as avg_score,
                COUNT(DISTINCT ts.id) as total_task_submitted
@@ -244,7 +244,7 @@ def users_alternative():
     # Students with performance stats
     cur.execute("""
         SELECT u.*, 
-               c.name as class_name,
+               MAX(c.name) as class_name,
                COUNT(DISTINCT qs.id) as total_quiz_taken,
                ROUND(AVG(qs.score), 2) as avg_score,
                COUNT(DISTINCT ts.id) as total_task_submitted
@@ -310,7 +310,7 @@ def users_with_active_status():
     # Students with performance stats
     cur.execute("""
         SELECT u.*, 
-               c.name as class_name,
+               MAX(c.name) as class_name,
                COUNT(DISTINCT qs.id) as total_quiz_taken,
                ROUND(AVG(qs.score), 2) as avg_score,
                COUNT(DISTINCT ts.id) as total_task_submitted

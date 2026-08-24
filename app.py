@@ -113,4 +113,4 @@ def override_csp_for_emailjs(response):
     return response
 
 if __name__ == '__main__':
-    app.run(debug=false)
+    app.run(debug=Config.ENV == 'development')

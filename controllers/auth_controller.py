@@ -81,13 +81,18 @@ def register_student():
                 'smp_year': request.form.get('smp_year', '').strip(),
                 'sma_year': request.form.get('sma_year', '').strip(),
                 'd3_year': request.form.get('d3_year', '').strip(),
+                'sd_name': request.form.get('sd_name', '').strip(),
+                'smp_name': request.form.get('smp_name', '').strip(),
+                'sma_name': request.form.get('sma_name', '').strip(),
+                'd3_name': request.form.get('d3_name', '').strip(),
                 
                 'education': request.form.get('education', ''),
                 'major': request.form.get('major', '').strip(),
                 'selected_class_type': request.form.get('selected_class_type', ''),
                 'learning_purpose': request.form.get('learning_purpose', '').strip(),
                 'experience': request.form.get('experience', ''),
-                'agreeTerms': request.form.get('agreeTerms')
+                'agreeTerms': request.form.get('agreeTerms'),
+                'signature_data': request.form.get('signature_data', '').strip()
             }
             
             # Validations
@@ -98,7 +103,9 @@ def register_student():
                 'full_name', 'email', 'phone', 'gender', 'birth_place', 
                 'birth_date', 'address', 'selected_class_type', 'agreeTerms',
                 'nik', 'height', 'weight', 'father_name', 'mother_name', 
-                'parent_phone', 'parent_address', 'sma_year', 'education'
+                'parent_phone', 'parent_address', 
+                'sd_name', 'sd_year', 'smp_name', 'smp_year', 'sma_name', 'sma_year', 'education',
+                'signature_data'
             ]
             
             for field in required_fields:
@@ -108,6 +115,20 @@ def register_student():
                         field_display = 'Persetujuan Syarat'
                     elif field == 'selected_class_type':
                         field_display = 'Jenis Kelas'
+                    elif field == 'sd_name':
+                        field_display = 'Nama Sekolah SD'
+                    elif field == 'sd_year':
+                        field_display = 'Tahun Lulus SD'
+                    elif field == 'smp_name':
+                        field_display = 'Nama Sekolah SMP'
+                    elif field == 'smp_year':
+                        field_display = 'Tahun Lulus SMP'
+                    elif field == 'sma_name':
+                        field_display = 'Nama Sekolah SMA'
+                    elif field == 'sma_year':
+                        field_display = 'Tahun Lulus SMA'
+                    elif field == 'signature_data':
+                        field_display = 'Tanda Tangan Digital'
                     errors.append(f"{field_display} harus diisi")
             
             # Email validation
@@ -174,7 +195,8 @@ def register_student():
                 payment_proof_filename = None
                 
                 # Create uploads directory if not exists
-                upload_dir = os.path.join('static', 'uploads')
+                project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                upload_dir = os.path.join(project_root, 'static', 'uploads')
                 if not os.path.exists(upload_dir):
                     os.makedirs(upload_dir)
                 
@@ -203,15 +225,39 @@ def register_student():
                     payment_path = os.path.join(upload_dir, payment_proof_filename)
                     payment_proof.save(payment_path)
                 
-                # Create user with student role
+                # Save digital signature base64 image as a JPG file (highly compatible with FPDF)
+                signature_filename = None
+                signature_data = form_data.get('signature_data')
+                if signature_data:
+                    # Support both PNG (fallback) and JPEG formats
+                    is_valid_base64 = False
+                    if signature_data.startswith('data:image/jpeg;base64,'):
+                        is_valid_base64 = True
+                    elif signature_data.startswith('data:image/png;base64,'):
+                        is_valid_base64 = True
+                        
+                    if is_valid_base64:
+                        import base64
+                        try:
+                            img_data = signature_data.split(',')[1]
+                            img_bytes = base64.b64decode(img_data)
+                            signature_filename = f"sig_{generated_username}_{timestamp}.jpg"
+                            sig_path = os.path.join(upload_dir, signature_filename)
+                            with open(sig_path, 'wb') as f:
+                                f.write(img_bytes)
+                        except Exception as e:
+                            print("Failed to save signature image:", e)
+                
+                 # Create user with student role
                 cur.execute("""
                     INSERT INTO users (username, email, phone, password, role, full_name, 
                     birth_place, birth_date, address, nik, height, weight, blood_type, 
                     father_name, mother_name, parent_phone, parent_address, sd_year, 
-                    smp_year, sma_year, d3_year, education, major, program_id, 
-                    selected_class_type, learning_purpose, experience, ktp_file, 
-                    pas_foto_file, ijazah_file, payment_status, registration_completed)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending_verification', 0)
+                    smp_year, sma_year, d3_year, sd_name, smp_name, sma_name, d3_name,
+                    education, major, program_id, selected_class_type, learning_purpose, 
+                    experience, ktp_file, pas_foto_file, ijazah_file, signature_file, payment_status, 
+                    registration_completed)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'pending_verification', 0)
                 """, (
                     generated_username,
                     form_data['email'],
@@ -235,6 +281,10 @@ def register_student():
                     form_data['smp_year'],
                     form_data['sma_year'],
                     form_data['d3_year'],
+                    form_data['sd_name'],
+                    form_data['smp_name'],
+                    form_data['sma_name'],
+                    form_data['d3_name'],
                     
                     form_data['education'],
                     form_data['major'],
@@ -244,7 +294,8 @@ def register_student():
                     form_data['experience'],
                     ktp_filename,
                     pas_filename,
-                    ijazah_filename
+                    ijazah_filename,
+                    signature_filename
                 ))
                 
                 user_id = cur.lastrowid
@@ -337,17 +388,31 @@ def download_registration_pdf(username):
         'sd_year': user.get('sd_year'),
         'smp_year': user.get('smp_year'),
         'sma_year': user.get('sma_year'),
-        'd3_year': user.get('d3_year')
+        'd3_year': user.get('d3_year'),
+        'sd_name': user.get('sd_name'),
+        'smp_name': user.get('smp_name'),
+        'sma_name': user.get('sma_name'),
+        'd3_name': user.get('d3_name'),
+        'pas_foto_file': user.get('pas_foto_file'),
+        'created_at': user.get('created_at'),
+        'signature_file': user.get('signature_file')
     })
     
     is_preview = request.args.get('preview', '0') == '1'
     
-    return send_file(
-        io.BytesIO(bytes(pdf_bytes)),
-        mimetype='application/pdf',
-        as_attachment=not is_preview,
-        download_name=f"Formulir_Pendaftaran_{username}.pdf"
-    )
+    # Simpan PDF ke folder static/uploads untuk menghindari crash buffer biner pada LiteSpeed/Passenger WSGI
+    pdf_filename = f"Formulir_Pendaftaran_{username}.pdf"
+    upload_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'uploads')
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+        
+    pdf_path = os.path.join(upload_dir, pdf_filename)
+    with open(pdf_path, 'wb') as f:
+        f.write(bytes(pdf_bytes))
+        
+    # Redirect ke file statis PDF yang aman
+    from flask import redirect, url_for
+    return redirect(url_for('static', filename=f'uploads/{pdf_filename}'))
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 @login_required

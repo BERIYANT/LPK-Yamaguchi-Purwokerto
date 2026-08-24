@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -2009,7 +2009,7 @@
                             • Kelas kecil (max 15 orang)<br>
                             • Persiapan ujian JLPT
                         </div>
-                        <a href="#register" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
+                        <a href="{{ url_for('auth.register_student') }}" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-10 col-12">
@@ -2031,7 +2031,7 @@
                             • Pelatihan bahasa intensif<br>
                             • Bimbingan penuh dokumen
                         </div>
-                        <a href="#register" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
+                        <a href="{{ url_for('auth.register_student') }}" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-10 col-12">
@@ -2054,7 +2054,7 @@
                             • Bisa bawa keluarga<br>
                             • Pelatihan skill khusus
                         </div>
-                        <a href="#register" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
+                        <a href="{{ url_for('auth.register_student') }}" class="btn btn-pricing text-decoration-none">Daftar Sekarang</a>
                     </div>
                 </div>
             </div>
@@ -2805,14 +2805,13 @@
     </script>
 
     <!-- VoiceFlow Chatbot Script dengan URL yang benar -->
-    <script type="text/javascript">
+<script type="text/javascript">
   (function(d, t) {
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
       v.onload = function() {
         window.voiceflow.chat.load({
-          verify: { projectID: '69cb7d75ba511b0ce1c31bd1' },
+          verify: { projectID: '6a33608e8fc66fdd81545f96' },
           url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production',
           voice: {
             url: "https://runtime-api.voiceflow.com"
           }

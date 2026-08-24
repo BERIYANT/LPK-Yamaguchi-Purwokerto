@@ -2,7 +2,7 @@ import os
 
 class Config:
     # Basic Config
-    SECRET_KEY = "lpk-yamaguchi-production-2024-secret-key-#@!$%^&*"
+    SECRET_KEY = os.getenv("SECRET_KEY", "lpk-yamaguchi-local-dev")
     
     # Upload Config
     UPLOAD_FOLDER = "static/uploads"
@@ -11,11 +11,11 @@ class Config:
     
     # Database configuration
     DB_CONFIG = {
-        'host': 'localhost',
-        'user': 'root',
-        'password': 'root',
-        'database': 'elearning_lpkyamaguchi',
-        'port': 8889
+        'host': os.getenv('DB_HOST', '127.0.0.1'),
+        'user': os.getenv('DB_USER', 'root'),
+        'password': os.getenv('DB_PASSWORD', 'root'),
+        'database': os.getenv('DB_NAME', 'elearning_lpkyamaguchi'),
+        'port': int(os.getenv('DB_PORT', '3306')),
     }
     
     # CSRF Protection
@@ -27,9 +27,9 @@ class Config:
     HSTS_ENABLED = True
     
     # Session Security
-    SESSION_COOKIE_SECURE = True  # Hanya HTTPS
+    SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'false').lower() == 'true'
     SESSION_COOKIE_HTTPONLY = True  # Tidak bisa diakses JavaScript
     SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
     
     # Production vs Development
-    ENV = 'production'  # atau 'development'
+    ENV = os.getenv('FLASK_ENV', 'development')
