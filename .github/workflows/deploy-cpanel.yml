@@ -28,12 +28,21 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.CPANEL_SSH_HOST }}
           SSH_PORT: ${{ secrets.CPANEL_SSH_PORT }}
+          SSH_USER: ${{ secrets.CPANEL_SSH_USER }}
         run: |
           set -eu
+          [ -n "$SSH_HOST" ] || { echo "CPANEL_SSH_HOST belum diisi di GitHub Actions Secrets"; exit 1; }
+          [ -n "$SSH_PORT" ] || { echo "CPANEL_SSH_PORT belum diisi di GitHub Actions Secrets"; exit 1; }
+          [ -n "$SSH_USER" ] || { echo "CPANEL_SSH_USER belum diisi di GitHub Actions Secrets"; exit 1; }
+          [ -n "$SSH_PRIVATE_KEY" ] || { echo "CPANEL_SSH_PRIVATE_KEY belum diisi di GitHub Actions Secrets"; exit 1; }
+          case "$SSH_PORT" in (*[!0-9]*|'') echo "CPANEL_SSH_PORT harus berupa angka"; exit 1;; esac
+          case "$SSH_PRIVATE_KEY" in (*"BEGIN "*"PRIVATE KEY"*) :;; (*) echo "CPANEL_SSH_PRIVATE_KEY bukan private key OpenSSH yang valid"; exit 1;; esac
+
           install -m 700 -d ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/cpanel_deploy
           chmod 600 ~/.ssh/cpanel_deploy
-          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/cpanel_deploy >/dev/null || { echo "Private key tidak dapat dibaca. Pastikan isi secret lengkap dan key tidak memakai passphrase."; exit 1; }
+          ssh-keyscan -T 15 -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts || { echo "SSH cPanel tidak dapat dijangkau. Periksa hostname, port, dan firewall hosting."; exit 1; }
 
       - name: Update cPanel repository and deploy
         env:
