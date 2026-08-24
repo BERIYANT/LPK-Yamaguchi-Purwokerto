@@ -16,6 +16,8 @@ tmp/
 
 # macOS
 .DS_Store
+._*
+__MACOSX/
 
 # Local environment
 .env

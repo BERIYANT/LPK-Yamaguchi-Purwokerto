@@ -67,6 +67,8 @@ jobs:
           tar -C "$REPO" -cf - \
             --exclude='.git' \
             --exclude='.github' \
+            --exclude='__MACOSX' \
+            --exclude='._*' \
             --exclude='.cpanel.yml' \
             --exclude='.env' \
             --exclude='.env.*' \
@@ -81,6 +83,8 @@ jobs:
             --exclude='tmp' \
             . | tar -C "$APP" -xf -
 
+          rm -rf "$APP/__MACOSX"
+          find "$APP" -name '._*' -type f -delete
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
