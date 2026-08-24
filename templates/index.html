@@ -1987,6 +1987,137 @@
             .section-padding, .training-section, .contact-section { padding: 64px 0; }
             .feature-card { padding: 28px 24px; }
         }
+
+        /* Simple institutional layout: photo-first, restrained surfaces */
+        body { background: #fff; }
+        .container { max-width: 1180px; }
+        .navbar-yamaguchi {
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            transform: none;
+            padding: 10px 0;
+            border: 0;
+            border-radius: 0;
+            box-shadow: 0 1px 0 rgba(20, 19, 19, .09);
+            background: rgba(255, 255, 255, .97);
+        }
+        .navbar-yamaguchi .container { max-width: 1180px; padding-inline: 20px; }
+        .navbar-yamaguchi .nav-link { border-radius: 0; padding: .65rem .85rem; }
+        .btn-masuk { font-weight: 600; }
+        .btn-daftar { border-radius: 8px; }
+
+        .hero-section {
+            min-height: 720px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            background: #242424;
+            color: #fff;
+        }
+        .hero-section::after {
+            display: block;
+            background: linear-gradient(90deg, rgba(16, 18, 20, .78) 0%, rgba(16, 18, 20, .52) 47%, rgba(16, 18, 20, .08) 78%);
+        }
+        .hero-section > .container { text-align: left; }
+        .hero-section .row { justify-content: flex-start !important; }
+        .hero-section .col-lg-8 { width: min(100%, 720px); }
+        .hero-badge {
+            color: #fff;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.55);
+            border-radius: 6px;
+            box-shadow: none;
+            padding: 7px 11px;
+            margin-bottom: 22px;
+            font-size: .82rem;
+        }
+        .hero-badge i { color: #fff; }
+        .hero-title {
+            margin: 0 0 22px;
+            max-width: 680px;
+            color: #fff;
+            font-size: clamp(3rem, 5vw, 4.8rem);
+            line-height: 1.02;
+            letter-spacing: -.045em;
+        }
+        .hero-title .highlight { color: #fff; }
+        .hero-subtitle {
+            margin: 0 0 28px;
+            max-width: 620px;
+            color: rgba(255,255,255,.88);
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+        }
+        .btn-hero-primary, .btn-hero-outline { border-radius: 8px; padding: 13px 20px; }
+        .btn-hero-outline { color: #fff; border-color: rgba(255,255,255,.7); background: transparent; }
+        .btn-hero-outline:hover { color: var(--ink); background: #fff; border-color: #fff; }
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+            object-position: center 58%;
+            box-shadow: none;
+            z-index: 0;
+        }
+        .stats-section { padding: 0; background: #fff; border-bottom: 1px solid #e8e5df; }
+        .stats-section .row { --bs-gutter-x: 0; }
+        .stat-card, .stat-card:hover {
+            padding: 25px 14px;
+            border: 0;
+            border-right: 1px solid #e8e5df;
+            border-radius: 0;
+            box-shadow: none;
+            transform: none;
+        }
+        .stats-section [class*="col-"]:last-child .stat-card { border-right: 0; }
+        .stat-number { font-size: 1.8rem; margin-bottom: 2px; }
+        .stat-text { font-size: .88rem; }
+
+        .section-padding, .training-section, .contact-section { padding: 76px 0; }
+        .section-title, .section-title-why, .section-title-program,
+        .program-hero h2, .cta-title, .section-hero-title {
+            font-size: clamp(2rem, 3.8vw, 3.25rem);
+            line-height: 1.08;
+            letter-spacing: -.035em;
+        }
+        .why-choose-section, .facility-section, .training-section,
+        .placement-section, .about-hero, .contact-section { background: #fff; }
+        .facility-section, .placement-section, .contact-section { background: #f7f6f3; }
+        .feature-card, .glass-card, .pricing-card, .placement-card,
+        .about-stat-card, .vmk-card, .teacher-card, .legal-card,
+        .contact-form-card, .contact-info-card {
+            border-radius: 12px;
+            border-color: #e5e2dc;
+        }
+        .feature-card { padding: 28px 24px; }
+        .feature-icon, .glass-icon, .vmk-icon, .teacher-avatar, .contact-icon, .placement-icon { border-radius: 8px; }
+        .program-hero, .section-hero, .cta-section, .footer {
+            margin: 0;
+            border-radius: 0;
+        }
+        .program-hero, .section-hero { padding: 68px 20px; }
+        .cta-section { padding: 68px 0 48px; }
+        .imageCarouselSwiper .swiper-slide img { border-radius: 10px !important; }
+
+        @media (max-width: 991px) {
+            .navbar-yamaguchi { top: 0; width: 100%; border-radius: 0; }
+            .hero-section { min-height: 650px; padding: 108px 0 52px; }
+            .hero-section > .container { text-align: left; }
+            .hero-video { position: absolute; width: 100%; height: 100%; margin: 0; }
+        }
+        @media (max-width: 575px) {
+            .hero-section { min-height: 610px; padding: 104px 0 44px; }
+            .hero-title { font-size: 2.75rem; }
+            .hero-subtitle { padding: 0; }
+            .btn-hero-primary, .btn-hero-outline { width: auto; margin: 0 8px 8px 0; }
+            .stat-card { border-bottom: 1px solid #e8e5df; }
+            .section-padding, .training-section, .contact-section { padding: 60px 0; }
+        }
     </style>
 </head>
 
@@ -2024,6 +2155,10 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+            poster="static/images/hero-poster.jpg" aria-hidden="true">
+            <source src="static/images/vidio-web.mp4" type="video/mp4">
+        </video>
         <div class="container" style="position: relative; z-index: 2;">
             <div class="row justify-content-start">
                 <div class="col-lg-8">
@@ -2042,10 +2177,6 @@
                     </div>
                 </div>
             </div>
-            <video class="hero-video" autoplay muted loop playsinline preload="metadata"
-                poster="static/images/hero-poster.jpg" aria-hidden="true">
-                <source src="static/images/vidio-web.mp4" type="video/mp4">
-            </video>
         </div>
     </section>
 
