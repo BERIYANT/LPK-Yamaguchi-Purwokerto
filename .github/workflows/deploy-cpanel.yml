@@ -145,6 +145,7 @@ jobs:
           print("Production database query verified")
           PY
           grep -q "load_private_environment()" "$APP/config.py"
+          grep -q "load_private_environment()" "$APP/utils/database.py"
           grep -q "return render_template('index.html')" "$APP/routes_main.py"
           ! grep -q 'SELECT \* FROM materials ORDER BY created_at DESC LIMIT 6' "$APP/routes_main.py"
 
