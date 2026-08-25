@@ -95,6 +95,23 @@ jobs:
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
           grep -q "return render_template('index.html')" "$APP/routes_main.py"
           ! grep -q 'SELECT \* FROM materials ORDER BY created_at DESC LIMIT 6' "$APP/routes_main.py"
+
+          # Login selalu membutuhkan MySQL. Gagalkan deployment lebih awal bila
+          # environment database cPanel hilang atau kredensialnya tidak valid.
+          "$PYTHON" - <<'PY'
+          from app import app
+          from utils.database import get_db
+
+          with app.app_context():
+              db = get_db()
+              cur = db.cursor()
+              cur.execute("SELECT 1")
+              assert cur.fetchone()[0] == 1
+              cur.close()
+
+          print("Production database connection verified")
+          PY
+
           mkdir -p "$APP/tmp"
           touch "$APP/tmp/restart.txt"
 
@@ -126,3 +143,41 @@ jobs:
             printf '%s' "$RESPONSE" | grep -o '<title>[^<]*</title>' | head -n 1 || echo "tidak ditemukan"
             exit 1
           }
+
+          LOGIN_COOKIE=$(mktemp)
+          LOGIN_PAGE=$(mktemp)
+          trap 'rm -f "$LOGIN_COOKIE" "$LOGIN_PAGE"' EXIT
+          curl --fail --silent --show-error --location \
+            --cookie-jar "$LOGIN_COOKIE" \
+            --output "$LOGIN_PAGE" \
+            https://www.lpkyamaguchi-pwt.com/login
+          grep -Fq 'class="login-card"' "$LOGIN_PAGE" || {
+            echo "Form login production tidak tampil."
+            exit 1
+          }
+          CSRF_TOKEN=$(sed -n 's/.*name="csrf_token"[^>]*value="\([^"]*\)".*/\1/p' "$LOGIN_PAGE" | head -n 1)
+          [ -n "$CSRF_TOKEN" ] || {
+            echo "Token CSRF form login tidak ditemukan."
+            exit 1
+          }
+
+          # Username probe sengaja tidak ada. Respons harus kembali ke form
+          # login, bukan 500; ini menguji koneksi database dari request WSGI.
+          HTTP_STATUS=$(curl --silent --show-error \
+            --cookie "$LOGIN_COOKIE" \
+            --cookie-jar "$LOGIN_COOKIE" \
+            --output "$LOGIN_PAGE" \
+            --write-out '%{http_code}' \
+            --request POST \
+            --data-urlencode "csrf_token=$CSRF_TOKEN" \
+            --data-urlencode 'username=deployment_health_probe' \
+            --data-urlencode 'password=invalid-deployment-health-probe' \
+            https://www.lpkyamaguchi-pwt.com/login)
+          if [ "$HTTP_STATUS" != "200" ] || ! grep -Fq 'Username atau password salah.' "$LOGIN_PAGE"; then
+            echo "POST login production gagal (HTTP $HTTP_STATUS). Log aplikasi terbaru:"
+            ssh -i ~/.ssh/cpanel_deploy -p "$SSH_PORT" \
+              -o BatchMode=yes -o IdentitiesOnly=yes \
+              "$SSH_USER@$SSH_HOST" \
+              'tail -n 120 /home/lpkd3153/yamaguchipwt/wsgi_debug.log 2>/dev/null || echo "wsgi_debug.log belum tersedia"'
+            exit 1
+          fi
