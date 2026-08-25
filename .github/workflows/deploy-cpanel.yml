@@ -149,10 +149,13 @@ jobs:
           ! grep -q 'SELECT \* FROM materials ORDER BY created_at DESC LIMIT 6' "$APP/routes_main.py"
 
           mkdir -p "$APP/tmp"
+          : > "$APP/wsgi_debug.log"
           touch "$APP/tmp/restart.txt"
           # LiteSpeed cPanel kadang tidak merespons restart marker saja.
-          # Sentuh entry point agar Passenger pasti memuat ulang Config/.env.
+          # Sentuh entry point dan .htaccess tanpa mengubah isinya agar worker
+          # lama dihentikan dan Config/.env dimuat ulang.
           touch "$APP/passenger_wsgi.py"
+          touch /home/lpkd3153/public_html/.htaccess
 
           echo "Production deployed at commit $(git -C "$REPO" rev-parse --short HEAD)"
           DEPLOY
