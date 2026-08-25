@@ -99,15 +99,21 @@ jobs:
           # Login selalu membutuhkan MySQL. Gagalkan deployment lebih awal bila
           # environment database cPanel hilang atau kredensialnya tidak valid.
           "$PYTHON" - <<'PY'
+          import sys
           from app import app
           from utils.database import get_db
 
-          with app.app_context():
-              db = get_db()
-              cur = db.cursor()
-              cur.execute("SELECT 1")
-              assert cur.fetchone()[0] == 1
-              cur.close()
+          try:
+              with app.app_context():
+                  db = get_db()
+                  cur = db.cursor()
+                  cur.execute("SELECT 1")
+                  assert cur.fetchone()[0] == 1
+                  cur.close()
+          except Exception as error:
+              message = str(error).replace('\n', ' ').replace('\r', ' ')
+              print(f"::error title=Production database connection failed::{type(error).__name__}: {message}")
+              sys.exit(1)
 
           print("Production database connection verified")
           PY
