@@ -1,13 +1,66 @@
-{% extends 'navbar/base.html' %}{% block title %}Data Siswa - LPK Yamaguchi{% endblock %}{% block content %}{% include 'admin/administration/_styles.html' %}
-<div class="admin-page"><div class="admin-hero"><div><p>Administrasi / Data Siswa</p><h1>Data Siswa</h1><p>Input, rekap tahunan mulai 2024, dan pencarian detail berdasarkan NIS.</p></div><i class="fas fa-user-graduate fa-3x text-danger"></i></div>
-<div class="admin-card"><h5><i class="fas fa-user-plus me-2 text-danger"></i>Input Siswa Baru</h5><form method="post"><div class="form-grid">
-<div><label class="form-label">NIS *</label><input class="form-control" name="nis" required></div><div><label class="form-label">Nama Lengkap *</label><input class="form-control" name="full_name" required></div><div><label class="form-label">Jenis Kelamin</label><select class="form-select" name="gender"><option value="">Pilih</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
-<div><label class="form-label">Tempat Lahir</label><input class="form-control" name="birth_place"></div><div><label class="form-label">Tanggal Lahir</label><input type="date" class="form-control" name="birth_date"></div><div><label class="form-label">Nomor HP</label><input class="form-control" name="phone"></div>
-<div><label class="form-label">Asal Sekolah</label><input class="form-control" name="school_name"></div><div><label class="form-label">NIK</label><input class="form-control" name="nik"></div><div><label class="form-label">Program</label><input class="form-control" name="program_name"></div>
-<div><label class="form-label">Tanggal Masuk *</label><input type="date" class="form-control" name="enrollment_date" required></div><div><label class="form-label">Tanggal Lulus</label><input type="date" class="form-control" name="graduation_date"></div><div><label class="form-label">Tanggal Terbang</label><input type="date" class="form-control" name="departure_date"></div>
-<div><label class="form-label">Sektor Pekerjaan</label><input class="form-control" name="job_sector"></div><div><label class="form-label">Penempatan</label><input class="form-control" name="placement"></div><div><label class="form-label">Status</label><select class="form-select" name="status"><option>aktif</option><option>lulus</option><option>terbang</option><option>pending</option><option>keluar</option><option>nonaktif</option></select></div>
-<div class="wide"><label class="form-label">Alamat</label><textarea class="form-control" name="address" rows="2"></textarea></div><div><label class="form-label">RT/RW</label><input class="form-control" name="rt_rw"></div>
-<div><label class="form-label">Kelurahan/Desa</label><input class="form-control" name="village"></div><div><label class="form-label">Kecamatan</label><input class="form-control" name="district"></div><div><label class="form-label">Kabupaten/Kota</label><input class="form-control" name="city"></div><div><label class="form-label">Provinsi</label><input class="form-control" name="province"></div>
-<div class="wide"><label class="form-label">Catatan</label><textarea class="form-control" name="notes" rows="2"></textarea></div><div class="d-flex align-items-end"><button class="btn-main"><i class="fas fa-save"></i>Simpan Siswa</button></div></div></form></div>
-<div class="admin-card"><div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3"><h5 class="mb-0">Rekap Siswa Tahun {{ selected_year }}</h5><form class="d-flex gap-2"><select class="form-select" name="year">{% for year in years %}<option value="{{ year }}" {% if year==selected_year %}selected{% endif %}>{{ year }}</option>{% endfor %}</select><input class="form-control" name="nis" value="{{ search_nis }}" placeholder="NIS / nama"><button class="btn-main">Tampilkan</button></form></div>
-<div class="table-responsive"><table class="table"><thead><tr><th>NIS</th><th>Nama</th><th>Program</th><th>Tanggal Masuk</th><th>Status</th><th></th></tr></thead><tbody>{% for row in students %}<tr><td><strong>{{ row.nis }}</strong></td><td>{{ row.full_name }}</td><td>{{ row.program_name or '-' }}</td><td>{{ row.enrollment_date.strftime('%d/%m/%Y') }}</td><td><span class="badge bg-success">{{ row.status|title }}</span></td><td><a class="btn-soft" href="{{ url_for('administration.student_detail',nis=row.nis) }}">Detail</a></td></tr>{% else %}<tr><td colspan="6" class="empty">Belum ada data siswa untuk tahun ini.</td></tr>{% endfor %}</tbody></table></div></div></div>{% endblock %}
+{% extends 'navbar/base.html' %}
+{% block title %}Data Siswa - LPK Yamaguchi{% endblock %}
+{% block content %}
+{% include 'admin/administration/_styles.html' %}
+<div class="admin-page">
+  <div class="admin-hero">
+    <div><p>Administrasi / Data Siswa</p><h1>Data Siswa</h1><p>Input, rekap tahunan mulai 2024, dan pencarian detail berdasarkan NIS.</p></div>
+    <i class="fas fa-user-graduate fa-3x text-danger"></i>
+  </div>
+
+  <div class="admin-card student-form-card">
+    <div class="student-form-heading">
+      <span class="student-form-icon"><i class="fas fa-user-plus"></i></span>
+      <div><h5>Input Siswa Baru</h5><p>Lengkapi identitas, alamat, dan informasi program siswa.</p></div>
+    </div>
+    <form method="post" class="student-entry-form">
+      <section class="form-section">
+        <div class="form-section-title"><span>01</span><div><h6>Identitas Siswa</h6><p>Data pribadi dan kontak siswa</p></div></div>
+        <div class="form-grid">
+          <div><label class="form-label">NIS <b>*</b></label><input class="form-control" name="nis" placeholder="Contoh: 02260405" required></div>
+          <div><label class="form-label">Nama Lengkap <b>*</b></label><input class="form-control" name="full_name" placeholder="Nama sesuai identitas" required></div>
+          <div><label class="form-label">Jenis Kelamin</label><select class="form-select" name="gender"><option value="">Pilih jenis kelamin</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+          <div><label class="form-label">Tempat Lahir</label><input class="form-control" name="birth_place" placeholder="Kota kelahiran"></div>
+          <div><label class="form-label">Tanggal Lahir</label><input type="date" class="form-control" name="birth_date"></div>
+          <div><label class="form-label">Nomor HP</label><input class="form-control" name="phone" inputmode="tel" placeholder="08xxxxxxxxxx"></div>
+          <div><label class="form-label">NIK</label><input class="form-control" name="nik" inputmode="numeric" maxlength="30" placeholder="Nomor Induk Kependudukan"></div>
+          <div class="wide"><label class="form-label">Asal Sekolah</label><input class="form-control" name="school_name" placeholder="Nama sekolah atau pendidikan terakhir"></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="form-section-title"><span>02</span><div><h6>Alamat Domisili</h6><p>Alamat disimpan terpisah agar mudah dibaca</p></div></div>
+        <div class="form-grid">
+          <div class="full"><label class="form-label">Alamat</label><textarea class="form-control" name="address" rows="3" placeholder="Nama jalan, nomor rumah, dusun, atau detail alamat"></textarea></div>
+          <div><label class="form-label">RT/RW</label><input class="form-control" name="rt_rw" placeholder="Contoh: 02/04"></div>
+          <div><label class="form-label">Kelurahan/Desa</label><input class="form-control" name="village" placeholder="Kelurahan atau desa"></div>
+          <div><label class="form-label">Kecamatan</label><input class="form-control" name="district" placeholder="Kecamatan"></div>
+          <div><label class="form-label">Kabupaten/Kota</label><input class="form-control" name="city" placeholder="Kabupaten atau kota"></div>
+          <div><label class="form-label">Provinsi</label><input class="form-control" name="province" placeholder="Provinsi"></div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <div class="form-section-title"><span>03</span><div><h6>Program &amp; Penempatan</h6><p>Informasi pelatihan dan perkembangan siswa</p></div></div>
+        <div class="form-grid">
+          <div><label class="form-label">Program</label><input class="form-control" name="program_name" placeholder="Contoh: Pelatihan Bahasa Jepang"></div>
+          <div><label class="form-label">Tanggal Masuk <b>*</b></label><input type="date" class="form-control" name="enrollment_date" required></div>
+          <div><label class="form-label">Status</label><select class="form-select" name="status"><option value="aktif">Aktif</option><option value="lulus">Lulus</option><option value="terbang">Terbang</option><option value="pending">Pending</option><option value="keluar">Keluar</option><option value="nonaktif">Nonaktif</option></select></div>
+          <div><label class="form-label">Tanggal Lulus</label><input type="date" class="form-control" name="graduation_date"></div>
+          <div><label class="form-label">Tanggal Terbang</label><input type="date" class="form-control" name="departure_date"></div>
+          <div><label class="form-label">Sektor Pekerjaan</label><input class="form-control" name="job_sector" placeholder="Contoh: Logistik"></div>
+          <div><label class="form-label">Penempatan</label><input class="form-control" name="placement" placeholder="Prefektur atau wilayah"></div>
+          <div class="wide"><label class="form-label">Catatan</label><textarea class="form-control" name="notes" rows="2" placeholder="Catatan khusus bila diperlukan"></textarea></div>
+        </div>
+      </section>
+
+      <div class="student-form-actions"><p><i class="fas fa-info-circle"></i> Kolom bertanda <b>*</b> wajib diisi.</p><button class="btn-main" type="submit"><i class="fas fa-save"></i>Simpan Siswa</button></div>
+    </form>
+  </div>
+
+  <div class="admin-card">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3"><h5 class="mb-0">Rekap Siswa Tahun {{ selected_year }}</h5><form class="d-flex gap-2"><select class="form-select" name="year">{% for year in years %}<option value="{{ year }}" {% if year==selected_year %}selected{% endif %}>{{ year }}</option>{% endfor %}</select><input class="form-control" name="nis" value="{{ search_nis }}" placeholder="NIS / nama"><button class="btn-main">Tampilkan</button></form></div>
+    <div class="table-responsive"><table class="table"><thead><tr><th>NIS</th><th>Nama</th><th>Program</th><th>Tanggal Masuk</th><th>Status</th><th></th></tr></thead><tbody>{% for row in students %}<tr><td><strong>{{ row.nis }}</strong></td><td>{{ row.full_name }}</td><td>{{ row.program_name or '-' }}</td><td>{{ row.enrollment_date.strftime('%d/%m/%Y') }}</td><td><span class="badge bg-success">{{ row.status|title }}</span></td><td><a class="btn-soft" href="{{ url_for('administration.student_detail',nis=row.nis) }}">Detail</a></td></tr>{% else %}<tr><td colspan="6" class="empty">Belum ada data siswa untuk tahun ini.</td></tr>{% endfor %}</tbody></table></div>
+  </div>
+</div>
+{% endblock %}
