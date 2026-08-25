@@ -172,6 +172,14 @@ jobs:
             https://www.lpkyamaguchi-pwt.com/login)
           if [ "$HTTP_STATUS" != "200" ] || ! grep -Fq 'Username atau password salah.' "$LOGIN_PAGE"; then
             echo "POST login production gagal (HTTP $HTTP_STATUS). Log aplikasi terbaru:"
+            MYSQL_ERROR=$(ssh -i ~/.ssh/cpanel_deploy -p "$SSH_PORT" \
+              -o BatchMode=yes -o IdentitiesOnly=yes \
+              "$SSH_USER@$SSH_HOST" \
+              "grep -E 'mysql\.connector\.errors\.|Access denied for user|Unknown database' /home/lpkd3153/yamaguchipwt/wsgi_debug.log 2>/dev/null | tail -n 1" || true)
+            if [ -n "$MYSQL_ERROR" ]; then
+              MYSQL_ERROR=$(printf '%s' "$MYSQL_ERROR" | tr '\r\n' '  ')
+              echo "::error title=Production login database error::$MYSQL_ERROR"
+            fi
             ssh -i ~/.ssh/cpanel_deploy -p "$SSH_PORT" \
               -o BatchMode=yes -o IdentitiesOnly=yes \
               "$SSH_USER@$SSH_HOST" \
