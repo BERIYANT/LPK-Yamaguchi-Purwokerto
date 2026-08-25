@@ -150,6 +150,9 @@ jobs:
 
           mkdir -p "$APP/tmp"
           touch "$APP/tmp/restart.txt"
+          # LiteSpeed cPanel kadang tidak merespons restart marker saja.
+          # Sentuh entry point agar Passenger pasti memuat ulang Config/.env.
+          touch "$APP/passenger_wsgi.py"
 
           echo "Production deployed at commit $(git -C "$REPO" rev-parse --short HEAD)"
           DEPLOY
