@@ -4,6 +4,28 @@ import traceback
 
 log_file_path = '/home/lpkd3153/yamaguchipwt/wsgi_debug.log'
 
+
+def load_private_environment():
+    """Load cPanel-only variables when LiteSpeed omits PassengerEnvVar."""
+    env_path = os.path.join(os.path.dirname(__file__), '.env')
+    if not os.path.isfile(env_path):
+        return
+
+    with open(env_path, encoding='utf-8') as env_file:
+        for raw_line in env_file:
+            line = raw_line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+            name, value = line.split('=', 1)
+            name = name.strip()
+            value = value.strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
+                value = value[1:-1]
+            os.environ.setdefault(name, value)
+
+
+load_private_environment()
+
 try:
     with open(log_file_path, 'a') as f:
         f.write(f"\n--- STARTUP ATTEMPT: Python {sys.version} ---\n")
