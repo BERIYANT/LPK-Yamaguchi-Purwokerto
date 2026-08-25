@@ -1,1 +1,39 @@
-{% extends 'navbar/base.html' %}{% block title %}Detail {{ student.nis }}{% endblock %}{% block content %}{% include 'admin/administration/_styles.html' %}<div class="admin-page"><div class="admin-hero"><div><p>Data Siswa / {{ student.nis }}</p><h1>{{ student.full_name }}</h1><p>Detail lengkap siswa berdasarkan NIS.</p></div><a class="btn-soft" href="{{ url_for('administration.students') }}">Kembali</a></div><div class="admin-card"><div class="detail-grid">{% for label,value in [('NIS',student.nis),('Nama Lengkap',student.full_name),('Jenis Kelamin','Laki-laki' if student.gender=='L' else 'Perempuan' if student.gender=='P' else '-'),('Tempat/Tanggal Lahir',(student.birth_place or '-') ~ ' / ' ~ (student.birth_date.strftime('%d/%m/%Y') if student.birth_date else '-')),('Nomor HP',student.phone or '-'),('Program',student.program_name or '-'),('Tanggal Masuk',student.enrollment_date.strftime('%d/%m/%Y')),('Status',student.status|title),('Alamat',student.address or '-') ] %}<div class="detail-item"><small>{{ label }}</small><strong>{{ value }}</strong></div>{% endfor %}</div><div class="mt-4"><a class="btn-main" href="{{ url_for('administration.student_payments',nis=student.nis) }}"><i class="fas fa-money-check-alt"></i>Lihat Pembayaran</a></div></div></div>{% endblock %}
+{% extends 'navbar/base.html' %}
+{% block title %}Detail {{ student.nis }}{% endblock %}
+{% block content %}
+{% include 'admin/administration/_styles.html' %}
+<div class="admin-page">
+  <div class="admin-hero">
+    <div><p>Data Siswa / {{ student.nis }}</p><h1>{{ student.full_name }}</h1><p>Detail lengkap siswa berdasarkan NIS.</p></div>
+    <a class="btn-soft" href="{{ url_for('administration.students') }}">Kembali</a>
+  </div>
+  <div class="admin-card student-profile">
+    <h5>Informasi Utama</h5>
+    <div class="detail-grid">
+      {% for label,value in [
+        ('NIS',student.nis), ('Nama Lengkap',student.full_name),
+        ('Jenis Kelamin','Laki-laki' if student.gender=='L' else 'Perempuan' if student.gender=='P' else '-'),
+        ('Tempat/Tanggal Lahir',(student.birth_place or '-') ~ ' / ' ~ (student.birth_date.strftime('%d/%m/%Y') if student.birth_date else '-')),
+        ('Nomor HP',student.phone or '-'), ('NIK',student.nik or '-'),
+        ('Asal Sekolah',student.school_name or '-'), ('Program',student.program_name or '-'),
+        ('Tanggal Masuk',student.enrollment_date.strftime('%d/%m/%Y')), ('Status',student.status|title)
+      ] %}<div class="detail-item"><small>{{ label }}</small><strong>{{ value }}</strong></div>{% endfor %}
+    </div>
+    <h5 class="detail-section-title">Alamat</h5>
+    <div class="detail-grid address-grid">
+      <div class="detail-item wide"><small>Alamat</small><strong>{{ student.address or '-' }}</strong></div>
+      {% for label,value in [('RT/RW',student.rt_rw or '-'),('Kelurahan/Desa',student.village or '-'),('Kecamatan',student.district or '-'),('Kabupaten/Kota',student.city or '-'),('Provinsi',student.province or '-')] %}<div class="detail-item"><small>{{ label }}</small><strong>{{ value }}</strong></div>{% endfor %}
+    </div>
+    <h5 class="detail-section-title">Kelulusan &amp; Penempatan</h5>
+    <div class="detail-grid">
+      {% for label,value in [
+        ('Tanggal Lulus',student.graduation_date.strftime('%d/%m/%Y') if student.graduation_date else '-'),
+        ('Tanggal Terbang',student.departure_date.strftime('%d/%m/%Y') if student.departure_date else '-'),
+        ('Sektor Pekerjaan',student.job_sector or '-'), ('Penempatan',student.placement or '-'),
+        ('Catatan',student.notes or '-')
+      ] %}<div class="detail-item"><small>{{ label }}</small><strong>{{ value }}</strong></div>{% endfor %}
+    </div>
+    <div class="mt-4"><a class="btn-main" href="{{ url_for('administration.student_payments',nis=student.nis) }}"><i class="fas fa-money-check-alt"></i>Lihat Pembayaran</a></div>
+  </div>
+</div>
+{% endblock %}

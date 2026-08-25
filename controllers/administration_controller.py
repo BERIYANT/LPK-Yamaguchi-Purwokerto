@@ -31,15 +31,25 @@ def students():
         try:
             cur.execute("""
                 INSERT INTO student_profiles
-                    (nis, full_name, gender, birth_place, birth_date, phone, address,
-                     program_name, enrollment_date, status)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    (nis, full_name, gender, birth_place, birth_date, school_name, nik,
+                     phone, address, rt_rw, village, district, city, province,
+                     program_name, enrollment_date, graduation_date, departure_date,
+                     job_sector, placement, status, notes)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (
                 request.form['nis'].strip(), request.form['full_name'].strip(),
                 request.form.get('gender') or None, request.form.get('birth_place') or None,
-                request.form.get('birth_date') or None, request.form.get('phone') or None,
-                request.form.get('address') or None, request.form.get('program_name') or None,
-                request.form['enrollment_date'], request.form.get('status', 'aktif')
+                request.form.get('birth_date') or None, request.form.get('school_name') or None,
+                request.form.get('nik') or None, request.form.get('phone') or None,
+                request.form.get('address') or None, request.form.get('rt_rw') or None,
+                request.form.get('village') or None, request.form.get('district') or None,
+                request.form.get('city') or None, request.form.get('province') or None,
+                request.form.get('program_name') or None, request.form['enrollment_date'],
+                request.form.get('graduation_date') or None,
+                request.form.get('departure_date') or None,
+                request.form.get('job_sector') or None, request.form.get('placement') or None,
+                request.form.get('status', 'aktif'), request.form.get('notes') or None
             ))
             db.commit()
             flash('Data siswa berhasil ditambahkan.', 'success')
