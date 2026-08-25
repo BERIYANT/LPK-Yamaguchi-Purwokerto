@@ -300,8 +300,12 @@
                 <!-- Admin Menu -->
                 <li><a href="{{ url_for('admin.dashboard') }}" {% if request.endpoint=='admin.dashboard'
                         %}class="active" {% endif %}><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="{{ url_for('administration.students') }}" {% if request.endpoint and request.endpoint.startswith('administration.student') %}class="active"{% endif %}><i class="fas fa-user-graduate"></i> Data Siswa</a></li>
+                <li><a href="{{ url_for('administration.student_payments') }}" {% if request.endpoint in ['administration.student_payments', 'administration.payment_recap'] %}class="active"{% endif %}><i class="fas fa-money-check-alt"></i> Pembayaran Siswa</a></li>
+                <li><a href="{{ url_for('administration.sensei') }}" {% if request.endpoint and request.endpoint.startswith('administration.sensei') %}class="active"{% endif %}><i class="fas fa-chalkboard-teacher"></i> Data Sensei</a></li>
+                <li><a href="{{ url_for('administration.teaching_schedules') }}" {% if request.endpoint=='administration.teaching_schedules' %}class="active"{% endif %}><i class="fas fa-calendar-alt"></i> Jadwal Sensei</a></li>
                 <li><a href="{{ url_for('admin.users') }}" {% if request.endpoint=='admin.users' %}class="active" {%
-                        endif %}><i class="fas fa-users"></i> Kelola User</a></li>
+                        endif %}><i class="fas fa-users-cog"></i> Akun E-Learning</a></li>
                 <li><a href="{{ url_for('admin.classes') }}" {% if request.endpoint=='admin.classes' %}class="active" {%
                         endif %}><i class="fas fa-book-open"></i> Kelola Kelas</a></li>
                 <li><a href="{{ url_for('admin.certificates') }}" {% if request.endpoint=='admin.certificates'

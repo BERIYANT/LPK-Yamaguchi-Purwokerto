@@ -58,6 +58,7 @@ setup_csp(app)
 # Import dan register blueprints
 from controllers.auth_controller import auth_bp
 from controllers.admin_controller import admin_bp
+from controllers.administration_controller import administration_bp
 from controllers.teacher_controller import teacher_bp
 from controllers.student_controller import student_bp
 from controllers.material_controller import material_bp
@@ -77,6 +78,7 @@ from controllers.question_bank_controller import question_bank_bp
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp, url_prefix='/admin')
+app.register_blueprint(administration_bp, url_prefix='/admin')
 app.register_blueprint(teacher_bp, url_prefix='/teacher')
 app.register_blueprint(student_bp, url_prefix='/student')
 app.register_blueprint(material_bp)
