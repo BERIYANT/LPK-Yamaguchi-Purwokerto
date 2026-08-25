@@ -109,6 +109,14 @@ from routes_main import *
 
 @app.after_request
 def override_csp_for_emailjs(response):
+    # Halaman autentikasi tidak boleh memakai salinan HTML lama dari cache
+    # browser/proxy. Template login pernah berubah sehingga cache lama dapat
+    # menampilkan navbar saja tanpa formulir.
+    if request.endpoint == 'auth.login':
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+
     # Hanya untuk halaman contact yang butuh EmailJS
     if request.endpoint in ['main.home', 'main.contact']:
         response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; connect-src 'self' https://api.emailjs.com https://*.emailjs.com;"
