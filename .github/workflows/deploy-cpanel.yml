@@ -119,6 +119,32 @@ jobs:
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
+          "$PYTHON" - <<'PY'
+          import sys
+          from config import Config
+          from utils.database import get_db
+          from app import app
+
+          db_user = Config.DB_CONFIG.get('user')
+          db_name = Config.DB_CONFIG.get('database')
+          print(f"Resolved production DB user: {db_user}")
+          print(f"Resolved production DB name: {db_name}")
+          if db_user == 'root':
+              print("::error title=Private environment not applied::config.py masih menyelesaikan DB_USER sebagai root")
+              sys.exit(1)
+          try:
+              with app.app_context():
+                  cur = get_db().cursor()
+                  cur.execute('SELECT 1')
+                  assert cur.fetchone()[0] == 1
+                  cur.close()
+          except Exception as error:
+              message = str(error).replace('\n', ' ').replace('\r', ' ')
+              print(f"::error title=Production database credentials rejected::{type(error).__name__}: {message}")
+              sys.exit(1)
+          print("Production database query verified")
+          PY
+          grep -q "load_private_environment()" "$APP/config.py"
           grep -q "return render_template('index.html')" "$APP/routes_main.py"
           ! grep -q 'SELECT \* FROM materials ORDER BY created_at DESC LIMIT 6' "$APP/routes_main.py"
 
