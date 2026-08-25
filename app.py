@@ -112,7 +112,12 @@ def override_csp_for_emailjs(response):
     # Halaman autentikasi tidak boleh memakai salinan HTML lama dari cache
     # browser/proxy. Template login pernah berubah sehingga cache lama dapat
     # menampilkan navbar saja tanpa formulir.
-    if request.endpoint == 'auth.login':
+    if request.endpoint in {
+        'auth.login',
+        'admin.dashboard',
+        'teacher.dashboard',
+        'student.dashboard',
+    }:
         response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '0'
