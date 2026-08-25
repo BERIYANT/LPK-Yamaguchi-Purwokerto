@@ -1,5 +1,27 @@
 import os
 
+
+def load_private_environment():
+    """Load private cPanel configuration before Config is constructed."""
+    env_path = os.path.join(os.path.dirname(__file__), '.env')
+    if not os.path.isfile(env_path):
+        return
+
+    with open(env_path, encoding='utf-8-sig') as env_file:
+        for raw_line in env_file:
+            line = raw_line.strip()
+            if not line or line.startswith('#') or '=' not in line:
+                continue
+            name, value = line.split('=', 1)
+            name = name.strip()
+            value = value.strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
+                value = value[1:-1]
+            os.environ[name] = value
+
+
+load_private_environment()
+
 class Config:
     # Basic Config
     SECRET_KEY = os.getenv("SECRET_KEY", "lpk-yamaguchi-local-dev")
