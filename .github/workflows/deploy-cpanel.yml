@@ -157,6 +157,13 @@ jobs:
           # lama dihentikan dan Config/.env dimuat ulang.
           touch "$APP/passenger_wsgi.py"
           touch /home/lpkd3153/public_html/.htaccess
+          # Hentikan hanya AppPreloader milik application root ini. Worker baru
+          # akan dibuat otomatis pada request berikutnya dengan source terbaru.
+          PRELOADER_PIDS=$(pgrep -u "$(id -u)" -f "Passenger AppPreloader: $APP" || true)
+          if [ -n "$PRELOADER_PIDS" ]; then
+            echo "Restarting stale Passenger app preloader"
+            kill $PRELOADER_PIDS
+          fi
 
           echo "Production deployed at commit $(git -C "$REPO" rev-parse --short HEAD)"
           DEPLOY
@@ -207,6 +214,8 @@ jobs:
           # Username probe sengaja tidak ada. Respons harus kembali ke form
           # login, bukan 500; ini menguji koneksi database dari request WSGI.
           HTTP_STATUS=$(curl --silent --show-error \
+            --retry 3 \
+            --retry-delay 3 \
             --cookie "$LOGIN_COOKIE" \
             --cookie-jar "$LOGIN_COOKIE" \
             --output "$LOGIN_PAGE" \
