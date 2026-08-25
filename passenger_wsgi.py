@@ -21,7 +21,9 @@ def load_private_environment():
             value = value.strip()
             if len(value) >= 2 and value[0] == value[-1] and value[0] in ('"', "'"):
                 value = value[1:-1]
-            os.environ.setdefault(name, value)
+            # File ini privat dan khusus production; nilainya harus mengganti
+            # environment lama/fallback yang mungkin diwariskan Passenger.
+            os.environ[name] = value
 
 
 load_private_environment()
