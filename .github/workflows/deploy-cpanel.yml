@@ -97,6 +97,14 @@ jobs:
             exit 1
           }
           chmod 600 "$APP/.env"
+          for name in DB_HOST DB_PORT DB_USER DB_PASSWORD DB_NAME SECRET_KEY FLASK_ENV SESSION_COOKIE_SECURE; do
+            if grep -q "^[[:space:]]*$name=" "$APP/.env"; then
+              echo "Private .env key $name: present"
+            else
+              echo "::error title=Invalid production environment file::$name tidak ditemukan dengan format $name=nilai di $APP/.env"
+              exit 1
+            fi
+          done
 
           # Diagnosis aman: hanya periksa keberadaan nama variabel, jangan
           # pernah mencetak nilainya ke log GitHub Actions.
