@@ -92,6 +92,17 @@ jobs:
           test -f /home/lpkd3153/public_html/.htaccess
           test -f "$APP/passenger_wsgi.py"
           test -f "$APP/app.py"
+
+          # Diagnosis aman: hanya periksa keberadaan nama variabel, jangan
+          # pernah mencetak nilainya ke log GitHub Actions.
+          for name in DB_HOST DB_PORT DB_USER DB_PASSWORD DB_NAME SECRET_KEY; do
+            if grep -q "^[[:space:]]*PassengerEnvVar[[:space:]]\+$name[[:space:]]" /home/lpkd3153/public_html/.htaccess; then
+              echo "cPanel .htaccess variable $name: present"
+            else
+              echo "::warning title=Missing cPanel Passenger variable::$name tidak ditemukan di public_html/.htaccess"
+            fi
+          done
+
           "$PYTHON" -m pip install -r "$APP/requirements.txt"
           cd "$APP"
           "$PYTHON" -m compileall -q -x '(^|/)(\.venv|venv|__pycache__)/' .
