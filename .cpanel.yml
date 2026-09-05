@@ -1,0 +1,19 @@
+---
+deployment:
+  tasks:
+    - /bin/mkdir -p /home/lpkd3153/yamaguchipwt
+    - /bin/tar -cf - --exclude='.git' --exclude='.github' --exclude='__MACOSX' --exclude='._*' --exclude='.cpanel.yml' --exclude='.env' --exclude='.env.*' --exclude='node_modules' --exclude='vendor' --exclude='storage/*.key' --exclude='storage/pail' --exclude='*.log' --exclude='storage/framework/views/*' --exclude='storage/framework/cache/*' --exclude='storage/framework/sessions/*' . | /bin/tar -C /home/lpkd3153/yamaguchipwt -xf -
+    - /bin/rm -rf /home/lpkd3153/yamaguchipwt/__MACOSX
+    - /usr/bin/find /home/lpkd3153/yamaguchipwt -name '._*' -type f -delete
+    - /bin/rm -rf /home/lpkd3153/yamaguchipwt/vendor
+    - /opt/cpanel/composer-cli/1.0/bin/composer --no-interaction --no-progress --optimize-autoloader --working-dir=/home/lpkd3153/yamaguchipwt install
+    - /usr/bin/php /home/lpkd3153/yamaguchipwt/artisan config:cache
+    - /usr/bin/php /home/lpkd3153/yamaguchipwt/artisan route:cache
+    - /usr/bin/php /home/lpkd3153/yamaguchipwt/artisan view:cache
+    - /usr/bin/php /home/lpkd3153/yamaguchipwt/artisan storage:link --force
+    - /usr/bin/php /home/lpkd3153/yamaguchipwt/artisan migrate --force
+    - /bin/mkdir -p /home/lpkd3153/yamaguchipwt/storage/framework/views
+    - /bin/mkdir -p /home/lpkd3153/yamaguchipwt/storage/framework/cache/data
+    - /bin/mkdir -p /home/lpkd3153/yamaguchipwt/storage/framework/sessions
+    - /bin/chown -R lpkd3153:lpkd3153 /home/lpkd3153/yamaguchipwt/storage
+    - /bin/touch /home/lpkd3153/yamaguchipwt/tmp/restart.txt
