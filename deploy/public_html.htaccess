@@ -1,6 +1,0 @@
-PassengerEnabled on
-PassengerAppType wsgi
-PassengerStartupFile passenger_wsgi.py
-PassengerAppRoot /home/lpkd3153/yamaguchipwt
-PassengerBaseURI /
-PassengerPython /home/lpkd3153/virtualenv/yamaguchipwt/3.13/bin/python

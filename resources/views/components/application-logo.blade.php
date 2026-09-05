@@ -1,0 +1,1 @@
+<img src="{{ asset('images/logo-yamaguchi.png') }}" alt="Logo LPK Yamaguchi Purwokerto" {{ $attributes->merge(['class' => 'rounded-full object-cover']) }}>

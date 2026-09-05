@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root { --red: #d62828; --white: #ffffff; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #202020; }
+}
+
+@layer components {
+    .eyebrow { @apply text-[10px] font-extrabold uppercase tracking-[.22em] text-[#d6362b]; }
+    .display-title { @apply mt-2 text-3xl font-extrabold tracking-[-.04em] text-[#0b1f3a] sm:text-4xl; }
+    .primary-button { @apply inline-flex items-center justify-center gap-3 rounded-xl bg-[#d6362b] px-5 py-3 text-xs font-extrabold text-white shadow-lg shadow-red-900/10 transition hover:-translate-y-0.5 hover:bg-[#b92c23]; }
+    .panel { @apply rounded-[24px] border border-[#0b1f3a]/10 bg-white p-6 shadow-[0_16px_50px_rgba(11,31,58,.06)]; }
+    .panel-head { @apply mb-5 flex items-center justify-between border-b border-black/[.07] pb-5; }
+    .panel-head h3 { @apply mt-1 text-lg font-extrabold; }
+    .panel-head a { @apply text-xs font-bold text-[#d6362b]; }
+    .metric-card { @apply relative min-h-[188px] overflow-hidden rounded-[24px] border border-black/[.06] p-6; }
+    .metric-card p { @apply mt-7 text-xs font-bold uppercase tracking-wider opacity-60; }
+    .metric-card strong { @apply mt-2 block text-4xl font-extrabold tracking-[-.05em]; }
+    .metric-card > span { @apply mt-3 block text-[10px] font-semibold opacity-40; }
+    .metric-icon { @apply grid h-10 w-10 place-items-center rounded-xl border border-black/10 bg-white/50 text-lg; }
+    .tone-red { @apply bg-[#d6362b] text-white; }
+    .tone-black { @apply bg-[#0b1f3a] text-white; }
+    .tone-cream { @apply bg-[#eef3f9] text-[#0b1f3a]; }
+    .tone-yellow { @apply bg-[#e7edf5] text-[#0b1f3a]; }
+    .date-block { @apply grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[#f7e4dc] py-1 text-[#a82c23]; }
+    .date-block b { @apply text-lg leading-none; }
+    .date-block span { @apply text-[9px] font-extrabold uppercase tracking-wider; }
+    .status-pill { @apply inline-flex rounded-full bg-[#f4eee9] px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-wider text-[#8c352c]; }
+    .avatar { @apply grid h-10 w-10 shrink-0 place-items-center rounded-full border-0 bg-[#ffe8d8] text-xs font-extrabold text-[#e2763f]; }
+    .empty-state { @apply rounded-2xl border border-dashed border-black/10 p-8 text-center text-sm text-black/35; }
+    .input { @apply rounded-xl border-black/10 bg-white text-sm shadow-sm focus:border-[#d6362b] focus:ring-[#d6362b]; }
+    .data-table { @apply w-full min-w-[760px] text-left text-sm; }
+    .data-table thead { @apply bg-[#eef3f9] text-[10px] uppercase tracking-[.13em] text-[#0b1f3a]/60; }
+    .data-table th { @apply px-6 py-4 font-extrabold; }
+    .data-table td { @apply border-t border-black/[.06] px-6 py-4 text-black/60; }
+    .data-table td b { @apply block text-sm text-black; }
+    .data-table td small { @apply mt-1 block text-[11px] text-black/35; }
+    .panel small { @apply mt-1 block text-[9px] font-bold uppercase tracking-wider text-black/35; }
+
+    /* Admin dashboard panels */
+    .admin-stat-card { @apply relative min-h-[176px] overflow-hidden rounded-[18px] border border-[#e9edf2] p-6 shadow-[0_8px_24px_rgba(34,52,74,.035)]; }
+    .admin-stat-card p { @apply mt-1 text-[13px] font-semibold text-[#6f7888]; }
+    .admin-stat-card strong { @apply mt-3 block text-[30px] leading-none font-extrabold tracking-[-.04em] text-[#20232d]; }
+    .admin-stat-card span { @apply mt-4 inline-block text-[11px] font-semibold text-[#687283]; }
+    .admin-stat-card span b { @apply text-[#18a88c]; }
+    .admin-stat-icon { @apply absolute right-5 top-5 grid h-12 w-12 place-items-center rounded-full text-white shadow-sm; }
+    .admin-stat-icon svg { @apply h-7 w-7; }
+
+    .admin-panel { @apply rounded-[18px] border border-[#e9edf2] bg-white shadow-[0_10px_30px_rgba(34,52,74,.04)]; }
+    .admin-panel-title { @apply border-b border-black/[.07] px-6 py-5; }
+    .admin-panel-title h3 { @apply mt-1 text-lg font-bold tracking-[-.02em] text-[#20232d]; }
+
+    .chart-grid { @apply grid h-72 grid-cols-12 items-end gap-3; }
+    .chart-column { @apply grid h-full grid-rows-1 place-items-end gap-2; }
+    .chart-bars { @apply flex w-full items-end gap-1; }
+    .chart-bars > span { @apply w-full rounded-xl; }
+
+    .calendar-arrow { @apply grid h-10 w-10 place-items-center rounded-full bg-white text-xl font-extrabold text-[#d62828] shadow-sm hover:bg-white/80; }
+    aside nav svg { @apply h-5 w-5 fill-none stroke-current; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+}
+
+@layer base {
+    .dark body, .dark main { background: #111111; color: #f5f5f5; }
+    .dark aside, .dark header { background: #171717; border-color: #303030; color: #f5f5f5; }
+    .dark .panel, .dark .admin-panel, .dark .admin-stat-card { background: #1d1d1d; border-color: #343434; color: #f5f5f5; box-shadow: none; }
+    .dark input, .dark select, .dark textarea { background: #242424; border-color: #484848; color: #fff; }
+    .dark table, .dark tbody, .dark tr, .dark td { background: #1d1d1d; color: #ededed; border-color: #343434; }
+    .dark thead, .dark th { background: #262626; color: #fff; }
+    .dark p, .dark small, .dark dt { color: #c4c4c4; }
+    .dark h1, .dark h2, .dark h3, .dark strong, .dark b, .dark dd { color: #fff; }
+    .dark nav[role="navigation"] span, .dark nav[role="navigation"] a { background: #1d1d1d !important; border-color: #3a3a3a !important; color: #fff !important; }
+    .dark .admin-stat-card strong, .dark .admin-panel-title h3 { color: #fff; }
+    .dark .admin-stat-card p, .dark .admin-stat-card span { color: #c9c9c9; }
+    .dark aside > div:last-child > div { background: #242424; }
+    .dark aside nav a:not(.bg-\[\#fff0f0\]) { color: #bdbdbd; }
+    .dark .status-pill { background: #382323; color: #ffb5af; }
+    .dark .avatar { background: #3a2923; color: #ff9a66; }
+    .dark .calendar-arrow { background: #292929; }
+    .dark aside > div:first-of-type p, .dark aside > div:last-child p:first-child { color: #fff; }
+    .dark aside > div:last-child p:last-child { color: #bdbdbd; }
+    .dark aside nav a[class*="bg-[#fff0f0]"] { background: #fff0f0 !important; color: #d62828 !important; }
+    .dark header > div:first-of-type { background: #fbeeee; color: #665b5b; }
+    .dark .admin-panel [class*="bg-[#edf1f6]"] { background: #d9d9d9; }
+    .dark .admin-panel [class*="bg-[#eaf0f7]"] { background: #292929; color: #fff; }
+    .dark .admin-panel [class*="text-[#233047]"], .dark .admin-panel [class*="text-[#687386]"], .dark .admin-panel [class*="text-[#0b1f3a]"] { color: #d7d7d7; }
+    .dark .admin-panel [class*="bg-[#d62828]"] { color: #fff; }
+    .dark .admin-panel .shadow-red-200 { box-shadow: none; }
+    .dark .admin-panel-title { border-color: #343434; }
+    .dark .admin-stat-icon { color: #fff; }
+}
