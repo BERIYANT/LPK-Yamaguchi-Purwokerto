@@ -51,34 +51,10 @@
             </article>
         </section>
 
-        <section class="mt-6 grid gap-6 xl:grid-cols-[minmax(0,2.15fr)_minmax(310px,.85fr)]">
-            <section>
-                <h3 class="mb-4 text-lg font-extrabold text-[#20232d]">Rincian Siswa</h3>
-                <div class="grid gap-4 sm:grid-cols-2">
-                    <article class="admin-stat-card bg-gradient-to-br from-[#fffafa] to-[#fff0f0]">
-                        <div class="admin-stat-icon" style="background: #d62828">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="3"/><path d="M5 20v-2a7 7 0 0 1 14 0v2"/></svg>
-                        </div>
-                        <div>
-                            <p>Total Siswa</p>
-                            <strong>{{ number_format($studentStats['total']) }}</strong>
-                            <span>Data database aktif</span>
-                        </div>
-                    </article>
-                    <article class="admin-stat-card bg-gradient-to-br from-[#eef7ff] to-[#f0f9ff]">
-                        <div class="admin-stat-icon" style="background: #3b82f6">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="7" r="3"/><path d="M2 20c0-4 2-7 6-7s6 3 6 7M16 5h5a2 2 0 0 1 2 2v3m-2 7a4 4 0 1 0-8 0"/></svg>
-                        </div>
-                        <div>
-                            <p>Siswa Aktif</p>
-                            <strong class="text-[#3b82f6]">{{ number_format($studentStats['status']['aktif'] ?? 0) }}</strong>
-                            <span>{{ number_format($studentStats['status']['lulus'] ?? 0) }} Lulus · {{ number_format($studentStats['status']['keluar'] ?? 0) }} Keluar</span>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                    <article class="panel">
+        <section class="mt-6">
+            <h3 class="mb-4 text-lg font-extrabold text-[#20232d]">Rincian Siswa</h3>
+            <div class="grid items-stretch gap-6 lg:grid-cols-3">
+                    <article class="admin-panel p-6">
                         <div class="panel-head"><h3>Gender Siswa</h3></div>
                         <div class="space-y-3">
                             <div class="flex items-center gap-3">
@@ -100,7 +76,7 @@
                         </div>
                     </article>
 
-                    <article class="panel">
+                    <article class="admin-panel p-6">
                         <div class="panel-head"><h3>Status Siswa</h3></div>
                         <div class="space-y-3">
                             @foreach([
@@ -116,28 +92,27 @@
                             @endforeach
                         </div>
                     </article>
-                </div>
-            </section>
 
-            <article class="admin-panel">
-                <div class="admin-panel-title"><h3>Distribusi ke Jepang</h3></div>
+            <article class="admin-panel overflow-hidden">
+                <div class="admin-panel-title"><h3>Penempatan Jepang</h3></div>
                 <div class="p-6">
                     <div class="space-y-4">
-                        @foreach($studentStats['cities'] as $city => $count)
+                        @forelse($studentStats['placements'] as $city => $count)
                             <div class="flex items-center gap-3">
-                                <span class="min-w-[80px] text-sm font-bold text-[#6e7788]">{{ $city }}</span>
-                                <div class="relative flex-1 h-8">
-                                    <div class="absolute inset-0 flex items-center rounded-xl bg-[#edf1f6]">
-                                        <span class="ml-3 text-xs font-black text-[#20232d]">{{ number_format($count) }} siswa</span>
-                                    </div>
-                                    <div class="h-full rounded-xl bg-[#d62828]" style="width: {{ ($count / max(1, $studentStats['cities']->max())) * 100 }}%"></div>
-                                </div>
+                                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-red-50 text-xs font-extrabold text-[#d62828]">{{ $loop->iteration }}</span>
+                                <span class="min-w-0 flex-1 truncate text-sm font-bold text-[#6e7788]">{{ $city }}</span>
+                                <strong class="whitespace-nowrap text-sm text-[#20232d]">{{ number_format($count) }} siswa</strong>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="py-8 text-center text-sm text-[#8b95a7]">Data penempatan belum tersedia.</p>
+                        @endforelse
                     </div>
                 </div>
             </article>
+            </div>
         </section>
+
+        <section class="mt-6 grid gap-6 xl:grid-cols-[minmax(0,2.15fr)_minmax(310px,.85fr)]">
             <article class="admin-panel">
                 <div class="admin-panel-title"><h3>Revenue Statistic</h3></div>
                 <div class="p-6 sm:p-8">

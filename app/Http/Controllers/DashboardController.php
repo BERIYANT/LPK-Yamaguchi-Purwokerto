@@ -74,7 +74,13 @@ class DashboardController extends Controller
                 'total' => User::where('role', 'student')->count(),
                 'gender' => StudentProfile::selectRaw('gender, COUNT(*) as cnt')->whereIn('gender', ['L', 'P'])->groupBy('gender')->pluck('cnt', 'gender')->toArray(),
                 'status' => StudentProfile::selectRaw('status, COUNT(*) as cnt')->groupBy('status')->orderByRaw("FIELD(status, 'aktif', 'lulus', 'keluar', 'pending')")->pluck('cnt', 'status')->toArray(),
-                'cities' => collect(StudentProfile::whereNotNull('destination_city')->where('destination_city', '!=', '')->selectRaw('destination_city, COUNT(*) as cnt')->groupBy('destination_city')->orderByDesc('cnt')->limit(5)->pluck('cnt', 'destination_city')->all()),
+                'placements' => StudentProfile::whereNotNull('placement')
+                    ->where('placement', '!=', '')
+                    ->selectRaw('UPPER(TRIM(placement)) as destination, COUNT(*) as cnt')
+                    ->groupByRaw('UPPER(TRIM(placement))')
+                    ->orderByDesc('cnt')
+                    ->limit(5)
+                    ->pluck('cnt', 'destination'),
             ],
         ]);
     }
