@@ -4,6 +4,7 @@ deployment:
     - /bin/mkdir -p /home/lpkd3153/lpk-yamaguchi-purwokerto/storage/framework/cache/data /home/lpkd3153/lpk-yamaguchi-purwokerto/storage/framework/sessions /home/lpkd3153/lpk-yamaguchi-purwokerto/storage/framework/views /home/lpkd3153/lpk-yamaguchi-purwokerto/bootstrap/cache
     - /bin/bash -lc 'cd /home/lpkd3153/lpk-yamaguchi-purwokerto && if command -v composer >/dev/null 2>&1; then composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader; elif [ -f composer.phar ]; then /usr/bin/php composer.phar install --no-dev --no-interaction --prefer-dist --optimize-autoloader; else echo "Composer tidak ditemukan" >&2; exit 1; fi'
     - /bin/bash -lc 'cd /home/lpkd3153/lpk-yamaguchi-purwokerto && if command -v npm >/dev/null 2>&1; then npm ci --no-audit --no-fund && npm run build; elif [ ! -f public/build/manifest.json ]; then echo "npm tidak ditemukan dan public/build belum tersedia" >&2; exit 1; fi'
+    - /bin/bash -lc '/bin/mkdir -p /home/lpkd3153/public_html/build /home/lpkd3153/public_html/images && /bin/cp -R /home/lpkd3153/lpk-yamaguchi-purwokerto/public/build/. /home/lpkd3153/public_html/build/ && /bin/cp -R /home/lpkd3153/lpk-yamaguchi-purwokerto/public/images/. /home/lpkd3153/public_html/images/'
     - /usr/bin/php /home/lpkd3153/lpk-yamaguchi-purwokerto/artisan optimize:clear
     - /usr/bin/php /home/lpkd3153/lpk-yamaguchi-purwokerto/artisan migrate --force
     - /usr/bin/php /home/lpkd3153/lpk-yamaguchi-purwokerto/artisan storage:link
