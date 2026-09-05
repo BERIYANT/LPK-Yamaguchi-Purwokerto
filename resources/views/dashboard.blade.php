@@ -27,26 +27,19 @@
                         <div>
                             <p>{{ $label }}</p>
                             <strong>{{ number_format($value) }}</strong>
-                            <span><b class="!text-[#d62828]">10% ▲</b> &nbsp; +5 Bulan Ini</span>
+                            <span>Data aktual database</span>
                         </div>
                     </article>
                 @endforeach
             </div>
 
             <article class="admin-panel flex flex-col">
-                <div class="admin-panel-title"><h3>Student Attendance</h3></div>
-                <div class="flex flex-1 flex-col p-6">
-                    <div class="flex h-3 overflow-hidden rounded-full bg-[#edf1f6]">
-                        @foreach($attendance as $item)
-                            @if($item['percentage'] > 0)<span style="width: {{ $item['percentage'] }}%; background: {{ $item['color'] }}"></span>@endif
-                        @endforeach
-                    </div>
-                    <div class="mt-8 space-y-5">
-                        @foreach($attendance as $item)
-                            <div class="flex items-center gap-3 text-sm"><span class="h-3 w-3 rounded-[3px]" style="background: {{ $item['color'] }}"></span><span class="font-semibold text-[#6e7788]">{{ $item['label'] }}</span><b class="ml-auto text-[#20283a]">{{ $item['percentage'] }}%</b></div>
-                        @endforeach
-                    </div>
-
+                <div class="admin-panel-title"><h3>Data Kehadiran</h3></div>
+                <div class="flex flex-1 flex-col justify-center p-6 text-center">
+                    <div class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-red-50 text-2xl font-extrabold text-[#d62828]">✓</div>
+                    <strong class="mt-5 text-4xl font-extrabold tracking-[-.04em] text-[#20232d]">{{ number_format($attendanceTotal) }}</strong>
+                    <p class="mt-2 text-sm font-semibold text-[#6e7788]">Kehadiran tercatat</p>
+                    <p class="mt-1 text-xs text-[#9aa3b2]">Dari {{ number_format($attendanceSessions) }} sesi absensi</p>
                 </div>
             </article>
         </section>
@@ -59,19 +52,13 @@
                         <div class="space-y-3">
                             <div class="flex items-center gap-3">
                                 <span class="w-32 font-semibold text-[#6e7788]">Laki-laki</span>
-                                <div class="flex-1 h-5 overflow-hidden rounded-full bg-[#edf1f6]">
-                                    <span class="flex h-full w-1/2 min-w-[2px] items-center justify-center rounded-full bg-[#d62828] text-[10px] font-black text-white" style="width: {{ ($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 1) > 0 ? (($studentStats['gender']['L'] ?? 0) / (($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 1)) * 100) : 0 }}%">
-                                        {{ number_format($studentStats['gender']['L'] ?? 0) }}
-                                    </span>
-                                </div>
+                                <div class="h-3 flex-1 overflow-hidden rounded-full bg-[#edf1f6]"><span class="block h-full rounded-full bg-[#d62828]" style="width: {{ ($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 0) > 0 ? (($studentStats['gender']['L'] ?? 0) / (($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 0)) * 100) : 0 }}%"></span></div>
+                                <strong class="w-10 text-right text-sm text-[#20232d]">{{ number_format($studentStats['gender']['L'] ?? 0) }}</strong>
                             </div>
                             <div class="flex items-center gap-3">
                                 <span class="w-32 font-semibold text-[#6e7788]">Perempuan</span>
-                                <div class="flex-1 h-5 overflow-hidden rounded-full bg-[#edf1f6]">
-                                    <span class="flex h-full min-w-[2px] items-center justify-center rounded-full bg-[#bd1f27] text-[10px] font-black text-white" style="width: {{ ($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 1) > 0 ? (($studentStats['gender']['P'] ?? 0) / (($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 1)) * 100) : 0 }}%">
-                                        {{ number_format($studentStats['gender']['P'] ?? 0) }}
-                                    </span>
-                                </div>
+                                <div class="h-3 flex-1 overflow-hidden rounded-full bg-[#edf1f6]"><span class="block h-full rounded-full bg-[#ef6a61]" style="width: {{ ($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 0) > 0 ? (($studentStats['gender']['P'] ?? 0) / (($studentStats['gender']['L'] ?? 0) + ($studentStats['gender']['P'] ?? 0)) * 100) : 0 }}%"></span></div>
+                                <strong class="w-10 text-right text-sm text-[#20232d]">{{ number_format($studentStats['gender']['P'] ?? 0) }}</strong>
                             </div>
                         </div>
                     </article>

@@ -29,12 +29,6 @@ class DashboardController extends Controller
         ];
 
         $attendanceTotal = AttendanceRecord::count();
-        $attendance = [
-            ['label' => 'Hadir', 'value' => $attendanceTotal, 'percentage' => $attendanceTotal ? 100 : 0, 'color' => '#a91820'],
-            ['label' => 'Tidak hadir', 'value' => 0, 'percentage' => 0, 'color' => '#d62828'],
-            ['label' => 'Terlambat', 'value' => 0, 'percentage' => 0, 'color' => '#e13b32'],
-            ['label' => 'Izin', 'value' => 0, 'percentage' => 0, 'color' => '#ef6a61'],
-        ];
 
         $monthlyStudents = collect(range(1, 12))->map(function (int $month) {
             return User::where('role', 'student')
@@ -58,7 +52,7 @@ class DashboardController extends Controller
 
         return view('dashboard', [
             'metrics' => $metrics,
-            'attendance' => $attendance,
+            'attendanceTotal' => $attendanceTotal,
             'attendanceSessions' => AttendanceSession::count(),
             'monthlyStudents' => $monthlyStudents,
             'monthlyAcademic' => $monthlyAcademic,
