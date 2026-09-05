@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/peserta/pembayaran', [ParticipantController::class, 'payments'])->name('participants.payments');
         Route::post('/peserta/pembayaran', [ParticipantController::class, 'storePayment'])->name('participants.payments.store');
         Route::get('/peserta/{nis}', [ParticipantController::class, 'show'])->name('participants.show');
+        Route::get('/peserta/edit/{nis}', [ParticipantController::class, 'edit'])->name('participants.edit');
+        Route::put('/peserta/{nis}', [ParticipantController::class, 'update'])->name('participants.update');
         Route::get('/penilaian', [GradeController::class, 'index'])->name('grades.index');
     });
 

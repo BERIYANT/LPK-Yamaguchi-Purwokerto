@@ -7,6 +7,7 @@ use App\Models\AttendanceSession;
 use App\Models\LmsClass;
 use App\Models\Material;
 use App\Models\Quiz;
+use App\Models\StudentProfile;
 use App\Models\Task;
 use App\Models\TaskSubmission;
 use App\Models\User;
@@ -69,6 +70,12 @@ class DashboardController extends Controller
             'recentParticipants' => User::where('role', 'student')->latest('id')->limit(6)->get(),
             'upcomingTasks' => Task::with('lmsClass')->whereNotNull('due_date')->orderBy('due_date')->limit(5)->get(),
             'recentQuizzes' => Quiz::with('lmsClass')->latest('id')->limit(5)->get(),
+            'studentStats' => [
+                'total' => User::where('role', 'student')->count(),
+                'gender' => StudentProfile::selectRaw('gender, COUNT(*) as cnt')->whereIn('gender', ['L', 'P'])->groupBy('gender')->pluck('cnt', 'gender')->toArray(),
+                'status' => StudentProfile::selectRaw('status, COUNT(*) as cnt')->groupBy('status')->orderByRaw("FIELD(status, 'aktif', 'lulus', 'keluar', 'pending')")->pluck('cnt', 'status')->toArray(),
+                'cities' => collect(StudentProfile::whereNotNull('destination_city')->where('destination_city', '!=', '')->selectRaw('destination_city, COUNT(*) as cnt')->groupBy('destination_city')->orderByDesc('cnt')->limit(5)->pluck('cnt', 'destination_city')->all()),
+            ],
         ]);
     }
 }

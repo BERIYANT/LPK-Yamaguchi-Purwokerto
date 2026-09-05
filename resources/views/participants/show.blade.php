@@ -1,5 +1,56 @@
-<x-app-layout><x-slot name="pageTitle">Detail Siswa</x-slot>
-@php $p=$participant->studentProfile; $labels=['registration'=>'Biaya Pendaftaran','education_1'=>'Biaya Pendidikan Angsuran 1','education_2'=>'Biaya Pendidikan Angsuran 2','education_3'=>'Biaya Pendidikan Angsuran 3','education_4'=>'Biaya Pendidikan Angsuran 4','education_5'=>'Biaya Pendidikan Angsuran 5','education_6'=>'Biaya Pendidikan Angsuran 6','mcu'=>'Biaya MCU','dormitory'=>'Biaya Asrama']; @endphp
-<div class="mb-7 flex flex-wrap items-end justify-between gap-3"><div><p class="eyebrow">NIS {{ $p->nis }}</p><h2 class="display-title">{{ $participant->name }}</h2></div><a href="{{ route('participants.payments',['nis'=>$p->nis]) }}" class="primary-button">Lihat Pembayaran</a></div>
-<div class="grid gap-5 lg:grid-cols-3"><section class="panel lg:col-span-2"><div class="panel-head"><h3>Detail Data Siswa</h3></div><dl class="grid gap-5 sm:grid-cols-2">@foreach(['nis'=>'NIS','full_name'=>'Nama lengkap','gender'=>'Jenis kelamin','birth_place'=>'Tempat lahir','birth_date'=>'Tanggal lahir','school_name'=>'Asal sekolah','nik'=>'NIK','phone'=>'Nomor WA','address'=>'Alamat','rt_rw'=>'RT/RW','village'=>'Desa/Kelurahan','district'=>'Kecamatan','city'=>'Kabupaten/Kota','province'=>'Provinsi','enrollment_date'=>'Tanggal masuk','graduation_date'=>'Tanggal lulus','departure_date'=>'Tanggal terbang','job_sector'=>'Sektor','placement'=>'Penempatan','status'=>'Status','notes'=>'Catatan'] as $key=>$label)<div><dt class="text-[10px] font-extrabold uppercase tracking-wider text-black/40">{{ $label }}</dt><dd class="mt-1 text-sm font-semibold">{{ $p->$key ?: '—' }}</dd></div>@endforeach</dl></section><section class="panel"><div class="panel-head"><h3>Ringkasan Pembayaran</h3></div><div class="space-y-3">@forelse($payments as $payment)<div class="rounded-xl bg-red-50 p-4"><b class="text-xs">{{ $labels[$payment->payment_type] ?? $payment->payment_type }}</b><p class="mt-1 text-lg font-extrabold text-[#d62828]">Rp {{ number_format($payment->amount,0,',','.') }}</p><small>{{ $payment->payment_date }}</small></div>@empty<div class="empty-state">Belum ada pembayaran.</div>@endforelse</div></section></div>
+<x-app-layout>
+    <x-slot name="pageTitle">Detail Siswa</x-slot>
+    @php
+        $p = $participant->studentProfile;
+        $labels = ['registration'=>'Biaya Pendaftaran','education_1'=>'Biaya Pendidikan Angsuran 1','education_2'=>'Biaya Pendidikan Angsuran 2','education_3'=>'Biaya Pendidikan Angsuran 3','education_4'=>'Biaya Pendidikan Angsuran 4','education_5'=>'Biaya Pendidikan Angsuran 5','education_6'=>'Biaya Pendidikan Angsuran 6','mcu'=>'Biaya MCU','dormitory'=>'Biaya Asrama'];
+        $statusLabels = ['aktif' => 'Aktif', 'lulus' => 'Lulus', 'keluar' => 'Keluar', 'pending' => 'Tertunda'];
+        $statusColors = ['aktif' => 'text-green-600', 'lulus' => 'text-blue-600', 'keluar' => 'text-red-600', 'pending' => 'text-yellow-600'];
+    @endphp
+    <div class="mb-7 flex flex-wrap items-end justify-between gap-3">
+        <div>
+            <p class="eyebrow">NIS {{ $p->nis }}</p>
+            <h2 class="display-title">{{ $participant->name }}</h2>
+        </div>
+        <div class="flex gap-2">
+            <a href="{{ route('participants.edit', ['nis' => $p->nis]) }}" class="rounded-xl border border-[#d62828] px-4 py-3 text-xs font-bold text-[#d62828]">✎ Edit</a>
+            <a href="{{ route('participants.payments', ['nis' => $p->nis]) }}" class="primary-button">Lihat Pembayaran</a>
+        </div>
+    </div>
+
+    <div class="grid gap-5 lg:grid-cols-3">
+        <section class="panel lg:col-span-2">
+            <div class="panel-head"><h3>Detail Data Siswa</h3></div>
+            <dl class="grid gap-5 sm:grid-cols-2">
+                @foreach(['nis'=>'NIS','full_name'=>'Nama lengkap','gender'=>'Jenis kelamin','birth_place'=>'Tempat lahir','birth_date'=>'Tanggal lahir','school_name'=>'Asal sekolah','nik'=>'NIK','phone'=>'Nomor WA','address'=>'Alamat','rt_rw'=>'RT/RW','village'=>'Desa/Kelurahan','district'=>'Kecamatan','city'=>'Kabupaten/Kota','province'=>'Provinsi','enrollment_date'=>'Tanggal masuk','graduation_date'=>'Tanggal lulus','departure_date'=>'Tanggal terbang','job_sector'=>'Sektor','placement'=>'Penempatan','status'=>'Status','notes'=>'Catatan'] as $key=>$label)
+                    <div>
+                        <dt class="text-[10px] font-extrabold uppercase tracking-wider text-black/40">{{ $label }}</dt>
+                        <dd class="mt-1 text-sm font-semibold{{ isset($statusColors[$p->status]) ? ' '.$statusColors[$p->status] : '' }}">
+                            @if($key === 'status' && isset($statusLabels[$p->status]))
+                                {{ $statusLabels[$p->status] }}
+                            @elseif($key === 'gender' && $p->gender)
+                                {{ $p->gender === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                            @else
+                                {{ $p->$key ?: '—' }}
+                            @endif
+                        </dd>
+                    </div>
+                @endforeach
+            </dl>
+        </section>
+
+        <section class="panel">
+            <div class="panel-head"><h3>Ringkasan Pembayaran</h3></div>
+            <div class="space-y-3">
+                @forelse($payments as $payment)
+                    <div class="rounded-xl bg-red-50 p-4">
+                        <b class="text-xs">{{ $labels[$payment->payment_type] ?? $payment->payment_type }}</b>
+                        <p class="mt-1 text-lg font-extrabold text-[#d62828]">Rp {{ number_format($payment->amount,0,',','.') }}</p>
+                        <small>{{ $payment->payment_date }}</small>
+                    </div>
+                @empty
+                    <div class="empty-state">Belum ada pembayaran.</div>
+                @endforelse
+            </div>
+        </section>
+    </div>
 </x-app-layout>

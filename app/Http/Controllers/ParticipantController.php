@@ -16,10 +16,25 @@ class ParticipantController extends Controller
     public function index(Request $request): View
     {
         $year = max(2024, $request->integer('year', now()->year));
+
+        $sortField = $request->get('sort', 'name');
+        $sortDir = $request->get('direction', 'asc');
+
         $participants = User::with('studentProfile')->where('role', 'student')
             ->when($request->filled('q'), fn ($query) => $query->whereHas('studentProfile', fn ($profile) => $profile->where('nis', 'like', '%'.$request->q.'%')->orWhere('full_name', 'like', '%'.$request->q.'%')))
             ->when($request->filled('year'), fn ($query) => $query->whereHas('studentProfile', fn ($profile) => $profile->whereYear('enrollment_date', $year)))
             ->orderBy('full_name')->paginate(20)->withQueryString();
+
+        // Apply sorting from the student profile relationship
+        $participants->getCollection()->sortBy(function ($item) use ($sortField) {
+            return match ($sortField) {
+                'nis' => $item->studentProfile?->nis ?? '',
+                'enrollment_date' => $item->studentProfile?->enrollment_date ?? '',
+                'school_name' => $item->studentProfile?->school_name ?? '',
+                'status' => $item->studentProfile?->status ?? 'aktif',
+                default => $item->full_name ?? '',
+            };
+        }, SORT_REGULAR, $sortDir === 'desc');
 
         $years = StudentProfile::selectRaw('YEAR(enrollment_date) year')->whereYear('enrollment_date', '>=', 2024)->distinct()->orderByDesc('year')->pluck('year');
 
@@ -46,6 +61,35 @@ class ParticipantController extends Controller
         $payments = Payment::where('user_id', $participant->id)->orderBy('payment_date')->get();
 
         return view('participants.show', compact('participant', 'payments'));
+    }
+
+    public function edit(string $nis): View
+    {
+        $participant = User::with('studentProfile')->where('role', 'student')->whereHas('studentProfile', fn ($query) => $query->where('nis', $nis))->firstOrFail();
+
+        return view('participants.form', compact('participant'));
+    }
+
+    public function update(Request $request, string $nis): RedirectResponse
+    {
+        $participant = User::with('studentProfile')->where('role', 'student')->whereHas('studentProfile', fn ($query) => $query->where('nis', $nis))->firstOrFail();
+        $profile = $participant->studentProfile;
+
+        $data = $request->validate([
+            'full_name' => ['required', 'string', 'max:255'],
+            'gender' => ['nullable', Rule::in(['L', 'P'])], 'birth_place' => ['nullable', 'string', 'max:100'], 'birth_date' => ['nullable', 'date'],
+            'school_name' => ['nullable', 'string', 'max:255'], 'nik' => ['nullable', 'string', 'max:30'], 'phone' => ['nullable', 'string', 'max:30'],
+            'address' => ['nullable', 'string'], 'rt_rw' => ['nullable', 'string', 'max:20'], 'village' => ['nullable', 'string', 'max:100'],
+            'district' => ['nullable', 'string', 'max:100'], 'city' => ['nullable', 'string', 'max:100'], 'province' => ['nullable', 'string', 'max:100'],
+            'enrollment_date' => ['required', 'date'], 'graduation_date' => ['nullable', 'date'], 'departure_date' => ['nullable', 'date'],
+            'job_sector' => ['nullable', 'string', 'max:100'], 'placement' => ['nullable', 'string', 'max:100'],
+            'status' => ['required', Rule::in(['aktif', 'lulus', 'keluar', 'pending'])], 'notes' => ['nullable', 'string'],
+        ]);
+
+        $participant->update(['full_name' => $data['full_name'], 'phone' => $data['phone'] ?? null]);
+        $profile->update($data);
+
+        return redirect()->route('participants.show', $profile->nis)->with('success', 'Data siswa berhasil diperbarui.');
     }
 
     public function payments(Request $request): View
@@ -87,7 +131,7 @@ class ParticipantController extends Controller
             'address' => ['nullable', 'string'], 'rt_rw' => ['nullable', 'string', 'max:20'], 'village' => ['nullable', 'string', 'max:100'],
             'district' => ['nullable', 'string', 'max:100'], 'city' => ['nullable', 'string', 'max:100'], 'province' => ['nullable', 'string', 'max:100'],
             'enrollment_date' => ['required', 'date'], 'graduation_date' => ['nullable', 'date'], 'departure_date' => ['nullable', 'date'],
-            'job_sector' => ['nullable', 'string', 'max:100'], 'placement' => ['nullable', 'string', 'max:100'], 'status' => ['nullable', 'string', 'max:30'], 'notes' => ['nullable', 'string'],
+            'job_sector' => ['nullable', 'string', 'max:100'], 'placement' => ['nullable', 'string', 'max:100'], 'status' => ['required', Rule::in(['aktif', 'lulus', 'keluar', 'pending'])], 'notes' => ['nullable', 'string'],
         ]);
     }
 }
