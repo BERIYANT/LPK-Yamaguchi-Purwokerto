@@ -44,8 +44,10 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $user = \App\Models\User::where('username', $this->string('username'))->first();
-        $valid = $user && ($this->validLegacyPassword($this->string('password')->toString(), $user->password)
-            || Hash::check($this->string('password')->toString(), $user->password));
+        $password = $this->string('password')->toString();
+        $valid = $user && (str_starts_with($user->password, 'pbkdf2:')
+            ? $this->validLegacyPassword($password, $user->password)
+            : Hash::check($password, $user->password));
 
         if (! $valid) {
             RateLimiter::hit($this->throttleKey());
@@ -56,7 +58,7 @@ class LoginRequest extends FormRequest
         }
 
         if (str_starts_with($user->password, 'pbkdf2:')) {
-            $user->forceFill(['password' => Hash::make($this->string('password')->toString())])->save();
+            $user->forceFill(['password' => Hash::make($password)])->save();
         }
 
         Auth::login($user, $this->boolean('remember'));
