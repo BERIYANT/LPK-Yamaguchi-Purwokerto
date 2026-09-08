@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-BNQkFsOE.css",
+    "file": "assets/app-DRc4nl03.css",
     "name": "app",
     "names": [
       "app.css"
@@ -13,5 +13,14 @@
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
+  },
+  "resources/js/kage.jsx": {
+    "file": "assets/kage-D2xWK-Ok.js",
+    "name": "kage",
+    "src": "resources/js/kage.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/kage-ByKPILYD.css"
+    ]
   }
 }

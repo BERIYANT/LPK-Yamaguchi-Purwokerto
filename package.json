@@ -18,5 +18,11 @@
     },
     "optionalDependencies": {
         "@laravel/multiplex": "^0.4.1"
+    },
+    "dependencies": {
+        "@designcodeio/threeui": "^1.2.0",
+        "@vitejs/plugin-react": "^6.1.1",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8"
     }
 }
